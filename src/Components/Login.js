@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 class Login extends Component {
   render() {
     const mystyle = {
-        height: '32rem', 
+        height: '33rem', 
         backgroundImage: "url('./assets/img/card-6.svg')"
       };
     return (
