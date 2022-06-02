@@ -1,16 +1,29 @@
-import logo from './logo.svg';
-// import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './Components/Login';
+import Header from './Components/Header';
 import Dashboard from './Components/Dashboard';
 import SideNav from './Components/SideNav';
-import Header from './Components/Header';
+import Footer from './Components/Footer';
 
 function App() {
   return (
     <div className="App">
-          <Dashboard />
-          {/* <SideNav/> */}
-          {/* <Header /> */}
+          <div className='has-navbar-vertical-aside navbar-vertical-aside-show-xl footer-offset'>
+                <Header />
+                <BrowserRouter>
+                    <SideNav/>
+
+                    <main id="content" role="main" className="main">
+                    <Routes>
+                        <Route exact path="/" element={<Dashboard/>}/>
+                        <Route exact path="/login" element={<Login/>}/>
+                    </Routes>
+                    </main>
+                    <Footer />
+                </BrowserRouter>
+
+            </div>
+         
     </div>
   );
 }

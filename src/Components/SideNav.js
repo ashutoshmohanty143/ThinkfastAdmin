@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import { Link } from 'react-router-dom'
 export default class SideNav extends Component {
   render() {
     return (
@@ -26,7 +26,9 @@ export default class SideNav extends Component {
                             <span className="nav-link-title">Dashboards</span>
                         </a>
                         <div id="navbarVerticalMenuDashboards" className="nav-collapse collapse show" data-bs-parent="#navbarVerticalMenu">
-                            <a className="nav-link active" href="./index.html">Default</a>
+                           
+                            <Link className="nav-link active" to="/">Dashboard</Link>
+                            <Link className="nav-link" to="/login">Login</Link>
                             <a className="nav-link " href="./dashboard-alternative.html">Alternative</a>
                         </div>
                     </div>
@@ -356,6 +358,53 @@ export default class SideNav extends Component {
         </div>
     </div>
 </aside>
+
+<div className="modal fade" id="welcomeMessageModal" aria-hidden="true">
+<div className="modal-dialog modal-dialog-centered">
+    <div className="modal-content">
+        
+        <div className="modal-close">
+            <button type="button" className="btn btn-ghost-secondary btn-icon btn-sm" data-bs-dismiss="modal" aria-label="Close">
+            <i className="bi-x-lg"></i>
+            </button>
+        </div>
+        
+        
+        <div className="modal-body p-sm-5">
+            <div className="text-center">
+                <div className="w-75 w-sm-50 mx-auto mb-4">
+                    <img className="img-fluid" src="./assets/svg/illustrations/oc-collaboration.svg" alt="Image Description" data-hs-theme-appearance="default" />
+                    <img className="img-fluid" src="./assets/svg/illustrations-light/oc-collaboration.svg" alt="Image Description" data-hs-theme-appearance="dark" />
+                </div>
+                <h4 className="h1">Welcome to Front</h4>
+                <p>We're happy to see you in our community.</p>
+            </div>
+        </div>
+        
+        
+        <div className="modal-footer d-block text-center py-sm-5">
+            <small className="text-cap text-muted">Trusted by the world's best teams</small>
+            <div className="w-85 mx-auto">
+                <div className="row justify-content-between">
+                    <div className="col">
+                        <img className="img-fluid" src="./assets/svg/brands/gitlab-gray.svg" alt="Image Description" />
+                    </div>
+                    <div className="col">
+                        <img className="img-fluid" src="./assets/svg/brands/fitbit-gray.svg" alt="Image Description" />
+                    </div>
+                    <div className="col">
+                        <img className="img-fluid" src="./assets/svg/brands/flow-xo-gray.svg" alt="Image Description" />
+                    </div>
+                    <div className="col">
+                        <img className="img-fluid" src="./assets/svg/brands/layar-gray.svg" alt="Image Description" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+</div>
       </div>
     )
   }

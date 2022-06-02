@@ -5,7 +5,8 @@ export default class Header extends Component {
     return (
       <div>
 
-<header id="header" className="navbar navbar-expand-lg navbar-fixed navbar-height navbar-container navbar-bordered bg-white">
+<header id="header" className="navbar navbar-expand-lg navbar-fixed 
+navbar-height navbar-container navbar-bordered bg-white">
     <div className="navbar-nav-wrap">
         
         <a className="navbar-brand" href="./index.html" aria-label="Front">
@@ -860,6 +861,447 @@ export default class Header extends Component {
     <div className="d-grid">
         <a className="btn btn-white" href="">View all <i className="bi-chevron-right"></i></a>
     </div>
+</div>
+</div>
+
+
+<div className="modal fade" id="inviteUserModal" aria-labelledby="inviteUserModalLabel" aria-hidden="true">
+<div className="modal-dialog modal-dialog-centered">
+    <div className="modal-content">
+        <div className="modal-header">
+            <h4 className="modal-title" id="inviteUserModalLabel">Invite users</h4>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div className="modal-body">
+            
+            <div className="mb-4">
+                <div className="input-group mb-2 mb-sm-0">
+                    <input type="text" className="form-control" name="fullName" placeholder="Search name or emails" aria-label="Search name or emails" />
+                    <div className="input-group-append input-group-append-last-sm-down-none">
+                        
+                        <div className="tom-select-custom tom-select-custom-end">
+                            <select className="js-select form-select"  data-hs-tom-select-options='{
+                                "searchInDropdown": false,
+                                "hideSearch": true,
+                                "dropdownWidth": "11rem"
+                                }'>
+                                <option value="guest">Guest</option>
+                                <option value="can edit">Can edit</option>
+                                <option value="can comment">Can comment</option>
+                                <option value="full access">Full access</option>
+                            </select>
+                        </div>
+                        
+                        <a className="btn btn-primary d-none d-sm-inline-block" href="">Invite</a>
+                    </div>
+                </div>
+                <a className="btn btn-primary w-100 d-sm-none" href="">Invite</a>
+            </div>
+            
+            <div className="row">
+                <h5 className="col modal-title">Invite users</h5>
+                <div className="col-auto">
+                    <a className="d-flex align-items-center small text-body" href="#">
+                        <img className="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/brands/gmail-icon.svg" alt="Image Description" />
+                        Import contacts
+                    </a>
+                </div>
+            </div>
+            <hr className="mt-2" />
+            <ul className="list-unstyled list-py-2 mb-0">
+                
+                <li>
+                    <div className="d-flex">
+                        <div className="flex-shrink-0">
+                            <div className="avatar avatar-sm avatar-circle">
+                                <img className="avatar-img" src="./assets/img/160x160/img10.jpg" alt="Image Description" />
+                            </div>
+                        </div>
+                        <div className="flex-grow-1 ms-3">
+                            <div className="row align-items-center">
+                                <div className="col-sm">
+                                    <h5 className="mb-0">Amanda Harvey <i className="bi-patch-check-fill text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></h5>
+                                    <span className="d-block small">amanda@site.com</span>
+                                </div>
+                                <div className="col-sm-auto">
+                                    
+                                    <div className="tom-select-custom tom-select-custom-sm-end">
+                                        <select className="js-select form-select form-select-borderless tom-select-custom-form-select-invite-user tom-select-form-select-ps-0"  data-hs-tom-select-options='{
+                                            "searchInDropdown": false,
+                                            "hideSearch": true,
+                                            "dropdownWidth": "11rem"
+                                            }'>
+                                            <option value="guest">Guest</option>
+                                            <option value="can edit">Can edit</option>
+                                            <option value="can comment">Can comment</option>
+                                            <option value="full access">Full access</option>
+                                            <option value="remove" data-option-template='<div className="text-danger">Remove</div>'>Remove</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </li>
+                
+                
+                <li>
+                    <div className="d-flex">
+                        <div className="flex-shrink-0">
+                            <div className="avatar avatar-sm avatar-circle">
+                                <img className="avatar-img" src="./assets/img/160x160/img3.jpg" alt="Image Description" />
+                            </div>
+                        </div>
+                        <div className="flex-grow-1 ms-3">
+                            <div className="row align-items-center">
+                                <div className="col-sm">
+                                    <h5 className="mb-0">David Harrison</h5>
+                                    <span className="d-block small">david@site.com</span>
+                                </div>
+                                <div className="col-sm-auto">
+                                    
+                                    <div className="tom-select-custom tom-select-custom-sm-end">
+                                        <select className="js-select form-select form-select-borderless tom-select-custom-form-select-invite-user tom-select-form-select-ps-0"  data-hs-tom-select-options='{
+                                            "searchInDropdown": false,
+                                            "hideSearch": true,
+                                            "dropdownWidth": "11rem"
+                                            }'>
+                                            <option value="guest">Guest</option>
+                                            <option value="can edit">Can edit</option>
+                                            <option value="can comment">Can comment</option>
+                                            <option value="full access">Full access</option>
+                                            <option value="remove" data-option-template='<div className="text-danger">Remove</div>'>Remove</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </li>
+                
+                
+                <li>
+                    <div className="d-flex">
+                        <div className="flex-shrink-0">
+                            <div className="avatar avatar-sm avatar-circle">
+                                <img className="avatar-img" src="./assets/img/160x160/img9.jpg" alt="Image Description" />
+                            </div>
+                        </div>
+                        <div className="flex-grow-1 ms-3">
+                            <div className="row align-items-center">
+                                <div className="col-sm">
+                                    <h5 className="mb-0">Ella Lauda <i className="bi-patch-check-fill text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></h5>
+                                    <span className="d-block small">Markvt@site.com</span>
+                                </div>
+                                <div className="col-sm-auto">
+                                    
+                                    <div className="tom-select-custom tom-select-custom-sm-end">
+                                        <select className="js-select form-select form-select-borderless tom-select-custom-form-select-invite-user tom-select-form-select-ps-0"  data-hs-tom-select-options='{
+                                            "searchInDropdown": false,
+                                            "hideSearch": true,
+                                            "dropdownWidth": "11rem"
+                                            }'>
+                                            <option value="guest">Guest</option>
+                                            <option value="can edit">Can edit</option>
+                                            <option value="can comment">Can comment</option>
+                                            <option value="full access">Full access</option>
+                                            <option value="remove" data-option-template='<div className="text-danger">Remove</div>'>Remove</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </li>
+                
+                
+                <li>
+                    <div className="d-flex">
+                        <div className="flex-shrink-0">
+                            <div className="avatar avatar-sm avatar-soft-dark avatar-circle">
+                                <span className="avatar-initials">B</span>
+                            </div>
+                        </div>
+                        <div className="flex-grow-1 ms-3">
+                            <div className="row align-items-center">
+                                <div className="col-sm">
+                                    <h5 className="mb-0">Bob Dean</h5>
+                                    <span className="d-block small">bob@site.com</span>
+                                </div>
+                                <div className="col-sm-auto">
+                                    
+                                    <div className="tom-select-custom tom-select-custom-sm-end">
+                                        <select className="js-select form-select form-select-borderless tom-select-custom-form-select-invite-user tom-select-form-select-ps-0"  data-hs-tom-select-options='{
+                                            "searchInDropdown": false,
+                                            "hideSearch": true,
+                                            "dropdownWidth": "11rem"
+                                            }'>
+                                            <option value="guest">Guest</option>
+                                            <option value="can edit">Can edit</option>
+                                            <option value="can comment">Can comment</option>
+                                            <option value="full access">Full access</option>
+                                            <option value="remove" data-option-template='<div className="text-danger">Remove</div>'>Remove</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </li>
+                
+            </ul>
+        </div>
+        
+        
+        <div className="modal-footer">
+            <div className="row align-items-center flex-grow-1 mx-n2">
+                <div className="col-sm-9 mb-2 mb-sm-0">
+                    <input type="hidden" id="inviteUserPublicClipboard" value="https://themes.getbootstrap.com/product/front-multipurpose-responsive-template/" />
+                    <p className="modal-footer-text">The public share <a href="#">link settings</a>
+                    <i className="bi-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="The public share link allows people to view the project without giving access to full collaboration features."></i>
+                </p>
+            </div>
+            <div className="col-sm-3 text-sm-end">
+                <a className="js-clipboard btn btn-white btn-sm text-nowrap" href="" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy to clipboard!" data-hs-clipboard-options='{
+                    "type": "tooltip",
+                    "successText": "Copied!",
+                    "contentTarget": "#inviteUserPublicClipboard",
+                    "container": "#inviteUserModal"
+                    }'>
+                <i className="bi-link-45deg me-1"></i> Copy link</a>
+            </div>
+        </div>
+    </div>
+    
+</div>
+</div>
+</div><div className="modal fade" id="inviteUserModal" aria-labelledby="inviteUserModalLabel" aria-hidden="true">
+<div className="modal-dialog modal-dialog-centered">
+    <div className="modal-content">
+        <div className="modal-header">
+            <h4 className="modal-title" id="inviteUserModalLabel">Invite users</h4>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div className="modal-body">
+            
+            <div className="mb-4">
+                <div className="input-group mb-2 mb-sm-0">
+                    <input type="text" className="form-control" name="fullName" placeholder="Search name or emails" aria-label="Search name or emails" />
+                    <div className="input-group-append input-group-append-last-sm-down-none">
+                        
+                        <div className="tom-select-custom tom-select-custom-end">
+                            <select className="js-select form-select"  data-hs-tom-select-options='{
+                                "searchInDropdown": false,
+                                "hideSearch": true,
+                                "dropdownWidth": "11rem"
+                                }'>
+                                <option value="guest">Guest</option>
+                                <option value="can edit">Can edit</option>
+                                <option value="can comment">Can comment</option>
+                                <option value="full access">Full access</option>
+                            </select>
+                        </div>
+                        
+                        <a className="btn btn-primary d-none d-sm-inline-block" href="">Invite</a>
+                    </div>
+                </div>
+                <a className="btn btn-primary w-100 d-sm-none" href="">Invite</a>
+            </div>
+            
+            <div className="row">
+                <h5 className="col modal-title">Invite users</h5>
+                <div className="col-auto">
+                    <a className="d-flex align-items-center small text-body" href="#">
+                        <img className="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/brands/gmail-icon.svg" alt="Image Description" />
+                        Import contacts
+                    </a>
+                </div>
+            </div>
+            <hr className="mt-2" />
+            <ul className="list-unstyled list-py-2 mb-0">
+                
+                <li>
+                    <div className="d-flex">
+                        <div className="flex-shrink-0">
+                            <div className="avatar avatar-sm avatar-circle">
+                                <img className="avatar-img" src="./assets/img/160x160/img10.jpg" alt="Image Description" />
+                            </div>
+                        </div>
+                        <div className="flex-grow-1 ms-3">
+                            <div className="row align-items-center">
+                                <div className="col-sm">
+                                    <h5 className="mb-0">Amanda Harvey <i className="bi-patch-check-fill text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></h5>
+                                    <span className="d-block small">amanda@site.com</span>
+                                </div>
+                                <div className="col-sm-auto">
+                                    
+                                    <div className="tom-select-custom tom-select-custom-sm-end">
+                                        <select className="js-select form-select form-select-borderless tom-select-custom-form-select-invite-user tom-select-form-select-ps-0"  data-hs-tom-select-options='{
+                                            "searchInDropdown": false,
+                                            "hideSearch": true,
+                                            "dropdownWidth": "11rem"
+                                            }'>
+                                            <option value="guest">Guest</option>
+                                            <option value="can edit">Can edit</option>
+                                            <option value="can comment">Can comment</option>
+                                            <option value="full access">Full access</option>
+                                            <option value="remove" data-option-template='<div className="text-danger">Remove</div>'>Remove</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </li>
+                
+                
+                <li>
+                    <div className="d-flex">
+                        <div className="flex-shrink-0">
+                            <div className="avatar avatar-sm avatar-circle">
+                                <img className="avatar-img" src="./assets/img/160x160/img3.jpg" alt="Image Description" />
+                            </div>
+                        </div>
+                        <div className="flex-grow-1 ms-3">
+                            <div className="row align-items-center">
+                                <div className="col-sm">
+                                    <h5 className="mb-0">David Harrison</h5>
+                                    <span className="d-block small">david@site.com</span>
+                                </div>
+                                <div className="col-sm-auto">
+                                    
+                                    <div className="tom-select-custom tom-select-custom-sm-end">
+                                        <select className="js-select form-select form-select-borderless tom-select-custom-form-select-invite-user tom-select-form-select-ps-0"  data-hs-tom-select-options='{
+                                            "searchInDropdown": false,
+                                            "hideSearch": true,
+                                            "dropdownWidth": "11rem"
+                                            }'>
+                                            <option value="guest">Guest</option>
+                                            <option value="can edit">Can edit</option>
+                                            <option value="can comment">Can comment</option>
+                                            <option value="full access">Full access</option>
+                                            <option value="remove" data-option-template='<div className="text-danger">Remove</div>'>Remove</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </li>
+                
+                
+                <li>
+                    <div className="d-flex">
+                        <div className="flex-shrink-0">
+                            <div className="avatar avatar-sm avatar-circle">
+                                <img className="avatar-img" src="./assets/img/160x160/img9.jpg" alt="Image Description" />
+                            </div>
+                        </div>
+                        <div className="flex-grow-1 ms-3">
+                            <div className="row align-items-center">
+                                <div className="col-sm">
+                                    <h5 className="mb-0">Ella Lauda <i className="bi-patch-check-fill text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></h5>
+                                    <span className="d-block small">Markvt@site.com</span>
+                                </div>
+                                <div className="col-sm-auto">
+                                    
+                                    <div className="tom-select-custom tom-select-custom-sm-end">
+                                        <select className="js-select form-select form-select-borderless tom-select-custom-form-select-invite-user tom-select-form-select-ps-0"  data-hs-tom-select-options='{
+                                            "searchInDropdown": false,
+                                            "hideSearch": true,
+                                            "dropdownWidth": "11rem"
+                                            }'>
+                                            <option value="guest">Guest</option>
+                                            <option value="can edit">Can edit</option>
+                                            <option value="can comment">Can comment</option>
+                                            <option value="full access">Full access</option>
+                                            <option value="remove" data-option-template='<div className="text-danger">Remove</div>'>Remove</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </li>
+                
+                
+                <li>
+                    <div className="d-flex">
+                        <div className="flex-shrink-0">
+                            <div className="avatar avatar-sm avatar-soft-dark avatar-circle">
+                                <span className="avatar-initials">B</span>
+                            </div>
+                        </div>
+                        <div className="flex-grow-1 ms-3">
+                            <div className="row align-items-center">
+                                <div className="col-sm">
+                                    <h5 className="mb-0">Bob Dean</h5>
+                                    <span className="d-block small">bob@site.com</span>
+                                </div>
+                                <div className="col-sm-auto">
+                                    
+                                    <div className="tom-select-custom tom-select-custom-sm-end">
+                                        <select className="js-select form-select form-select-borderless tom-select-custom-form-select-invite-user tom-select-form-select-ps-0"  data-hs-tom-select-options='{
+                                            "searchInDropdown": false,
+                                            "hideSearch": true,
+                                            "dropdownWidth": "11rem"
+                                            }'>
+                                            <option value="guest">Guest</option>
+                                            <option value="can edit">Can edit</option>
+                                            <option value="can comment">Can comment</option>
+                                            <option value="full access">Full access</option>
+                                            <option value="remove" data-option-template='<div className="text-danger">Remove</div>'>Remove</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </li>
+                
+            </ul>
+        </div>
+        
+        
+        <div className="modal-footer">
+            <div className="row align-items-center flex-grow-1 mx-n2">
+                <div className="col-sm-9 mb-2 mb-sm-0">
+                    <input type="hidden" id="inviteUserPublicClipboard" value="https://themes.getbootstrap.com/product/front-multipurpose-responsive-template/" />
+                    <p className="modal-footer-text">The public share <a href="#">link settings</a>
+                    <i className="bi-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="The public share link allows people to view the project without giving access to full collaboration features."></i>
+                </p>
+            </div>
+            <div className="col-sm-3 text-sm-end">
+                <a className="js-clipboard btn btn-white btn-sm text-nowrap" href="" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy to clipboard!" data-hs-clipboard-options='{
+                    "type": "tooltip",
+                    "successText": "Copied!",
+                    "contentTarget": "#inviteUserPublicClipboard",
+                    "container": "#inviteUserModal"
+                    }'>
+                <i className="bi-link-45deg me-1"></i> Copy link</a>
+            </div>
+        </div>
+    </div>
+    
+</div>
 </div>
 </div>
 
