@@ -13,7 +13,7 @@ class Login extends Component {
       <div className="d-flex align-items-center min-h-100">
 
       
-      <main id="content" role="main" className="main pt-0">
+      <main id="content" role="main" className="main pt-0" style={{paddingLeft: 0}}>
 
         <div className="container-fluid px-3">
           <div className="row">
@@ -31,7 +31,6 @@ class Login extends Component {
                 <div style={{maxWidth: 23+'rem'}}>
                   <div className="text-center mb-5">
                     <img className="img-fluid" src="./assets/svg/illustrations/oc-chatting.svg" alt="Image Description" style={{width: '12rem'}} data-hs-theme-appearance="default" />
-                      <img className="img-fluid" src="./assets/svg/illustrations-light/oc-chatting.svg" alt="Image Description" style={{width: '12rem'}} data-hs-theme-appearance="dark" />
                       </div>
 
                       <div className="mb-5">

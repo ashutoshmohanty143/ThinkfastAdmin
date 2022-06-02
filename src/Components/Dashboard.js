@@ -1,9 +1,16 @@
 import React, { Component } from 'react'
+import Header from './Header';
 
+import SideNav from './SideNav';
+import Footer from './Footer';
 
 class Dashboard extends Component {
     render() {
         return (
+            <div>
+                <Header />
+                <SideNav />
+                <main id="content" role="main" className="main">
             <div className="content container-fluid">
 
                 <div className="page-header">
@@ -567,303 +574,7 @@ class Dashboard extends Component {
                                     <td>1 year ago</td>
                                     <td>37534</td>
                                 </tr>
-                                <tr>
-                                    <td className="table-column-pe-0">
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" value="" id="usersDataCheck8" />
-                                            <label className="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td className="table-column-ps-0">
-                                        <a className="d-flex align-items-center" href="./user-profile.html">
-                                            <div className="flex-shrink-0">
-                                                <div className="avatar avatar-sm avatar-circle">
-                                                    <img className="avatar-img" src="./assets/img/160x160/img4.jpg" alt="Image Description" />
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <h5 className="text-inherit mb-0">Sam Kart</h5>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span className="legend-indicator bg-success"></span>Successful
-                                    </td>
-                                    <td>Non-subscription</td>
-                                    <td>sam@site.com</td>
-                                    <td>1 year ago</td>
-                                    <td>57300</td>
-                                </tr>
-                                <tr>
-                                    <td className="table-column-pe-0">
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" value="" id="usersDataCheck9" />
-                                            <label className="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td className="table-column-ps-0">
-                                        <a className="d-flex align-items-center" href="./user-profile.html">
-                                            <div className="flex-shrink-0">
-                                                <div className="avatar avatar-sm avatar-circle">
-                                                    <img className="avatar-img" src="./assets/img/160x160/img6.jpg" alt="Image Description" />
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <h5 className="text-inherit mb-0">Costa Quinn</h5>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span className="legend-indicator bg-danger"></span>Overdue
-                                    </td>
-                                    <td>Unassigned</td>
-                                    <td>costa@site.com</td>
-                                    <td>1 year ago</td>
-                                    <td>71288</td>
-                                </tr>
-                                <tr>
-                                    <td className="table-column-pe-0">
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" value="" id="usersDataCheck10" />
-                                            <label className="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td className="table-column-ps-0">
-                                        <a className="d-flex align-items-center" href="./user-profile.html">
-                                            <div className="flex-shrink-0">
-                                                <div className="avatar avatar-sm avatar-soft-primary avatar-circle">
-                                                    <span className="avatar-initials">R</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <h5 className="text-inherit mb-0">Rachel Doe</h5>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span className="legend-indicator bg-warning"></span>Pending
-                                    </td>
-                                    <td>Unassigned</td>
-                                    <td>rachel@site.com</td>
-                                    <td>6 months ago</td>
-                                    <td>95211</td>
-                                </tr>
-                                <tr>
-                                    <td className="table-column-pe-0">
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" value="" id="usersDataCheck11" />
-                                            <label className="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td className="table-column-ps-0">
-                                        <a className="d-flex align-items-center" href="./user-profile.html">
-                                            <div className="flex-shrink-0">
-                                                <div className="avatar avatar-sm avatar-soft-dark avatar-circle">
-                                                    <span className="avatar-initials">B</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <h5 className="text-inherit mb-0">Brian Halligan</h5>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span className="legend-indicator bg-warning"></span>Pending
-                                    </td>
-                                    <td>Subscription</td>
-                                    <td>brian@site.com</td>
-                                    <td>1 year ago</td>
-                                    <td>58643</td>
-                                </tr>
-                                <tr>
-                                    <td className="table-column-pe-0">
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" value="" id="usersDataCheck12" />
-                                            <label className="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td className="table-column-ps-0">
-                                        <a className="d-flex align-items-center" href="./user-profile.html">
-                                            <div className="flex-shrink-0">
-                                                <div className="avatar avatar-sm avatar-circle">
-                                                    <img className="avatar-img" src="./assets/img/160x160/img8.jpg" alt="Image Description" />
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <h5 className="text-inherit mb-0">Linda Bates</h5>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span className="legend-indicator bg-warning"></span>Pending
-                                    </td>
-                                    <td>Subscription</td>
-                                    <td>linda@site.com</td>
-                                    <td>1 year ago</td>
-                                    <td>44414</td>
-                                </tr>
-                                <tr>
-                                    <td className="table-column-pe-0">
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" value="" id="usersDataCheck13" />
-                                            <label className="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td className="table-column-ps-0">
-                                        <a className="d-flex align-items-center" href="./user-profile.html">
-                                            <div className="flex-shrink-0">
-                                                <div className="avatar avatar-sm avatar-soft-info avatar-circle">
-                                                    <span className="avatar-initials">C</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <h5 className="text-inherit mb-0">Chris Mathew <i className="bi-patch-check-fill text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Top endorsed"></i></h5>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span className="legend-indicator bg-success"></span>Successful
-                                    </td>
-                                    <td>Non-subscription</td>
-                                    <td>chris@site.com</td>
-                                    <td>1 year ago</td>
-                                    <td>12569</td>
-                                </tr>
-                                <tr>
-                                    <td className="table-column-pe-0">
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" value="" id="usersDataCheck14" />
-                                            <label className="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td className="table-column-ps-0">
-                                        <a className="d-flex align-items-center" href="./user-profile.html">
-                                            <div className="flex-shrink-0">
-                                                <div className="avatar avatar-sm avatar-soft-dark avatar-circle">
-                                                    <span className="avatar-initials">L</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <h5 className="text-inherit mb-0">Lewis Clarke</h5>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span className="legend-indicator bg-danger"></span>Overdue
-                                    </td>
-                                    <td>Non-subscription</td>
-                                    <td>lewis@site.com</td>
-                                    <td>1 year ago</td>
-                                    <td>54621</td>
-                                </tr>
-                                <tr>
-                                    <td className="table-column-pe-0">
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" value="" id="usersDataCheck15" />
-                                            <label className="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td className="table-column-ps-0">
-                                        <a className="d-flex align-items-center" href="./user-profile.html">
-                                            <div className="flex-shrink-0">
-                                                <div className="avatar avatar-sm avatar-circle">
-                                                    <img className="avatar-img" src="./assets/img/160x160/img7.jpg" alt="Image Description" />
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <h5 className="text-inherit mb-0">Clarice Boone <i className="bi-patch-check-fill text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Top endorsed"></i></h5>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span className="legend-indicator bg-success"></span>Successful
-                                    </td>
-                                    <td>Non-subscription</td>
-                                    <td>clarice@site.com</td>
-                                    <td>6 months ago</td>
-                                    <td>23485</td>
-                                </tr>
-                                <tr>
-                                    <td className="table-column-pe-0">
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" value="" id="usersDataCheck16" />
-                                            <label className="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td className="table-column-ps-0">
-                                        <a className="d-flex align-items-center" href="./user-profile.html">
-                                            <div className="flex-shrink-0">
-                                                <div className="avatar avatar-sm avatar-soft-danger avatar-circle">
-                                                    <span className="avatar-initials">M</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <h5 className="text-inherit mb-0">Mark Colbert</h5>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span className="legend-indicator bg-success"></span>Successful
-                                    </td>
-                                    <td>Subscription</td>
-                                    <td>mark@site.com</td>
-                                    <td>6 months ago</td>
-                                    <td>78463</td>
-                                </tr>
-                                <tr>
-                                    <td className="table-column-pe-0">
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" value="" id="usersDataCheck17" />
-                                            <label className="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td className="table-column-ps-0">
-                                        <a className="d-flex align-items-center" href="./user-profile.html">
-                                            <div className="flex-shrink-0">
-                                                <div className="avatar avatar-sm avatar-soft-info avatar-circle">
-                                                    <span className="avatar-initials">J</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <h5 className="text-inherit mb-0">Johnny Appleseed</h5>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span className="legend-indicator bg-warning"></span>Pending
-                                    </td>
-                                    <td>Subscription</td>
-                                    <td>johnny@site.com</td>
-                                    <td>1 year ago</td>
-                                    <td>23564</td>
-                                </tr>
-                                <tr>
-                                    <td className="table-column-pe-0">
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" value="" id="usersDataCheck18" />
-                                            <label className="form-check-label"></label>
-                                        </div>
-                                    </td>
-                                    <td className="table-column-ps-0">
-                                        <a className="d-flex align-items-center" href="./user-profile.html">
-                                            <div className="flex-shrink-0">
-                                                <div className="avatar avatar-sm avatar-soft-primary avatar-circle">
-                                                    <span className="avatar-initials">P</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <h5 className="text-inherit mb-0">Phileas Fogg</h5>
-                                            </div>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <span className="legend-indicator bg-warning"></span>Pending
-                                    </td>
-                                    <td>Subscription</td>
-                                    <td>phileas@site.com</td>
-                                    <td>6 months ago</td>
-                                    <td>39199</td>
-                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -906,6 +617,9 @@ class Dashboard extends Component {
                     </div>
 
                 </div>
+            </div>
+            </main>
+            <Footer />
             </div>
         )
     }

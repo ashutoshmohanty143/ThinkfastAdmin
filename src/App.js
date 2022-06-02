@@ -8,18 +8,13 @@ import Footer from './Components/Footer';
 function App() {
   return (
     <div className="App">
-          <div className='has-navbar-vertical-aside navbar-vertical-aside-show-xl footer-offset'>
-                <Header />
-                <BrowserRouter>
-                    <SideNav/>
-
-                    <main id="content" role="main" className="main">
+          <div className='has-navbar-vertical-aside navbar-vertical-aside-show-xl'>
+                
+                <BrowserRouter>                    
                     <Routes>
-                        <Route exact path="/" element={<Dashboard/>}/>
-                        <Route exact path="/login" element={<Login/>}/>
-                    </Routes>
-                    </main>
-                    <Footer />
+                        <Route exact path="/" element={<Login />}/>
+                        <Route exact path="/dashboard" element={<Dashboard/>}/>
+                    </Routes>                    
                 </BrowserRouter>
 
             </div>
