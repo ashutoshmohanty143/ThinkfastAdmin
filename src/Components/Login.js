@@ -1,14 +1,88 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
+
+import '../App.css';
 
 class Login extends Component {
+
+  constructor(){
+    super();
+
+    this.state = {
+      fields: {},
+      errors: {},
+      inpass: "password",
+      eye: false
+    }
+
+    this.handleChange = this.handleChange.bind(this);
+    this.submitLoginForm = this.submitLoginForm.bind(this);
+    this.handlepassword = this.handlepassword.bind(this);
+
+  };
+
+  handleChange(e) {
+    let fields = this.state.fields;
+    fields[e.target.name] = e.target.value;
+    this.setState({
+      fields
+    });
+
+  }
+
+  submitLoginForm(e) {
+    e.preventDefault();
+      if (this.validateForm()) {
+          let fields = {};
+          fields["email"] = "";
+          fields["password"] = "";
+          this.setState({fields:fields});
+          alert("Form submitted");
+      }
+  }
+
+  validateForm() {
+      let fields = this.state.fields;
+      let errors = {};
+      let formIsValid = true;
+
+      if (!fields["email"]) {
+        formIsValid = false;
+        errors["email"] = "*Please enter your email-ID.";
+      }
+
+      if (!fields["password"]) {
+        formIsValid = false;
+        errors["password"] = "*Please enter your password.";
+      }
+
+      this.setState({
+        errors: errors
+      });
+
+      return formIsValid;
+
+  }
+
+
+    handlepassword(){
+      if(this.inpass === "password"){
+        this.setState({
+          inpass: "password",
+          eye:false
+        })
+        return;
+        } 
+        this.setState({
+          inpass: "text",
+          eye:true
+        })
+
+    }
+
+  
+
+
   render() {
-    const stylecss = {
-      minWidth: 7+'rem',
-      maxWidth: 7+'rem'
-    }
-    function handlepassword(){
-      console.log(55);
-    }
     return (
       <div className="d-flex align-items-center min-h-100">
 
@@ -22,7 +96,8 @@ class Login extends Component {
               <div className="position-absolute top-0 start-0 end-0 mt-3 mx-3">
                 <div className="d-none d-lg-flex justify-content-between">
                   <a href="">
-                    <img className="w-100" src="./assets/svg/logos/logo.svg" alt="Image Description" data-hs-theme-appearance="default" style={stylecss} />
+                    <img className="w-100" src="./assets/svg/logos/logo.svg" alt="Image Description" 
+                          data-hs-theme-appearance="default" style={{minWidth: 7+'rem', maxWidth: 7+'rem'}} />
                       </a>
                     </div>
                 </div>
@@ -80,7 +155,7 @@ class Login extends Component {
                 <div className="col-lg-6 d-flex justify-content-center align-items-center min-vh-lg-100">
                   <div className="w-100 content-space-t-4 content-space-t-lg-2 content-space-b-1" style={{maxWidth: '25rem'}}>
 
-                    <form className="js-validate needs-validation">
+                    <form>
                       <div className="text-center">
                         <div className="mb-5">
                           <h1 className="display-5">Sign in</h1>
@@ -100,35 +175,46 @@ class Login extends Component {
                       </div>
 
 
-                      <div className="mb-4">
+                      <div className="mb-4 text-start">
                         <label className="form-label" htmlFor="signinSrEmail">Your email</label>
-                        <input type="email" className="form-control form-control-lg" name="email" id="signinSrEmail" tabIndex="1" placeholder="email@address.com" aria-label="email@address.com" required />
+                        <input type="email" className="form-control form-control-lg" 
+                          name="email" id="signinSrEmail" 
+                          tabIndex="1" placeholder="email@address.com" 
+                          aria-label="email@address.com" required  
+                          value={this.state.fields.email} onChange={this.handleChange} />
                           <span className="invalid-feedback">Please enter a valid email address.</span>
+                          <span className="errorMsg">{this.state.errors.email}</span>
                       </div>
 
 
-                      <div className="mb-4">
+                      <div className="mb-4 text-start">
                         <label className="form-label w-100" htmlFor="signupSrPassword" tabIndex="0">
                           <span className="d-flex justify-content-between align-items-center">
                             <span>Password</span>
-                            <a className="form-label-link mb-0" href="./authentication-reset-password-cover.html">Forgot Password?</a>
+                            <a className="form-label-link mb-0" href="">
+                                Forgot Password?</a>
                           </span>
                         </label>
 
-                        <div className="input-group input-group-merge" data-hs-validation-validate-class>
-                          <input type="password" className="js-toggle-password form-control form-control-lg" name="password" id="signupSrPassword" placeholder="8+ characters required" aria-label="8+ characters required" required minLength="8" />
-                            <a id="changePassTarget" className="input-group-append input-group-text" 
-                            onClick={handlepassword}>
-                              <i id="changePassIcon" className="bi-eye"></i>
+                        <div className="input-group input-group-merge">
+                          <input type={this.state.eye ? "text" : "password"} className="{warning} js-toggle-password form-control form-control-lg" 
+                          name="password" id="signupSrPassword" placeholder="8+ characters required" 
+                          aria-label="8+ characters required" required minLength="8" 
+                          value={this.state.fields.password} onChange={this.handleChange}/>
+                            <a className="input-group-append input-group-text">
+                              {/* <i className={`${this.state.eye ? "bi-eye" : "bi-eye-slash"}`} 
+                                onClick={this.handlepassword}></i> */}
+                                <i className={`${this.state.eye ? "bi-eye" : "bi-eye-slash"}`} 
+                                onClick={this.setState({eye: false})}></i>
                             </a>
                         </div>
-
                         <span className="invalid-feedback">Please enter a valid password.</span>
+                        <span className="errorMsg">{this.state.errors.password}</span>
                       </div>
 
 
 
-                      <div className="form-check mb-4">
+                      <div className="form-check mb-4 text-start">
                         <input className="form-check-input" type="checkbox" value="" id="termsCheckbox" />
                           <label className="form-check-label">
                             Remember me
@@ -137,8 +223,10 @@ class Login extends Component {
 
 
                       <div className="d-grid">
-                        <button type="submit" className="btn btn-primary btn-lg">Sign in</button>
+                        <button type="submit" className="btn btn-primary btn-lg" 
+                                      onClick={this.submitLoginForm}>Sign in</button>
                       </div>
+
                     </form>
 
                   </div>
