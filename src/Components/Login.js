@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react'
-
+import React, { Component } from 'react'
+import axios from 'axios';
 import '../App.css';
 
 class Login extends Component {
@@ -10,8 +10,8 @@ class Login extends Component {
     this.state = {
       fields: {},
       errors: {},
-      inpass: "password",
-      eye: false
+      users: [],
+      showErrorBorder: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -29,14 +29,25 @@ class Login extends Component {
 
   }
 
+    componentDidMount(){
+      axios.get("https://jsonplaceholder.typicode.com/users")
+              .then(response => {
+                //console.log(response.data);
+                  this.setState({
+                      users: response.data
+                  })
+              });  
+        
+        
+        
+    }
+
   submitLoginForm(e) {
     e.preventDefault();
       if (this.validateForm()) {
-          let fields = {};
-          fields["email"] = "";
-          fields["password"] = "";
-          this.setState({fields:fields});
-          alert("Form submitted");
+          //return <Redirect to='/profile' />
+        //alert("Form submitted");
+          // this.props.history.push('/dashboard');
       }
   }
 
@@ -48,11 +59,13 @@ class Login extends Component {
       if (!fields["email"]) {
         formIsValid = false;
         errors["email"] = "*Please enter your email-ID.";
+        this.setState({showErrorBorder : true});
       }
 
       if (!fields["password"]) {
         formIsValid = false;
         errors["password"] = "*Please enter your password.";
+        this.setState({showErrorBorder : true});
       }
 
       this.setState({
@@ -76,17 +89,14 @@ class Login extends Component {
           inpass: "text",
           eye:true
         })
-
     }
 
-  
-
-
   render() {
+    console.log(this.state.users[0]);
     return (
-      <div className="d-flex align-items-center min-h-100">
 
-      
+      <div className="d-flex align-items-center min-h-100">
+       
       <main id="content" role="main" className="main pt-0" style={{paddingLeft: 0}}>
 
         <div className="container-fluid px-3">
@@ -95,7 +105,7 @@ class Login extends Component {
 
               <div className="position-absolute top-0 start-0 end-0 mt-3 mx-3">
                 <div className="d-none d-lg-flex justify-content-between">
-                  <a href="">
+                  <a href="#">
                     <img className="w-100" src="./assets/svg/logos/logo.svg" alt="Image Description" 
                           data-hs-theme-appearance="default" style={{minWidth: 7+'rem', maxWidth: 7+'rem'}} />
                       </a>
@@ -159,7 +169,7 @@ class Login extends Component {
                       <div className="text-center">
                         <div className="mb-5">
                           <h1 className="display-5">Sign in</h1>
-                          <p>Don't have an account yet? <a className="link" href="./authentication-signup-cover.html">Sign up here</a></p>
+                          <p>Don't have an account yet? <a className="link" href="#">Sign up here</a></p>
                         </div>
 
                         <div className="d-grid mb-4">
@@ -177,7 +187,7 @@ class Login extends Component {
 
                       <div className="mb-4 text-start">
                         <label className="form-label" htmlFor="signinSrEmail">Your email</label>
-                        <input type="email" className="form-control form-control-lg" 
+                        <input type="email" className={"form-control form-control-lg " + `${this.state.showErrorBorder ? 'errorBorder' : ""}`} 
                           name="email" id="signinSrEmail" 
                           tabIndex="1" placeholder="email@address.com" 
                           aria-label="email@address.com" required  
@@ -191,21 +201,21 @@ class Login extends Component {
                         <label className="form-label w-100" htmlFor="signupSrPassword" tabIndex="0">
                           <span className="d-flex justify-content-between align-items-center">
                             <span>Password</span>
-                            <a className="form-label-link mb-0" href="">
+                            <a className="form-label-link mb-0" href="#">
                                 Forgot Password?</a>
                           </span>
                         </label>
 
                         <div className="input-group input-group-merge">
-                          <input type={this.state.eye ? "text" : "password"} className="{warning} js-toggle-password form-control form-control-lg" 
+                          <input type={this.state.eye ? "text" : "password"} className={"js-toggle-password form-control form-control-lg " + `${this.state.showErrorBorder ? 'errorBorder' : ""}`} 
+
+
                           name="password" id="signupSrPassword" placeholder="8+ characters required" 
                           aria-label="8+ characters required" required minLength="8" 
                           value={this.state.fields.password} onChange={this.handleChange}/>
                             <a className="input-group-append input-group-text">
-                              {/* <i className={`${this.state.eye ? "bi-eye" : "bi-eye-slash"}`} 
-                                onClick={this.handlepassword}></i> */}
-                                <i className={`${this.state.eye ? "bi-eye" : "bi-eye-slash"}`} 
-                                onClick={this.setState({eye: false})}></i>
+                              <i className={`${this.state.eye ? "bi-eye" : "bi-eye-slash"}`} 
+                                onClick={this.handlepassword}></i>                                
                             </a>
                         </div>
                         <span className="invalid-feedback">Please enter a valid password.</span>

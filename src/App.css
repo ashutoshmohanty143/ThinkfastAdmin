@@ -44,6 +44,6 @@
   margin-bottom: 12px;
 }
 
-.warning{
+.errorBorder{
   border:1px solid red !important;
 }
