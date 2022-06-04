@@ -74,14 +74,18 @@ class SideNav extends Component {
                       <i className="bi-house-door nav-icon"></i>
                       <span className="nav-link-title">Dashboards</span>
                     </a>
-                    <div
-                      id="navbarVerticalMenuDashboards"
-                      className="nav-collapse collapse show"
-                      data-bs-parent="#navbarVerticalMenu"
-                    >
+                    <div id="navbarVerticalMenuDashboards" className="nav-collapse collapse show"
+                                  data-bs-parent="#navbarVerticalMenu">
+
+
                       <Link className="nav-link active" to="/">
-                        Dashboard
+                        Home
                       </Link>
+                      <Link className="nav-link" to="/about">
+                        About Us
+                      </Link>
+
+
                     </div>
                   </div>
                   <span className="dropdown-header mt-4">Pages</span>
