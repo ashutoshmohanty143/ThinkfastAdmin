@@ -79,17 +79,22 @@ export default function AddUser() {
                                                 </div>
 
                                             </div>
+                                            <div ></div>
+                                            <div className='text-end'><a className="btn btn-primary btn-sm" href="#.">Submit</a></div>
                                         </div>
 
                                     </div>
                                 </div>
+                                
                             </div>
+                            
+
                         </div>
 
 
                     </main>
                     <Footer />
-                </div> : window.location.href= "/" }
+                </div> : window.location.href = "/"}
         </>
     )
 }
