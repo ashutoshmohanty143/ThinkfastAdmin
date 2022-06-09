@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 export default class Home extends Component {
   render() {
     return (
-        
+        <main id="content" role="main" className="main">
         <div className="content container-fluid">
 
             <div className="page-header">
@@ -611,6 +611,7 @@ export default class Home extends Component {
 
             </div>
         </div>
+        </main>
     )
   }
 }

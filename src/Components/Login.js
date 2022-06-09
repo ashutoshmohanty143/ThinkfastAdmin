@@ -14,18 +14,21 @@ class Login extends Component {
       errors: {},
       users: []
     }
+    this.authLogin = this.authLogin.bind(this);
 
+     
   };
 
-  componentDidMount() {
-    axios.get("https://jsonplaceholder.typicode.com/users")
-      .then(response => {
-        this.setState({
-          users: response.data
-        })
-      });
-
+  authLogin(){
+    console.log(1);
+    // axios.get("https://jsonplaceholder.typicode.com/users")
+    //   .then(response => {
+    //     this.setState({
+    //       users: response.data
+    //     })
+    //   });
   }
+ 
 
   submitLoginForm(e) {
 
@@ -38,7 +41,7 @@ class Login extends Component {
     let errPass = document.getElementById('errorPassword');
     let tboxPass = document.getElementById('textboxPassword')
 
-    if (data.get('email') == "") {
+    if (data.get('email') === "") {
       errEmail.classList.remove('d-none');
       tboxEmail.classList.add('errorBorder');
       i++;
@@ -48,7 +51,7 @@ class Login extends Component {
     }
 
 
-    if (data.get('password') == "") {
+    if (data.get('password') === "") {
       errPass.classList.remove('d-none');
       tboxPass.classList.add('errorBorder');
       i++;
@@ -59,19 +62,51 @@ class Login extends Component {
 
     if (i > 0) {
       return false;
-    } else if (tboxEmail.value != "admin") {
-      alert("Plaese give username as admin");
-      return false;
-    } else if (tboxPass.value != "admin") {
-      alert("Plaese give password as admin");
-      return false;
     } else {
-      alert("Form submitted");
-      tboxEmail.value = "";
-      tboxPass.value = "";
-      window.location.pathname = "/home";
-      //return <Redirect to='/profile' />
-      // this.props.history.push('/dashboard');
+      // const apiResponse = {
+      //   status : 'success',
+      //   users : {
+      //     userName: "Amit Sahoo",
+      //     userEmail: "amit@gmail.com",
+      //   },
+      //   token: "QpwL5tke4Pnpja7X4QpwL5tke4Pnpja7X4QpwL5tke4Pnpja7X4"
+      // }
+
+      // const userData = apiResponse.users;
+      // const token = apiResponse.token;
+
+      // sessionStorage.setItem("userData", userData);
+      // sessionStorage.setItem("userToken", token);
+      //api call
+      const apiUrl = 'https://reqres.in/api/login';
+      const loginData = {
+        username: data.get('email'),
+        password: data.get('password')
+      }
+      axios.post(apiUrl, loginData).then(response => {
+            //console.log('loginData',loginData);
+            //console.log('response', response.data.token);
+            sessionStorage.setItem("userToken", response.data.token);
+            
+            if(sessionStorage.getItem('userToken')){
+              window.location.href = "/dashboard";
+            }else{
+              console.log('error');
+            }
+            
+            //user details & jwt token needs to be set in session storage
+
+        }).catch(error => {
+            console.log("error", error)
+            //this.setState({start:false})
+        })
+
+
+      
+      //console.log(tboxEmail.value)
+      //this.authLogin();
+      //return true;
+      //window.location.href = "/dashboard";
     }
   }
 
@@ -91,7 +126,7 @@ class Login extends Component {
   }
 
   render() {
-    // console.log(this.state.users[0]);
+    //this.authLogin();
     return (
 
       <div className="d-flex align-items-center min-h-100">
@@ -105,7 +140,7 @@ class Login extends Component {
                 <div className="position-absolute top-0 start-0 end-0 mt-3 mx-3">
                   <div className="d-none d-lg-flex justify-content-between">
                     <a href="#">
-                      <img className="w-100" src="./assets/svg/logos/logo.svg" alt="Image Description"
+                      <img className="w-100" src="./assets/svg/logos/logo.svg"
                         data-hs-theme-appearance="default" style={{ minWidth: 7 + 'rem', maxWidth: 7 + 'rem' }} />
                     </a>
                   </div>
@@ -114,7 +149,7 @@ class Login extends Component {
 
                 <div style={{ maxWidth: 23 + 'rem' }}>
                   <div className="text-center mb-5">
-                    <img className="img-fluid" src="./assets/svg/illustrations/oc-chatting.svg" alt="Image Description" style={{ width: '12rem' }} data-hs-theme-appearance="default" />
+                    <img className="img-fluid" src="./assets/svg/illustrations/oc-chatting.svg" style={{ width: '12rem' }} data-hs-theme-appearance="default" />
                   </div>
 
                   <div className="mb-5">
@@ -137,22 +172,22 @@ class Login extends Component {
 
                   <div className="row justify-content-between mt-5 gx-3">
                     <div className="col">
-                      <img className="img-fluid" src="./assets/svg/brands/gitlab-gray.svg" alt="Logo" />
+                      <img className="img-fluid" src="./assets/svg/brands/gitlab-gray.svg" />
                     </div>
 
 
                     <div className="col">
-                      <img className="img-fluid" src="./assets/svg/brands/fitbit-gray.svg" alt="Logo" />
+                      <img className="img-fluid" src="./assets/svg/brands/fitbit-gray.svg" />
                     </div>
 
 
                     <div className="col">
-                      <img className="img-fluid" src="./assets/svg/brands/flow-xo-gray.svg" alt="Logo" />
+                      <img className="img-fluid" src="./assets/svg/brands/flow-xo-gray.svg" />
                     </div>
 
 
                     <div className="col">
-                      <img className="img-fluid" src="./assets/svg/brands/layar-gray.svg" alt="Logo" />
+                      <img className="img-fluid" src="./assets/svg/brands/layar-gray.svg" />
                     </div>
 
                   </div>
@@ -164,7 +199,7 @@ class Login extends Component {
               <div className="col-lg-6 d-flex justify-content-center align-items-center min-vh-lg-100">
                 <div className="w-100 content-space-t-4 content-space-t-lg-2 content-space-b-1" style={{ maxWidth: '25rem' }}>
 
-                  <form onSubmit={this.submitLoginForm}>
+                  <form method='post' onSubmit={this.submitLoginForm}>
                     <div className="text-center">
                       <div className="mb-5">
                         <h1 className="display-5">Sign in</h1>
@@ -174,7 +209,7 @@ class Login extends Component {
                       <div className="d-grid mb-4">
                         <a className="btn btn-white btn-lg" href="#">
                           <span className="d-flex justify-content-center align-items-center">
-                            <img className="avatar avatar-xss me-2" src="./assets/svg/brands/google-icon.svg" alt="Image Description" />
+                            <img className="avatar avatar-xss me-2" src="./assets/svg/brands/google-icon.svg" />
                             Sign in with Google
                           </span>
                         </a>
