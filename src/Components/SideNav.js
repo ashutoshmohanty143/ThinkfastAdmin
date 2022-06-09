@@ -58,14 +58,10 @@ export default function SideNav() {
                     data-bs-parent="#navbarVerticalMenu">
 
 
-                    <NavLink className="nav-link" to="/home">
+                    <NavLink className="nav-link" to="/dashboard">
                       Home
                     </NavLink>
-                    <NavLink className="nav-link" to="/about">
-                      About Us
-                    </NavLink>
-
-
+                  
                   </div>
                 </div>
                 <span className="dropdown-header mt-4">Pages</span>

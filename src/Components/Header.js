@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 
 export default class Header extends Component {
-  render() {
+
+    logout = () => {
+        sessionStorage.clear('userToken');
+        window.location.href = '/'
+    }
+    render() {
     return (
       <>
 
@@ -685,7 +690,7 @@ export default class Header extends Component {
 
                                         <a className="dropdown-item" href="#">Manage team</a>
                                         <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">Sign out</a>
+                                        <a className="dropdown-item" onClick={this.logout}>Sign out</a>
                                     </div>
                                 </div>
 

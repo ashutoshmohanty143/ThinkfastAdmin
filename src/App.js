@@ -1,5 +1,3 @@
-
-
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './Components/Login';
 import Home from './Components/Home';
@@ -30,6 +28,10 @@ function App() {
             <Route exact path="/about" element={<AboutUs />} />
             <Route exact path="/users" element={<Users />} />
             <Route exact path="/adduser" element={<AddUser />} />
+          
+        </Routes>
+      </BrowserRouter>
+    </div>
     
   );
 }

@@ -12,10 +12,13 @@ class Dashboard extends Component {
     render() {
         return (
             <>
-                <Header />
-                <SideNav />
-                <Home />    
-                <Footer />
+                { sessionStorage.getItem('userToken') ?
+                    <>
+                        <Header />
+                        <SideNav />
+                        <Home />
+                        <Footer />
+                    </> : window.location.href= "/" }
             </>
         )
     }

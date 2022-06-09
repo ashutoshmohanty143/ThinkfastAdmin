@@ -1,100 +1,95 @@
 import React from 'react'
 
+import Header from './Header';
+import SideNav from './SideNav';
+import Footer from './Footer';
+
 export default function AddUser() {
-  return (
+    return (
+        <>
+            {sessionStorage.getItem('userToken') ?
+                <div>
+                    <Header />
+                    <SideNav />
+                    <main id="content" role="main" className="main">
 
-    <main id="content" role="main" className="main">
-      <div className="content container-fluid pb-5">
-        
-          <h1 className='text-center'>Add Users</h1>
+                        <div className="content container-fluid">
+                            <div className="page-header">
+                                <div className="row align-items-center">
+                                    <div className="col-sm mb-2 mb-sm-0">
+                                        <nav aria-label="breadcrumb">
+                                            <ol className="breadcrumb breadcrumb-no-gutter">
+                                                <li className="breadcrumb-item"><a className="breadcrumb-link" href="./ecommerce-products.html">Users</a></li>
+                                                <li className="breadcrumb-item active" aria-current="page">Add User</li>
+                                            </ol>
+                                        </nav>
 
-          <div className="row justify-content-center">
+                                        <h1 className="page-header-title">Add Users</h1>
+                                    </div>
 
-              <div className="col-lg-8">
+                                </div>
 
-                  <div className="card">
+                            </div>
 
-                      <div className="card-body">
-                          <div className="row">
-                              <div className="col-sm-6">
+                            <div className='row'>
+                                <div className='col-lg-12 mb-3 mb-lg-0'>
+                                    <div className="card mb-3 mb-lg-5">
 
-                                  <div className="mb-4">
-                                      <label htmlFor="firstNameLabel" className="form-label">First name</label>
-                                      <input type="text" className="form-control" name="firstName" id="firstNameLabel" 
-                                                placeholder="Clarice" aria-label="Clarice" />
-                                  </div>
-
-                              </div>
-
-
-                              <div className="col-sm-6">
-
-                                  <div className="mb-4">
-                                      <label htmlFor="lastNameLabel" className="form-label">Last name</label>
-                                      <input type="text" className="form-control" name="lastName" id="lastNameLabel" placeholder="Boone" aria-label="Boone" />
-                                  </div>
-
-                              </div>
-
-                          </div>
+                                        <div className="card-header">
+                                            <h4 className="card-header-title">Product information</h4>
+                                        </div>
 
 
 
-                          <div className="mb-4">
-                              <label htmlFor="emailLabel" className="form-label">Email</label>
-                              <input type="email" className="form-control" name="email" id="emailLabel" placeholder="clarice@site.com" aria-label="clarice@site.com" />
-                          </div>
+                                        <div className="card-body">
+
+                                            <div className="mb-4">
+                                                <label for="productNameLabel" className="form-label">Name </label>
+
+                                                <input type="text" className="form-control" name="productName" id="productNameLabel" placeholder="Name" />
+                                            </div>
 
 
+                                            <div className="row">
+                                                <div className="col-sm-6">
 
-                          <div className="js-add-field mb-4" data-hs-add-field-options='{
-                                                                            "template": "#addPhoneFieldTemplate",
-                                                                            "container": "#addPhoneFieldContainer",
-                                                                            "defaultCreated": 0 }'>
-                              <label htmlFor="phoneLabel" className="form-label">Phone</label>
+                                                    <div className="mb-4">
+                                                        <label for="email" className="form-label">Email ID</label>
 
-                              <div className="input-group">
-                                  <input type="text" className="js-input-mask form-control" name="phone" 
-                                            id="phoneLabel" placeholder="+x(xxx)xxx-xx-xx" aria-label="+x(xxx)xxx-xx-xx" 
-                                            data-hs-mask-options='{"mask": "+0(000)000-00-00" }' />
+                                                        <input type="text" className="form-control" name="email" id="email" placeholder="Email ID" />
+                                                    </div>
 
-                                  <div className="input-group-append">
-
-                                      <div className="tom-select-custom tom-select-custom-end">
-                                          <select className="js-select form-select"  name="phoneSelect" 
-                                                    data-hs-tom-select-options='{"searchInDropdown": false,
-                                                                                "hideSearch": true,
-                                                                                "dropdownWidth": "8rem"}'>
-                                              <option value="Mobile" >Mobile</option>
-                                              <option value="Home">Home</option>
-                                              <option value="Work">Work</option>
-                                              <option value="Fax">Fax</option>
-                                              <option value="Direct">Direct</option>
-                                          </select>
-
-                                      </div>
-                                  </div>
-                              </div>
+                                                </div>
 
 
-                              <div id="addPhoneFieldContainer"></div>
+                                                <div className="col-sm-6">
 
-                              <a href="" className="js-create-field form-link">
-                                  <i className="bi-plus"></i> Add phone
-                              </a>
-                          </div>
+                                                    <div className="mb-4">
+                                                        <label for="phone" className="form-label">Phone No.</label>
 
-                          <div className="d-flex justify-content-end gap-3">
-                              <button type="button" className="btn btn-white">Discard</button>
-                              <button type="button" className="btn btn-primary">Save</button>
-                          </div>
-                      </div>
+                                                        <div className="input-group">
+                                                            <input type="text" className="form-control" name="phone" id="phone" placeholder="Phone No." />
 
-                  </div>
 
-              </div>
-          </div>
-    </div>
-    </main>
-  )
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </main>
+                    <Footer />
+                </div> : window.location.href= "/" }
+        </>
+    )
 }
