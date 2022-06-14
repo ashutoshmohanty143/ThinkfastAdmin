@@ -1,19 +1,25 @@
-import React from 'react'
+
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import Header from './Header';
-import SideNav from './SideNav';
-import Footer from './Footer';
+import Header from '../Common/Header';
+import SideNav from '../Common/SideNav';
+import Footer from '../Common/Footer';
 
-export default function Users() {
-  return (
-    <>
+export default class Users extends Component {
+
+  handleDeleteRecord = () =>{
+    alert("Record Deleted Successfully");
+  }
+  render() {
+    return (
+      <>
       {sessionStorage.getItem('userToken') ?
         <div>
           <Header />
           <SideNav />
           <main id="content" role="main" className="main">
-            <div class="content container-fluid">
+            <div className="content container-fluid">
               <div className="page-header">
                 <div className="row align-items-center mb-3">
                   <div className="col-md mb-2 mb-md-0">
@@ -24,8 +30,6 @@ export default function Users() {
                   </div>
 
                 </div>
-
-
 
                 <div className="js-nav-scroller hs-nav-scroller-horizontal">
                   <span className="hs-nav-scroller-arrow-prev" style={{ display: 'none' }}>
@@ -40,15 +44,9 @@ export default function Users() {
                     </a>
                   </span>
 
-
-
-
                 </div>
 
               </div>
-
-
-
               <div className="card">
 
                 <div className="card-header card-header-content-sm-between">
@@ -244,7 +242,9 @@ export default function Users() {
                         <td>+1-202-555-0140</td>
                         <td>United Kingdom</td>
                         <td>
-                          <span className="legend-indicator bg-success"></span>Active
+                          <a href='javasrcipt:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                          <span> / </span>
+                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>
@@ -272,7 +272,9 @@ export default function Users() {
                         <td>+1-752-235-2353</td>
                         <td>United States</td>
                         <td>
-                          <span className="legend-indicator bg-danger"></span>Disabled
+                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                          <span> / </span>
+                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>
@@ -300,7 +302,9 @@ export default function Users() {
                         <td>+1-235-364-2611</td>
                         <td>United States</td>
                         <td>
-                          <span className="legend-indicator bg-success"></span>Active
+                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                          <span> / </span>
+                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>
@@ -328,7 +332,9 @@ export default function Users() {
                         <td>+1-743-632-9574</td>
                         <td>Argentina</td>
                         <td>
-                          <span className="legend-indicator bg-danger"></span>Disabled
+                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                          <span> / </span>
+                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>
@@ -356,7 +362,9 @@ export default function Users() {
                         <td>+1-854-235-9755</td>
                         <td>Austria</td>
                         <td>
-                          <span className="legend-indicator bg-danger"></span>Disabled
+                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                          <span> / </span>
+                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>
@@ -412,5 +420,6 @@ export default function Users() {
         </div>
         : window.location.href= "/"}
     </>
-  )
+    )
+  }
 }

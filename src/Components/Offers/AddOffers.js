@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
-import Header from './Header';
-import SideNav from './SideNav';
-import Footer from './Footer';
+import Header from '../Common/Header';
+import SideNav from '../Common/SideNav';
+import Footer from '../Common/Footer';
 
-export default function AddUser() {
+export default class AddOffers extends Component {
+  render() {
     return (
-        <>
+      <>
             {sessionStorage.getItem('userToken') ?
                 <div>
                     <Header />
@@ -19,12 +21,14 @@ export default function AddUser() {
                                     <div className="col-sm mb-2 mb-sm-0">
                                         <nav aria-label="breadcrumb">
                                             <ol className="breadcrumb breadcrumb-no-gutter">
-                                                <li className="breadcrumb-item"><a className="breadcrumb-link" href="./ecommerce-products.html">Users</a></li>
-                                                <li className="breadcrumb-item active" aria-current="page">Add User</li>
+                                                <li className="breadcrumb-item">
+                                                    <Link className="breadcrumb-link" to="/offers">Offers</Link>
+                                                </li>
+                                                <li className="breadcrumb-item active" aria-current="page">Add Offer</li>
                                             </ol>
                                         </nav>
 
-                                        <h1 className="page-header-title">Add Users</h1>
+                                        <h1 className="page-header-title">Add Offers</h1>
                                     </div>
 
                                 </div>
@@ -36,7 +40,7 @@ export default function AddUser() {
                                     <div className="card mb-3 mb-lg-5">
 
                                         <div className="card-header">
-                                            <h4 className="card-header-title">Product information</h4>
+                                            <h4 className="card-header-title">Offers Information</h4>
                                         </div>
 
 
@@ -97,4 +101,5 @@ export default function AddUser() {
                 </div> : window.location.href = "/"}
         </>
     )
+  }
 }
