@@ -95,7 +95,6 @@ class AddOffers extends Component {
         if(this.formValidate()) {            
             let title = this.state.fields['offerTitle'];
             let link = this.state.fields['offerLink'];
-
             
             const apiUrl =  'http://localhost:5000/api/curd/saveDoc';
             const formData = {
@@ -134,7 +133,6 @@ class AddOffers extends Component {
             //alert("Form has errors.");
           }        
     }
-
 
 render() {
     //console.log(this.state.formErrors);
