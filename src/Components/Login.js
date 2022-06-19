@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import '../Common.css';
+import { Navigate } from 'react-router-dom';
 import Dashboard from './Dashboard';
-
 
 class Login extends Component {
 
@@ -50,23 +50,32 @@ class Login extends Component {
 
   submitLoginForm = e => {
     e.preventDefault();
-    let email = this.state.loginParams.email;
-    let password = this.state.loginParams.password;
-      if (this.formValidate()) {
-        const apiUrl = 'http://localhost:4000/users';
-        const loginData = { email, password };
+    
+    if (this.formValidate()) {
+      const data = new FormData(e.target);
+      const apiUrl = 'http://localhost:5000/api/auth/login';
+      const formData = {
+        username: data.get('email'),
+        password: data.get('password')
+      }
+      axios.post(apiUrl, formData).then(response => {
+        // console.log('response', JSON.stringify(response.data.data));
+        // console.log('response1', response.data.data.accessToken);
+        sessionStorage.setItem("userToken", response.data.data.accessToken);
+        sessionStorage.setItem("userData", JSON.stringify(response.data.data));
 
-        axios.get(apiUrl).then(response => {
-          const resusername = response.data[0].username;
-          const respassword = response.data[0].password;
-          if (email == resusername && password == respassword) {
-            sessionStorage.setItem("userToken", response.data[0].token);
-            window.location.href = "/dashboard";
-          } else {
-            console.log('Login Error.....!');
-          }
-        })
-      
+        if (sessionStorage.getItem('userToken')) {
+          window.location.href = "/dashboard";
+        } else {
+          console.log('error');
+        }
+
+        //user details & jwt token needs to be set in session storage
+
+      }).catch(error => {
+        console.log("error", error)
+        //this.setState({start:false})
+      })          
     } else {
       return false;
     }
@@ -88,15 +97,13 @@ class Login extends Component {
   }
 
   render() {
+    //this.authLogin();
     const { emailErr, passwordErr } = this.state.formErrors;
     return (
-      
       <>
-        
         {sessionStorage.getItem('userToken') ?
           window.location.href = "/dashboard" :
 
-          
           <div className="d-flex align-items-center min-h-100">
 
             <main id="content" role="main" className="main pt-0" style={{ paddingLeft: 0 }}>
@@ -198,7 +205,6 @@ class Login extends Component {
                                   tabIndex="1" 
                                   placeholder="email@address.com" 
                           />
-                          {/* <span id="errorEmail" className="errorMsg d-none">Please enter your email address.</span> */}
                           {emailErr && <span className='errorMsg'>{emailErr}</span>}
 
                         </div>
@@ -225,7 +231,6 @@ class Login extends Component {
                               <i className="bi-eye-slash" onClick={this.handlepassword} id="passIcon"></i>
                             </a>
                           </div>
-                          {/* <span id="errorPassword" className="errorMsg d-none">Please enter password.</span> */}
                           {passwordErr && <span className='errorMsg'>{passwordErr}</span>}
                         </div>
 

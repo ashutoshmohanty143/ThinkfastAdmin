@@ -47,7 +47,7 @@ export default function AddUser() {
                                         <div className="card-body">
 
                                             <div className="mb-4">
-                                                <label for="productNameLabel" className="form-label">Name </label>
+                                                <label htmlFor="productNameLabel" className="form-label">Name </label>
 
                                                 <input type="text" className="form-control" name="productName" id="productNameLabel" placeholder="Name" />
                                             </div>
@@ -57,7 +57,7 @@ export default function AddUser() {
                                                 <div className="col-sm-6">
 
                                                     <div className="mb-4">
-                                                        <label for="email" className="form-label">Email ID</label>
+                                                        <label htmlFor="email" className="form-label">Email ID</label>
 
                                                         <input type="text" className="form-control" name="email" id="email" placeholder="Email ID" />
                                                     </div>
@@ -68,7 +68,7 @@ export default function AddUser() {
                                                 <div className="col-sm-6">
 
                                                     <div className="mb-4">
-                                                        <label for="phone" className="form-label">Phone No.</label>
+                                                        <label htmlFor="phone" className="form-label">Phone No.</label>
 
                                                         <div className="input-group">
                                                             <input type="text" className="form-control" name="phone" id="phone" placeholder="Phone No." />

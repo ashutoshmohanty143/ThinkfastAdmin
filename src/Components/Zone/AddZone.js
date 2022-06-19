@@ -48,7 +48,7 @@ export default class AddZone extends Component {
                                     <div className="card-body">
 
                                         <div className="mb-4">
-                                            <label for="productNameLabel" className="form-label">Name </label>
+                                            <label htmlhtmlFor="productNameLabel" className="form-label">Name </label>
 
                                             <input type="text" className="form-control" name="productName" id="productNameLabel" placeholder="Name" />
                                         </div>
@@ -58,7 +58,7 @@ export default class AddZone extends Component {
                                             <div className="col-sm-6">
 
                                                 <div className="mb-4">
-                                                    <label for="email" className="form-label">Email ID</label>
+                                                    <label htmlhtmlFor="email" className="form-label">Email ID</label>
 
                                                     <input type="text" className="form-control" name="email" id="email" placeholder="Email ID" />
                                                 </div>
@@ -69,7 +69,7 @@ export default class AddZone extends Component {
                                             <div className="col-sm-6">
 
                                                 <div className="mb-4">
-                                                    <label for="phone" className="form-label">Phone No.</label>
+                                                    <label htmlhtmlFor="phone" className="form-label">Phone No.</label>
 
                                                     <div className="input-group">
                                                         <input type="text" className="form-control" name="phone" id="phone" placeholder="Phone No." />
