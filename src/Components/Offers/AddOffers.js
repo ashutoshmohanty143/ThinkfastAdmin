@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+
+
 import { Link } from 'react-router-dom'
 import "./offers.css"
 
-import RichTextEditor from 'react-rte';
+//import RichTextEditor from 'react-rte';
 import axios from 'axios';
 import swal from 'sweetalert';
 
@@ -11,6 +13,7 @@ import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
 
+
 class AddOffers extends Component {
     constructor(props) {
         super(props);        
@@ -18,37 +21,11 @@ class AddOffers extends Component {
             fields: {},
             formErrors: {},
             typeSelected: true,
-            rtevalue: RichTextEditor.createEmptyValue()
+            //rtevalue: RichTextEditor.createEmptyValue()
         }
     }
 
-    handleRadioClick() {
-        //console.log(2)
-        if (document.getElementById('link').checked) {
-            console.log(4)
-            document.getElementById("offerLink").style.display = "block";            
-            document.getElementById("offerDescriptionDiv").style.display = "none";
-          //box.style.display = 'block';
-        } else if (document.getElementById('description').checked) {
-            console.log(5)
-            document.getElementById("offerLink").style.display = "none";
-            document.getElementById("offerDescriptionDiv").style.display = "block";
-          //box.style.display = 'none';
-        }
-      }
-
     
-    
-
-    
-
-    componentDidMount(){
-        document.getElementById("offerDescriptionDiv").style.display = "none";
-        const radioButtons = document.querySelectorAll('input[name="offerType"]');
-        radioButtons.forEach(radio => {
-            radio.addEventListener('click', this.handleRadioClick);
-        });        
-    }
     
     rteValueChange = (rtevalue) => {
         this.setState({rtevalue});
@@ -59,8 +36,22 @@ class AddOffers extends Component {
 
     handleFormFieldsChange = event => {
         let fields = this.state.fields;
-        fields[event.target.name] = event.target.value;
-        this.setState({ fields });
+        //console.log(event.target.name);
+        if(event.target.name == "offerTitle"){
+            fields[event.target.name] = event.target.value;
+            this.setState({ fields });
+        } else if (document.getElementById('link').checked) {
+            //console.log(this.state.fields);
+            //console.log(event.target.value);
+            fields[event.target.name] = event.target.value;
+            this.setState({ fields });
+        } else if (document.getElementById('description').checked) {
+            //console.log(this.state.fields);
+            //console.log(event.target.value);
+            fields[event.target.name] = event.target.value;
+            this.setState({ fields });
+        }
+        
     }
 
     formValidate(){
@@ -78,13 +69,23 @@ class AddOffers extends Component {
           errors["offerTitleErr"] = "";
         }
 
-        //Link
-        if (!fields["offerLink"]) {
-            formIsValid = false;
-            errors["offerLinkErr"] = "Link Cannot be empty";
-        } else {
+        if (document.getElementById('link').checked) {
+            errors["offerDescriptionErr"] = "";
+            if (!fields["offerLink"]) {
+                formIsValid = false;
+                errors["offerLinkErr"] = "Link Cannot be empty";
+            } else {
+                errors["offerLinkErr"] = "";
+            }
+        } else if (document.getElementById('description').checked) {
             errors["offerLinkErr"] = "";
-        }
+            if (!fields["offerDescription"]) {
+                formIsValid = false;
+                errors["offerDescriptionErr"] = "Link Cannot be empty";
+            } else {
+                errors["offerDescriptionErr"] = "";
+            }
+        }        
         
         this.setState({ formErrors : errors  });
         return formIsValid; 
@@ -134,9 +135,37 @@ class AddOffers extends Component {
           }        
     }
 
+    handleRadioClick() {
+        const offerLinkDiv          = document.getElementById("offerLink");
+        const offerDescriptionDiv   = document.getElementById("offerDescriptionDiv");
+   
+
+        if (document.getElementById('link').checked) {
+            
+            //document.getElementById("descriptionValue").value = '';
+            offerLinkDiv.style.display = "block";            
+            offerDescriptionDiv.style.display = "none";
+        } else if (document.getElementById('description').checked) {
+            this.state.formErrors["offerLinkErr"] = "";
+            offerLinkDiv.value = '';
+            document.getElementById('description').setAttribute("checked", "true");
+            offerLinkDiv.style.display = "none";
+            offerDescriptionDiv.style.display = "block";
+        }
+      }    
+
+    componentDidMount(){
+        document.getElementById('link').setAttribute("checked", "true");
+        document.getElementById("offerDescriptionDiv").style.display = "none";
+        const radioButtons = document.querySelectorAll('input[name="offerType"]');
+        radioButtons.forEach(radio => {
+            radio.addEventListener('click', this.handleRadioClick);
+        });        
+    }
+
 render() {
-    //console.log(this.state.formErrors);
-    const { offerTitleErr, offerLinkErr  } = this.state.formErrors;
+    console.log(this.state.fields);
+    const { offerTitleErr, offerLinkErr, offerDescriptionErr  } = this.state.formErrors;
     return (
         <>
 {sessionStorage.getItem('userToken') ?
@@ -186,7 +215,7 @@ render() {
                                 <div className="mb-4">
                                     <label htmlFor="title" className="form-label"> Type </label><br/>
                                     <div className="form-check form-check-inline">
-                                        <input type="radio" className="form-check-input" name="offerType" value="link" id="link" checked readOnly />
+                                        <input type="radio" className="form-check-input" name="offerType" value="link" id="link" readOnly />
                                         <label className="form-check-label">Link</label>
                                         </div>
                                         <div className="form-check form-check-inline">
@@ -200,9 +229,11 @@ render() {
                                     {offerLinkErr && <span className='errorMsg'>{offerLinkErr}</span>}
                                 </div>
 
+
                                 <div id="offerDescriptionDiv">
-                                {/* <textarea rows={5} className="form-control" name="offerDescription" id="offerDescription" placeholder="Offer Description" /> */}
-                                <RichTextEditor name="offerDescription" value={this.state.rtevalue} onChange={this.rteValueChange}/>
+                                
+                                <textarea rows={8} className="form-control" name="offerDescription" id="offerDescription" placeholder="Offer Description" />
+                                {/* <RichTextEditor name="offerDescription" id="descriptionValue" value={this.state.rtevalue} onChange={this.rteValueChange}/> */}
                                 </div> 
 
                                 <div className='text-end mt-5'><button className="btn btn-primary btn-sm">Submit</button></div>

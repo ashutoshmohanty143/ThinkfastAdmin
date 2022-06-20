@@ -102,6 +102,19 @@
         }
       </script>
 
+<script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script>
+      <script type="text/javascript">
+        window.addEventListener("load", (e)=>{
+    ClassicEditor.create( document.querySelector( '#editor' ) )
+    .then( editor => {
+        console.log( editor );
+    } )
+    .catch( error => {
+        console.error( error );
+    } );
+});
+      </script>
+
 
   </head>
   <body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl footer-offset">
@@ -110,7 +123,9 @@
     <script src="./assets/js/hs-navbar-vertical-aside-mini-cache.js"></script>
 
 
-      <div id="root"></div>
+      <div id="root">
+        
+      </div>
 
 
       
@@ -137,8 +152,7 @@
     <!-- JS Front -->
     <script src="./assets/js/theme.min.js"></script>
     <script src="./assets/js/hs.theme-appearance-charts.js"></script>
-
-
+   
   <script>
     (function() {
       window.onload = function () {
