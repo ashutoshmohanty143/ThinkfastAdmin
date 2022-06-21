@@ -47,45 +47,55 @@ export default class AddZone extends Component {
 
                                     <div className="card-body">
 
-                                        <div className="mb-4">
-                                            <label htmlhtmlFor="productNameLabel" className="form-label">Name </label>
-
-                                            <input type="text" className="form-control" name="productName" id="productNameLabel" placeholder="Name" />
+                                    <div className="row">
+                                        <div className="col-sm-6">
+                                            <div className="mb-4">
+                                                <label htmlhtmlFor="zonea" className="form-label">Zone A</label>
+                                                <input type="text" className="form-control" name="zonea" id="zonea" placeholder="Zone A" />
+                                            </div>
                                         </div>
 
-
-                                        <div className="row">
-                                            <div className="col-sm-6">
-
-                                                <div className="mb-4">
-                                                    <label htmlhtmlFor="email" className="form-label">Email ID</label>
-
-                                                    <input type="text" className="form-control" name="email" id="email" placeholder="Email ID" />
+                                        <div className="col-sm-6">
+                                            <div className="mb-4">
+                                                <label htmlhtmlFor="zonec" className="form-label">Zone C</label>
+                                                <div className="input-group">
+                                                    <input type="text" className="form-control" name="zonec" id="zonec" placeholder="Zone C" />
                                                 </div>
-
                                             </div>
-
-
-                                            <div className="col-sm-6">
-
-                                                <div className="mb-4">
-                                                    <label htmlhtmlFor="phone" className="form-label">Phone No.</label>
-
-                                                    <div className="input-group">
-                                                        <input type="text" className="form-control" name="phone" id="phone" placeholder="Phone No." />
-
-
-                                                    </div>
-
-
-                                                </div>
-
-                                            </div>
-
                                         </div>
-                                        <div ></div>
-                                        <div className='text-end'><a className="btn btn-primary btn-sm" href="#.">Submit</a></div>
                                     </div>
+
+                                    <div className="row">
+                                        <div className="col-sm-6">
+                                            <div className="mb-4">
+                                                <label htmlhtmlFor="zoneb" className="form-label">Zone B</label>
+                                                <input type="text" className="form-control" name="zoneb" id="zoneb" placeholder="Zone B" />
+                                            </div>
+                                        </div>
+
+
+                                        <div className="col-sm-6">
+                                            <div className="mb-4">
+                                                <label htmlhtmlFor="zonec" className="form-label">Zone C</label>
+                                                <div className="input-group">
+                                                    <input type="text" className="form-control" name="zonec" id="zonec" placeholder="Zone C" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-sm-6">
+                                            <div className="mb-4">
+                                                <label htmlhtmlFor="zoneb" className="form-label">Zone B</label>
+                                                <input type="text" className="form-control" name="zoneb" id="zoneb" placeholder="Zone B" />
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    <div className='text-end'><a className="btn btn-primary btn-sm" href="#.">Submit</a></div>
+                                </div>
 
                                 </div>
                             </div>

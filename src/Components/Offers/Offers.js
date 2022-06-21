@@ -5,9 +5,11 @@ import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
 
+import UpdateOffer from './UpdateOffer.js'
+
 export default class Offers extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
         offerLists: []
     }
@@ -18,32 +20,50 @@ export default class Offers extends Component {
   }
 
   fetchOffers(){
-    const apiUrl = "http://localhost:5000/api/curd/fetchDoc/?collection=offers";
+    const apiUrl = "http://localhost:5000/api/curd/doc/?collection=offers";
     const token = sessionStorage.getItem("userToken");
     axios.get(apiUrl, {
       headers: {
         'Authorization': `Bearer ${token}`
       },
     }).then(response => {
+      //if(response == 'Invalid Token') redirect to login
       //console.log('response', response.data.data);
       this.setState({ offerLists : response.data.data }); 
-      // console.log('response1', response.data.data.accessToken);
-      //sessionStorage.setItem("userToken", response.data.data.accessToken);
-      //sessionStorage.setItem("userData", JSON.stringify(response.data.data));
-
-      
-
-      //user details & jwt token needs to be set in session storage
-
     }).catch(error => {
       console.log("error", error)
       //this.setState({start:false})
-    }) 
+    });
   }
 
   componentDidMount(){
     this.fetchOffers();
   }
+
+  handleUpdate(id){
+    //console.log(id);
+    const apiUrl = `http://localhost:5000/api/curd/doc/${id}/?collection=offers`;
+
+    //console.log(apiUrl);
+    const token = sessionStorage.getItem("userToken");
+    axios.get(apiUrl, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+    }).then(response => {
+      console.log(response);
+      return <UpdateOffer offerId={id} />
+      //if(response == 'Invalid Token') redirect to login
+      //console.log('response', response.data.data);
+      //this.setState({ offerLists : response.data.data }); 
+    }).catch(error => {
+      console.log("error", error)
+      //this.setState({start:false})
+    });
+    //return <UpdateOffer offerId={id} />
+
+
+    }
   render() {
     const { offerLists } = this.state;
     return (
@@ -242,13 +262,9 @@ export default class Offers extends Component {
                     <thead className="thead-light">
                       <tr>
                         <th scope="col" className="table-column-pe-0">
-                          <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="" id="datatableCheckAll" />
-                            <label className="form-check-label" htmlFor="datatableCheckAll"></label>
-                          </div>
+                          Sl. No#
                         </th>
                         <th className="table-column-ps-0">Offer Title</th>
-                        <th>Offer Link</th>
                         <th>Offer Description</th>
                         <th>Action</th>
                       </tr>
@@ -259,20 +275,17 @@ export default class Offers extends Component {
                             offerLists.map((item,i)=>    
                             <tr key={item._id}>
                               <td className="table-column-pe-0">
-                                <div className="form-check">
-                                  <input type="checkbox" className="form-check-input" id="usersDataCheck3" />
-                                  <label className="form-check-label" htmlFor="usersDataCheck3"></label>
-                                </div>
+                                {i++}
                               </td>
-                              <td className="table-column-ps-0">{item.title} </td>
-                              <td>{item.link}</td>
+                              <td className="table-column-pe-0">{item.title} </td>
                               <td>{item.description}</td>
                               <td>
-                                <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                                <a href='javascript:void(0)' onClick={() => this.handleUpdate(item._id)} ><i className="bi bi-pencil-square text-success"> Edit</i></a>
                                 <span> / </span>
                                 <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
+                                <span> / </span>
+                                <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-eye-fill text-primary"> Disable</i></a>
                               </td>
-
                             </tr>
                      ): "Data Not Found"
                     }
@@ -280,45 +293,42 @@ export default class Offers extends Component {
                   </table>
                 </div>
   
-  
-  
-                  <div className="card-footer">
-                    <div className="row justify-content-center justify-content-sm-between align-items-sm-center">
-                      <div className="col-sm mb-2 mb-sm-0">
-                        <div className="d-flex justify-content-center justify-content-sm-start align-items-center">
-                          <span className="me-2">Showing:</span>
-  
-  
-                          <div className="tom-select-custom">
-                            <select id="datatableEntries" className="js-select form-select form-select-borderless w-auto" autoComplete="off" data-hs-tom-select-options='{
-                            "searchInDropdown": false,
-                            "hideSearch": true
-                          }'>
-                              <option value="5">5</option>
-                              <option value="10">10</option>
-                              <option value="20">20</option>
-                            </select>
-                          </div>
-  
-  
-                          <span className="text-secondary me-2">of</span>
-  
-  
-                          <span id="datatableWithPaginationInfoTotalQty"></span>
+                <div className="card-footer">
+                  <div className="row justify-content-center justify-content-sm-between align-items-sm-center">
+                    <div className="col-sm mb-2 mb-sm-0">
+                      <div className="d-flex justify-content-center justify-content-sm-start align-items-center">
+                        <span className="me-2">Showing:</span>
+
+
+                        <div className="tom-select-custom">
+                          <select id="datatableEntries" className="js-select form-select form-select-borderless w-auto" autoComplete="off" data-hs-tom-select-options='{
+                          "searchInDropdown": false,
+                          "hideSearch": true
+                        }'>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                          </select>
                         </div>
+
+
+                        <span className="text-secondary me-2">of</span>
+
+
+                        <span id="datatableWithPaginationInfoTotalQty"></span>
                       </div>
-  
-  
-                      <div className="col-sm-auto">
-                        <div className="d-flex justify-content-center justify-content-sm-end">
-  
-                          <nav id="datatablePagination" aria-label="Activity pagination"></nav>
-                        </div>
-                      </div>
-  
                     </div>
-  
+
+
+                    <div className="col-sm-auto">
+                      <div className="d-flex justify-content-center justify-content-sm-end">
+
+                        <nav id="datatablePagination" aria-label="Activity pagination"></nav>
+                      </div>
+                    </div>
+
                   </div>
+                </div>
   
                 </div>
               </div>

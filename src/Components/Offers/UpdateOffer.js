@@ -10,7 +10,7 @@ import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
 
 
-class AddOffers extends Component {
+class UpdateOffer extends Component {
     constructor(props) {
         super(props);        
         this.state = {
@@ -61,17 +61,15 @@ class AddOffers extends Component {
             let title = this.state.fields['offerTitle'];
             let description = this.state.fields['offerDescription'];
             
-            const apiUrl =  'http://localhost:5000/api/curd/doc';
+            const apiUrl =  'http://localhost:5000/api/curd/saveDoc';
             const formData = {
                 "collection" : "offers",
-                "data": {
+                "data": {        
                         "title": title,
-                        "description": description,
-                        "isEnabled": true
+                        "description": description
                 },
                 "meta" : {
-                    "duplicate" : [],
-                    "multiInsert": false
+                    "duplicate" : []
                 }
             };                
             const token = sessionStorage.getItem("userToken");
@@ -179,4 +177,4 @@ render() {
 }
 
 
-export default AddOffers;
+export default UpdateOffer;
