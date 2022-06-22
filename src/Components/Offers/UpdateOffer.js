@@ -16,16 +16,16 @@ class UpdateOffer extends Component {
         this.state = {
             fields: {},
             formErorrs: {},
-            fetchData: ''
+            fetchData: {}
         }
     }
 
     componentDidMount(){
         // let id = this.props.match.params.id;
         // console.log(id);
+        let fields = {};
         let path = window.location.pathname;
         let id = path.split('/')[2];
-        // console.log(id);
         const apiUrl = `http://localhost:5000/api/curd/doc/${id}/?collection=offers`;
         const token = sessionStorage.getItem("userToken");
         axios.get(apiUrl, {
@@ -33,15 +33,16 @@ class UpdateOffer extends Component {
             'Authorization': `Bearer ${token}`
         },
         }).then(response => {
-       
-            // console.log('response', response.data.data);
-            // console.log(response.data.data);
-            this.setState({ fetchData : response.data.data }); 
-        }).catch(error => {
-            console.log("error", error)
-        });
 
-        // console.log(this.state.fetchData)
+            // this.setState({ fetchData : response.data.data });
+            fields["offerTitle"] = response.data.data.title;
+            fields["offerDescription"] = response.data.data.description;
+            this.setState({ fields : fields });
+        }).catch(error => {
+
+            console.log("error", error)
+
+        });
     }
 
 
@@ -50,9 +51,7 @@ class UpdateOffer extends Component {
     handleFormFieldsChange = event => {
         let fields = this.state.fields;
         fields[event.target.name] = event.target.value;
-        this.setState({ fields });  
-        console.log(fields['offerTitle'])
-        console.log(fields['offerDescription'])   
+        this.setState({ fields });    
     }
 
     formValidate(){
@@ -69,11 +68,9 @@ class UpdateOffer extends Component {
         }
 
         if (!fields["offerDescription"]) {
-            console.log('first')
             formIsValid = false;
             erorrs["offerDescriptionErr"] = 'Description Cannot be empty';
         } else {
-            console.log('last')
             formIsValid = true;
             erorrs["offerDescriptionErr"] = '';
         }       
@@ -84,13 +81,16 @@ class UpdateOffer extends Component {
     
     handleSubmit = event =>{
         event.preventDefault();
-        if(this.formValidate()) {            
+   
             let title = this.state.fields['offerTitle'];
             let description = this.state.fields['offerDescription'];
+            let path = window.location.pathname;
+            let id = path.split('/')[2];
             
             const apiUrl =  'http://localhost:5000/api/curd/doc';
             const formData = {
                 "collection" : "offers",
+                "id": `${id}`,
                 "data": {        
                         "title": title,
                         "description": description
@@ -106,8 +106,7 @@ class UpdateOffer extends Component {
                   'Authorization': `Bearer ${token}`
                 },
                 }).then(response => {
-                console.log('response', response);
-                swal("Thank you!", "Offer added successfully!!!", "success");
+                swal("Thank you!", "Offer updated successfully!!!", "success");
                 //console.log(document.querySelectorAll('.swal-button--confirm')[0]);
                 const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
                 swalOkBtn.addEventListener('click', function(){
@@ -117,17 +116,15 @@ class UpdateOffer extends Component {
               }).catch(error => {
                 console.log("error", error)
               });
-          } else {
-            console.log("Error");
-          }        
+               
     }
     
 
 render() {
     
+    const { offerTitle, offerDescription } =  this.state.fields;
     const { offerTitleErr, offerDescriptionErr }  = this.state.formErorrs;
-    const { fetchData } = this.state.fetchData;
-    console.log(fetchData);
+    
     return (
         <>
 {sessionStorage.getItem('userToken') ?
@@ -171,7 +168,8 @@ render() {
 
                                     <div className="mb-4">
                                         <label htmlFor="offerTitle" className="form-label"> Title </label>
-                                        <input type="text" className="form-control" name="offerTitle" id="offerTitle" 
+                                        <input type="text" className="form-control" name="offerTitle" 
+                                            id="offerTitle"  value={offerTitle} 
                                             placeholder="Title" onChange={this.handleFormFieldsChange} />
                                         {offerTitleErr && <span className='errorMsg'>{offerTitleErr}</span>}
                                     </div>
@@ -180,11 +178,11 @@ render() {
                                         <label htmlFor="offerDescription" className="form-label"> Description </label>
                                         <textarea rows={6} className="form-control" name="offerDescription"
                                             id="offerDescription" placeholder="Offer Description" 
-                                            onChange={this.handleFormFieldsChange} />
+                                            value={offerDescription} onChange={this.handleFormFieldsChange} />
                                         {offerDescriptionErr && <span className='errorMsg'>{offerDescriptionErr}</span>}
                                     </div>
 
-                                    <div className='text-end mt-5'><button className="btn btn-primary btn-sm">Submit</button></div>
+                                    <div className='text-end mt-5'><button className="btn btn-primary btn-sm">Save Data</button></div>
                                 </form>
                             </div>
 

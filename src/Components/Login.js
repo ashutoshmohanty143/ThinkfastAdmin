@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import '../Common.css';
-import { Navigate } from 'react-router-dom';
-import Dashboard from './Dashboard';
 
 class Login extends Component {
 

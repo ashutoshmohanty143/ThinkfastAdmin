@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios';
+import swal from 'sweetalert';
+
 import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
@@ -13,8 +15,34 @@ export default class Offers extends Component {
     }
   }
   
-  handleDeleteRecord = () =>{
-    alert("Record Deleted Successfully");
+  handleDeleteRecord = (id) =>{
+    
+            // event.preventDefault();
+            // let path = window.location.pathname;
+            // let id = path.split('/')[2];
+            
+            const apiUrl =  `http://localhost:5000/api/curd/doc/${id}/?collection=offers`;              
+            const token = sessionStorage.getItem("userToken");
+
+            axios.put(apiUrl, {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                },
+                }).then(response => {
+                swal("Your offer deleted successfully!!!", "danger");
+                //console.log(document.querySelectorAll('.swal-button--confirm')[0]);
+                // const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
+                // swalOkBtn.addEventListener('click', function(){
+                //     window.location.href = "/offers";
+                // });
+        
+              }).catch(error => {
+                console.log("error", error)
+              });
+  }
+
+  handleDisableRecord = (event) => {
+      event.preventDefault();
   }
 
   fetchOffers(){
@@ -37,29 +65,9 @@ export default class Offers extends Component {
     this.fetchOffers();
   }
 
-  handleUpdate(id){
-    console.log(id);
-    // const apiUrl = `http://localhost:5000/api/curd/doc/${id}/?collection=offers`;
-
-    // //console.log(apiUrl);
-    // const token = sessionStorage.getItem("userToken");
-    // axios.get(apiUrl, {
-    //   headers: {
-    //     'Authorization': `Bearer ${token}`
-    //   },
-    // }).then(response => {
-      
-      
-    //   <Link></Link>
-    // }).catch(error => {
-    //   console.log("error", error)
-    // });
-   
-    }
-
 
   render() {
-    const { offerLists } = this.state;
+    const { offerLists, erroer } = this.state;
     return (
         <>
         {sessionStorage.getItem('userToken') ?
@@ -276,9 +284,10 @@ export default class Offers extends Component {
                               <td>
                               <Link to={`/updateoffer/${item._id}`}> <i className="bi bi-pencil-square text-success"> Edit</i> </Link>
                                 <span> / </span>
-                                <a href='' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
+                                {/* <Link to={`/deleteoffer/${item._id}`}></Link> */}
+                                <a href='' onClick={this.handleDeleteRecord(item._id)}><i className="bi bi-trash text-danger"> Delete</i></a>
                                 <span> / </span>
-                                <a href='' onClick={this.handleDeleteRecord}><i className="bi bi-eye-fill text-primary"> Disable</i></a>
+                                <a href='' onClick={this.handleDisableRecord}><i className="bi bi-eye-fill text-primary"> Disable</i></a>
                               </td>
                             </tr>
                      ): "Data Not Found"
