@@ -13,6 +13,7 @@ import AddZone from './Components/Zone/AddZone';
 import Slots from './Components/Slot/Slots';
 import AddSlot from './Components/Slot/AddSlot';
 import Orders from './Components/Orders/Orders';
+import UpdateOffer from './Components/Offers/UpdateOffer';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
             <Route exact path="/adduser" element={<AddUser />} />
             <Route exact path="/offers" element={<Offers />} />
             <Route exact path="/addoffer" element={<AddOffers />} />
+            <Route exact path="/updateoffer/:id" element={<UpdateOffer />} />
             <Route exact path="/zones" element={<Zones />} />
             <Route exact path="/addzone" element={<AddZone />} />
             <Route exact path="/slots" element={<Slots />} />

@@ -5,8 +5,6 @@ import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
 
-import UpdateOffer from './UpdateOffer.js'
-
 export default class Offers extends Component {
   constructor(props){
     super(props);
@@ -32,7 +30,6 @@ export default class Offers extends Component {
       this.setState({ offerLists : response.data.data }); 
     }).catch(error => {
       console.log("error", error)
-      //this.setState({start:false})
     });
   }
 
@@ -41,29 +38,26 @@ export default class Offers extends Component {
   }
 
   handleUpdate(id){
-    //console.log(id);
-    const apiUrl = `http://localhost:5000/api/curd/doc/${id}/?collection=offers`;
+    console.log(id);
+    // const apiUrl = `http://localhost:5000/api/curd/doc/${id}/?collection=offers`;
 
-    //console.log(apiUrl);
-    const token = sessionStorage.getItem("userToken");
-    axios.get(apiUrl, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-    }).then(response => {
-      console.log(response);
-      return <UpdateOffer offerId={id} />
-      //if(response == 'Invalid Token') redirect to login
-      //console.log('response', response.data.data);
-      //this.setState({ offerLists : response.data.data }); 
-    }).catch(error => {
-      console.log("error", error)
-      //this.setState({start:false})
-    });
-    //return <UpdateOffer offerId={id} />
-
-
+    // //console.log(apiUrl);
+    // const token = sessionStorage.getItem("userToken");
+    // axios.get(apiUrl, {
+    //   headers: {
+    //     'Authorization': `Bearer ${token}`
+    //   },
+    // }).then(response => {
+      
+      
+    //   <Link></Link>
+    // }).catch(error => {
+    //   console.log("error", error)
+    // });
+   
     }
+
+
   render() {
     const { offerLists } = this.state;
     return (
@@ -73,7 +67,7 @@ export default class Offers extends Component {
             <Header />
             <SideNav />
             <main id="content" role="main" className="main">
-              <div class="content container-fluid">
+              <div className="content container-fluid">
                 <div className="page-header">
                   <div className="row align-items-center mb-3">
                     <div className="col-md mb-2 mb-md-0">
@@ -280,11 +274,11 @@ export default class Offers extends Component {
                               <td className="table-column-pe-0">{item.title} </td>
                               <td>{item.description}</td>
                               <td>
-                                <a href='javascript:void(0)' onClick={() => this.handleUpdate(item._id)} ><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                              <Link to={`/updateoffer/${item._id}`}> <i className="bi bi-pencil-square text-success"> Edit</i> </Link>
                                 <span> / </span>
-                                <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
+                                <a href='' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
                                 <span> / </span>
-                                <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-eye-fill text-primary"> Disable</i></a>
+                                <a href='' onClick={this.handleDeleteRecord}><i className="bi bi-eye-fill text-primary"> Disable</i></a>
                               </td>
                             </tr>
                      ): "Data Not Found"

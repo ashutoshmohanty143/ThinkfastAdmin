@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import "./offers.css"
 import axios from 'axios';
 import swal from 'sweetalert';
@@ -15,9 +15,36 @@ class UpdateOffer extends Component {
         super(props);        
         this.state = {
             fields: {},
-            formErorrs: {}
+            formErorrs: {},
+            fetchData: ''
         }
     }
+
+    componentDidMount(){
+        // let id = this.props.match.params.id;
+        // console.log(id);
+        let path = window.location.pathname;
+        let id = path.split('/')[2];
+        // console.log(id);
+        const apiUrl = `http://localhost:5000/api/curd/doc/${id}/?collection=offers`;
+        const token = sessionStorage.getItem("userToken");
+        axios.get(apiUrl, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        }).then(response => {
+       
+            // console.log('response', response.data.data);
+            // console.log(response.data.data);
+            this.setState({ fetchData : response.data.data }); 
+        }).catch(error => {
+            console.log("error", error)
+        });
+
+        // console.log(this.state.fetchData)
+    }
+
+
 
 
     handleFormFieldsChange = event => {
@@ -61,7 +88,7 @@ class UpdateOffer extends Component {
             let title = this.state.fields['offerTitle'];
             let description = this.state.fields['offerDescription'];
             
-            const apiUrl =  'http://localhost:5000/api/curd/saveDoc';
+            const apiUrl =  'http://localhost:5000/api/curd/doc';
             const formData = {
                 "collection" : "offers",
                 "data": {        
@@ -74,7 +101,7 @@ class UpdateOffer extends Component {
             };                
             const token = sessionStorage.getItem("userToken");
 
-            axios.post(apiUrl, formData, {
+            axios.put(apiUrl, formData, {
                 headers: {
                   'Authorization': `Bearer ${token}`
                 },
@@ -99,6 +126,8 @@ class UpdateOffer extends Component {
 render() {
     
     const { offerTitleErr, offerDescriptionErr }  = this.state.formErorrs;
+    const { fetchData } = this.state.fetchData;
+    console.log(fetchData);
     return (
         <>
 {sessionStorage.getItem('userToken') ?
@@ -142,7 +171,7 @@ render() {
 
                                     <div className="mb-4">
                                         <label htmlFor="offerTitle" className="form-label"> Title </label>
-                                        <input type="text" className="form-control" name="offerTitle" id="offerTitle"
+                                        <input type="text" className="form-control" name="offerTitle" id="offerTitle" 
                                             placeholder="Title" onChange={this.handleFormFieldsChange} />
                                         {offerTitleErr && <span className='errorMsg'>{offerTitleErr}</span>}
                                     </div>
