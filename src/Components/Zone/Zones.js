@@ -1,15 +1,42 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios';
+import swal from 'sweetalert';
 
 import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
 
 export default class Zones extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        zoneLists: []
+    }
+  }
+
+  componentDidMount(){
+    const apiUrl = "http://localhost:5000/api/curd/doc/?collection=zones";
+    const token = sessionStorage.getItem("userToken");
+    axios.get(apiUrl, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+    }).then(response => {
+      //if(response == 'Invalid Token') redirect to login
+      // console.log('response', response.data.data);
+      this.setState({ zoneLists : response.data.data }); 
+    }).catch(error => {
+      console.log("error", error)
+    });
+  }
+
   handleDeleteRecord = () =>{
     alert("Record Deleted Successfully");
   }
   render() {
+
+    const { zoneLists } = this.state;
     return (
         <>
         {sessionStorage.getItem('userToken') ?
@@ -17,7 +44,7 @@ export default class Zones extends Component {
             <Header />
             <SideNav />
             <main id="content" role="main" className="main">
-              <div class="content container-fluid">
+              <div className="content container-fluid">
                 <div className="page-header">
                   <div className="row align-items-center mb-3">
                     <div className="col-md mb-2 mb-md-0">
@@ -44,15 +71,10 @@ export default class Zones extends Component {
                       </a>
                     </span>
   
-  
-  
-  
                   </div>
   
                 </div>
-  
-  
-  
+   
                 <div className="card">
   
                   <div className="card-header card-header-content-sm-between">
@@ -208,172 +230,42 @@ export default class Zones extends Component {
                 "isShowPaging": false,
                 "pagination": "datatablePagination"
               }'>
-                    <thead className="thead-light">
+                    <thead className="thead-light">  
                       <tr>
                         <th scope="col" className="table-column-pe-0">
-                          <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="" id="datatableCheckAll" />
-                            <label className="form-check-label" htmlFor="datatableCheckAll"></label>
-                          </div>
+                          SL No.
                         </th>
-                        <th className="table-column-ps-0">Name</th>
-                        <th>E-mail</th>
-                        <th>Phone</th>
-                        <th>Country</th>
+                        <th className="table-column-ps-0">Zone A</th>
+                        <th>Zone B</th>
+                        <th>Zone C</th>
+                        <th>Zone D</th>
+                        <th>Zone E</th>
                         <th>Action</th>
                       </tr>
+                      
                     </thead>
 
                     <tbody>
-                      <tr>
+                    { zoneLists ? 
+                              zoneLists.map((item, i) =>
+                      <tr key={item._id}> 
                         <td className="table-column-pe-0">
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="usersDataCheck1" />
-                            <label className="form-check-label" htmlFor="usersDataCheck1"></label>
-                          </div>
+                          {i++}
                         </td>
-                        <td className="table-column-ps-0">
-                          <a className="d-flex align-items-center" href="./ecommerce-customer-details.html">
-                            <div className="flex-shrink-0">
-                              <div className="avatar avatar-circle">
-                                <img className="avatar-img" src="./assets/img/160x160/img10.jpg" alt="Image Description" />
-                              </div>
-                            </div>
-                            <div className="flex-grow-1 ms-3">
-                              <span className="h5 text-inherit">Amanda Harvey <i className="bi-patch-check-fill text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Top endorsed"></i></span>
-                            </div>
-                          </a>
-                        </td>
-                        <td>amanda@site.com</td>
-                        <td>+1-202-555-0140</td>
-                        <td>United Kingdom</td>
+                        <td className="table-column-ps-0">{item.zoneA}</td>
+                        <td>{item.zoneB}</td>
+                        <td>{item.zoneC}</td>
+                        <td>{item.zoneD}</td>
+                        <td>{item.zoneE}</td>
                         <td>
-                          <a href='javasrcipt:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                          <a href=''><i className="bi bi-pencil-square text-success"> Edit</i></a>
                           <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
+                          <a href='' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>
-
-                      <tr>
-                        <td className="table-column-pe-0">
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="usersDataCheck2" />
-                            <label className="form-check-label" htmlFor="usersDataCheck2"></label>
-                          </div>
-                        </td>
-                        <td className="table-column-ps-0">
-                          <a className="d-flex align-items-center" href="./ecommerce-customer-details.html">
-                            <div className="flex-shrink-0">
-                              <div className="avatar avatar-soft-primary avatar-circle">
-                                <span className="avatar-initials">A</span>
-                              </div>
-                            </div>
-                            <div className="flex-grow-1 ms-3">
-                              <span className="h5 text-inherit">Anne Richard</span>
-                            </div>
-                          </a>
-                        </td>
-                        <td>anne@site.com</td>
-                        <td>+1-752-235-2353</td>
-                        <td>United States</td>
-                        <td>
-                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
-                          <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
-                        </td>
-
-                      </tr>
-
-                      <tr>
-                        <td className="table-column-pe-0">
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="usersDataCheck3" />
-                            <label className="form-check-label" htmlFor="usersDataCheck3"></label>
-                          </div>
-                        </td>
-                        <td className="table-column-ps-0">
-                          <a className="d-flex align-items-center" href="./ecommerce-customer-details.html">
-                            <div className="flex-shrink-0">
-                              <div className="avatar avatar-circle">
-                                <img className="avatar-img" src="./assets/img/160x160/img3.jpg" alt="Image Description" />
-                              </div>
-                            </div>
-                            <div className="flex-grow-1 ms-3">
-                              <span className="h5 text-inherit">David Harrison</span>
-                            </div>
-                          </a>
-                        </td>
-                        <td>david@site.com</td>
-                        <td>+1-235-364-2611</td>
-                        <td>United States</td>
-                        <td>
-                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
-                          <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
-                        </td>
-
-                      </tr>
-
-                      <tr>
-                        <td className="table-column-pe-0">
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="usersDataCheck4" />
-                            <label className="form-check-label" htmlFor="usersDataCheck4"></label>
-                          </div>
-                        </td>
-                        <td className="table-column-ps-0">
-                          <a className="d-flex align-items-center" href="./ecommerce-customer-details.html">
-                            <div className="flex-shrink-0">
-                              <div className="avatar avatar-circle">
-                                <img className="avatar-img" src="./assets/img/160x160/img5.jpg" alt="Image Description" />
-                              </div>
-                            </div>
-                            <div className="flex-grow-1 ms-3">
-                              <span className="h5 text-inherit">Finch Hoot</span>
-                            </div>
-                          </a>
-                        </td>
-                        <td>finch@site.com</td>
-                        <td>+1-743-632-9574</td>
-                        <td>Argentina</td>
-                        <td>
-                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
-                          <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
-                        </td>
-
-                      </tr>
-
-                      <tr>
-                        <td className="table-column-pe-0">
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="usersDataCheck5" />
-                            <label className="form-check-label" htmlFor="usersDataCheck5"></label>
-                          </div>
-                        </td>
-                        <td className="table-column-ps-0">
-                          <a className="d-flex align-items-center" href="./ecommerce-customer-details.html">
-                            <div className="flex-shrink-0">
-                              <div className="avatar avatar-soft-dark avatar-circle">
-                                <span className="avatar-initials">B</span>
-                              </div>
-                            </div>
-                            <div className="flex-grow-1 ms-3">
-                              <span className="h5 text-inherit">Bob Dean</span>
-                            </div>
-                          </a>
-                        </td>
-                        <td>bob@site.com</td>
-                        <td>+1-854-235-9755</td>
-                        <td>Austria</td>
-                        <td>
-                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
-                          <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
-                        </td>
-
-                      </tr>
+                      ): "Data Not Found"
+                    }
 
                     </tbody>
                   </table>

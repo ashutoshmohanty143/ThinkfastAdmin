@@ -65,7 +65,7 @@ export default class Offers extends Component {
 
 
   render() {
-    const { offerLists, erroer } = this.state;
+    const { offerLists } = this.state;
     return (
         <>
         {sessionStorage.getItem('userToken') ?
