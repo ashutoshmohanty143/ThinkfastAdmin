@@ -15,30 +15,28 @@ export default class Offers extends Component {
     }
   }
   
-  handleDeleteRecord = (id) =>{
-    
-            // event.preventDefault();
-            // let path = window.location.pathname;
-            // let id = path.split('/')[2];
+  handleDeleteRecord = (event,id) =>{
+    event.preventDefault();
+    console.log(id);            
             
-            const apiUrl =  `http://localhost:5000/api/curd/doc/${id}/?collection=offers`;              
-            const token = sessionStorage.getItem("userToken");
+    const apiUrl =  `http://localhost:5000/api/curd/doc/${id}/?collection=offers`;              
+    const token = sessionStorage.getItem("userToken");
 
-            axios.put(apiUrl, {
-                headers: {
-                  'Authorization': `Bearer ${token}`
-                },
-                }).then(response => {
-                swal("Your offer deleted successfully!!!", "danger");
-                //console.log(document.querySelectorAll('.swal-button--confirm')[0]);
-                // const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
-                // swalOkBtn.addEventListener('click', function(){
-                //     window.location.href = "/offers";
-                // });
-        
-              }).catch(error => {
-                console.log("error", error)
-              });
+    axios.delete(apiUrl, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        }).then(response => {
+        swal("Your offer deleted successfully!!!", "danger");
+        //console.log(document.querySelectorAll('.swal-button--confirm')[0]);
+        const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
+        swalOkBtn.addEventListener('click', function(){
+            window.location.href = "/offers";
+        });
+
+      }).catch(error => {
+        console.log("error", error)
+      });
   }
 
   handleDisableRecord = (event) => {
@@ -285,7 +283,7 @@ export default class Offers extends Component {
                               <Link to={`/updateoffer/${item._id}`}> <i className="bi bi-pencil-square text-success"> Edit</i> </Link>
                                 <span> / </span>
                                 {/* <Link to={`/deleteoffer/${item._id}`}></Link> */}
-                                <a href='' onClick={this.handleDeleteRecord(item._id)}><i className="bi bi-trash text-danger"> Delete</i></a>
+                                <a href='' onClick={(event) => this.handleDeleteRecord(event, item._id)}><i className="bi bi-trash text-danger"> Delete</i></a>
                                 <span> / </span>
                                 <a href='' onClick={this.handleDisableRecord}><i className="bi bi-eye-fill text-primary"> Disable</i></a>
                               </td>
