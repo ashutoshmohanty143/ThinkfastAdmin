@@ -6,7 +6,6 @@ import swal from 'sweetalert';
 import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
-import SweetAlert from 'react-bootstrap-sweetalert';
 
 export default class AddZone extends Component {
     constructor(props) {
@@ -104,10 +103,7 @@ export default class AddZone extends Component {
                 const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
                 swalOkBtn.addEventListener('click', function(){
                     window.location.href = "/zones";
-                });
-
-                // <SweetAlert title="Here's a message!" onConfirm={this.onConfirm} />
-        
+                });    
               }).catch(error => {
                 console.log("error", error)
               });
