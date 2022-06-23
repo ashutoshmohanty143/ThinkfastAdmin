@@ -34,7 +34,7 @@ export default class AddZone extends Component {
     
         if (!fields["zoneA"]) {
             formIsValid = false;
-            Errors["zoneAError"]  = 'Zone A Cannot be empty';
+            Errors["zoneAError"]  = 'Zone A cannot be empty';
         } else {
             formIsValid = true;
             Errors["zoneAError"]  = '';
@@ -42,7 +42,7 @@ export default class AddZone extends Component {
 
         if (!fields["zoneB"]) {
             formIsValid = false;
-            Errors["zoneBError"]  = 'Zone B Cannot be empty';
+            Errors["zoneBError"]  = 'Zone B cannot be empty';
         } else {
             formIsValid = true;
             Errors["zoneBError"]  = '';
@@ -50,7 +50,7 @@ export default class AddZone extends Component {
         
         if (!fields["zoneC"]) {
             formIsValid = false;
-            Errors["zoneCError"]  = 'Zone C Cannot be empty';
+            Errors["zoneCError"]  = 'Zone C cannot be empty';
         } else {
             formIsValid = true;
             Errors["zoneCError"]  = '';
@@ -58,7 +58,7 @@ export default class AddZone extends Component {
 
         if (!fields["zoneD"]) {
             formIsValid = false;
-            Errors["zoneDError"]  = 'Zone D Cannot be empty';
+            Errors["zoneDError"]  = 'Zone D cannot be empty';
         } else {
             formIsValid = true;
             Errors["zoneDError"]  = '';
@@ -66,7 +66,7 @@ export default class AddZone extends Component {
 
         if (!fields["zoneE"]) {
             formIsValid = false;
-            Errors["zoneEError"]  = 'Zone E Cannot be empty';
+            Errors["zoneEError"]  = 'Zone E cannot be empty';
         } else {
             formIsValid = true;
             Errors["zoneEError"]  = '';
@@ -104,7 +104,7 @@ export default class AddZone extends Component {
                 },
                 }).then(response => {
                 console.log('response', response);
-                swal("Thank you!", "Offer added successfully!!!", "success");
+                swal("Thank you!", "Zones added successfully!!!", "success");
                 const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
                 swalOkBtn.addEventListener('click', function(){
                     window.location.href = "/zones";
@@ -122,7 +122,7 @@ export default class AddZone extends Component {
     }
 
 
-  render() {
+    render() {
         const { zoneAError, zoneBError, zoneCError, zoneDError, zoneEError }  = this.state.formErrors;
     return (
         <>

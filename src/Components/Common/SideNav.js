@@ -81,7 +81,7 @@ export default function SideNav() {
                     </a>
                     <div
                       id="navbarVerticalMenuPagesUsersMenu"
-                      className="nav-collapse collapse "
+                      className="nav-collapse collapse show"
                       data-bs-parent="#navbarVerticalMenuPagesMenu"
                     >
                       <NavLink className="nav-link" to="/users">Users</NavLink>

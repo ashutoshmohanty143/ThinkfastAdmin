@@ -51,7 +51,7 @@ export default class Zones extends Component {
                       <h1 className="page-header-title">Zones </h1>
                     </div>
                     <div className="col-md-auto">
-                      <Link className="btn btn-primary" to="/addzone">Add Zone</Link>
+                      <Link className="btn btn-primary" to="/addzone">Add New</Link>
                     </div>
   
                   </div>
@@ -250,7 +250,7 @@ export default class Zones extends Component {
                               zoneLists.map((item, i) =>
                       <tr key={item._id}> 
                         <td className="table-column-pe-0">
-                          {i++}
+                          {i+1}
                         </td>
                         <td className="table-column-ps-0">{item.zoneA}</td>
                         <td>{item.zoneB}</td>

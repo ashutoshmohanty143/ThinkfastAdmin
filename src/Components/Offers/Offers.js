@@ -17,7 +17,7 @@ export default class Offers extends Component {
   
   handleDeleteRecord = (event,id) =>{
     event.preventDefault();
-    console.log(id);            
+    //console.log(id);            
             
     const apiUrl =  `http://localhost:5000/api/curd/doc/${id}/?collection=offers`;              
     const token = sessionStorage.getItem("userToken");
@@ -39,8 +39,39 @@ export default class Offers extends Component {
       });
   }
 
-  handleDisableRecord = (event) => {
-      event.preventDefault();
+  handleStatusChange = (event,id,status) =>{
+    event.preventDefault();
+    //console.log(id);            
+
+    const apiUrl =  'http://localhost:5000/api/curd/doc';
+    const formData = {
+        "collection" : "offers",
+        "id": id,
+        "data": {
+                "isEnabled": status ? false : true
+        },
+        "meta" : {
+            "duplicate" : [],
+            "multiInsert": false
+        }
+    };                
+    const token = sessionStorage.getItem("userToken");
+
+    axios.put(apiUrl, formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+    }).then(response => {
+        swal("Thank you!", `Offer ${status ? 'Disabled' : 'Enabled'} successfully!!!`, "success");
+        //console.log(document.querySelectorAll('.swal-button--confirm')[0]);
+        const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
+        swalOkBtn.addEventListener('click', function(){
+            window.location.href = "/offers";
+        });
+
+    }).catch(error => {
+        console.log("error", error)
+    });
   }
 
   fetchOffers(){
@@ -66,6 +97,7 @@ export default class Offers extends Component {
 
   render() {
     const { offerLists } = this.state;
+    console.log(offerLists);
     return (
         <>
         {sessionStorage.getItem('userToken') ?
@@ -285,7 +317,7 @@ export default class Offers extends Component {
                                 {/* <Link to={`/deleteoffer/${item._id}`}></Link> */}
                                 <a href='' onClick={(event) => this.handleDeleteRecord(event, item._id)}><i className="bi bi-trash text-danger"> Delete</i></a>
                                 <span> / </span>
-                                <a href='' onClick={this.handleDisableRecord}><i className="bi bi-eye-fill text-primary"> Disable</i></a>
+                                <a href='' onClick={(event) => this.handleStatusChange(event, item._id, item.isEnabled)}><i className="bi bi-eye-fill text-primary"> {item.isEnabled ? 'Disable' : "Enable"}</i></a>
                               </td>
                             </tr>
                      ): "Data Not Found"
