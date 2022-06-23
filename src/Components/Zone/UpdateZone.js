@@ -6,15 +6,38 @@ import swal from 'sweetalert';
 import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
-import SweetAlert from 'react-bootstrap-sweetalert';
 
-export default class AddZone extends Component {
+export default class UpdateZone extends Component {
     constructor(props) {
         super(props);        
         this.state = {
             fields: {},
             formErrors: {}
         }
+    }
+
+    componentDidMount(){
+        let fields = {};
+        let path = window.location.pathname;
+        let id = path.split('/')[2];
+        const apiUrl = `http://localhost:5000/api/curd/doc/${id}/?collection=zones`;
+        const token = sessionStorage.getItem("userToken");
+        axios.get(apiUrl, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        }).then(response => {
+            fields["zoneA"] = response.data.data.zoneA;
+            fields["zoneB"] = response.data.data.zoneB;
+            fields["zoneC"] = response.data.data.zoneC;
+            fields["zoneD"] = response.data.data.zoneD;
+            fields["zoneE"] = response.data.data.zoneE;
+            this.setState({ fields : fields });
+        }).catch(error => {
+
+            console.log("error", error)
+
+        });
     }
 
     handleFormFieldsChange = event => {
@@ -76,10 +99,13 @@ export default class AddZone extends Component {
         event.preventDefault();
         if(this.formValidate()) {            
             let {zoneA, zoneB, zoneC, zoneD, zoneE} = this.state.fields;
+            let path = window.location.pathname;
+            let id = path.split('/')[2];
             
             const apiUrl =  'http://localhost:5000/api/curd/doc';
             const formData = {
                 "collection" : "zones",
+                "id": `${id}`,
                 "data": {
                         "zoneA": zoneA,
                         "zoneB": zoneB,
@@ -94,37 +120,28 @@ export default class AddZone extends Component {
             };                
             const token = sessionStorage.getItem("userToken");
 
-            axios.post(apiUrl, formData, {
+            axios.put(apiUrl, formData, {
                 headers: {
                   'Authorization': `Bearer ${token}`
                 },
                 }).then(response => {
-                // console.log('response', response);   
-                swal("Thank you!", "Zones added successfully!!!", "success");
+                swal("Thank you!", "Zone updated successfully!!!", "success");
                 const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
                 swalOkBtn.addEventListener('click', function(){
                     window.location.href = "/zones";
                 });
-
-                // <SweetAlert title="Here's a message!" onConfirm={this.onConfirm} />
         
               }).catch(error => {
                 console.log("error", error)
               });
-
-            swal("Thank you!", "Zones added successfully!!!", "success");
-
           } else {
             console.log("Form Validation Error");
           }        
     }
 
-    onConfirm = () =>{
-        window.location.href = "/zones"
-    }
-
 
     render() {
+        let {zoneA, zoneB, zoneC, zoneD, zoneE} = this.state.fields;
         const { zoneAError, zoneBError, zoneCError, zoneDError, zoneEError }  = this.state.formErrors;
     return (
         <>
@@ -172,7 +189,8 @@ export default class AddZone extends Component {
                                                         <div className="mb-4">
                                                             <label htmlFor="zoneA" className="form-label">Zone A</label>
                                                             <input type="text" className="form-control" name="zoneA"
-                                                                id="zoneA" placeholder="Zone A" onChange={this.handleFormFieldsChange} />
+                                                                id="zoneA" placeholder="Zone A" value={zoneA}
+                                                                onChange={this.handleFormFieldsChange} />
                                                             {zoneAError && <span className='errorMsg'>{zoneAError}</span>}
                                                         </div>
                                                     </div>
@@ -181,7 +199,8 @@ export default class AddZone extends Component {
                                                         <div className="mb-4">
                                                             <label htmlFor="zoneB" className="form-label">Zone B</label>
                                                             <input type="text" className="form-control" name="zoneB"
-                                                                id="zoneB" placeholder="Zone B" onChange={this.handleFormFieldsChange} />
+                                                                id="zoneB" placeholder="Zone B" value={zoneB}
+                                                                onChange={this.handleFormFieldsChange} />
                                                             {zoneBError && <span className='errorMsg'>{zoneBError}</span>}
                                                         </div>
                                                     </div>
@@ -192,7 +211,8 @@ export default class AddZone extends Component {
                                                         <div className="mb-4">
                                                             <label htmlFor="zoneC" className="form-label">Zone C</label>
                                                             <input type="text" className="form-control" name="zoneC"
-                                                                id="zoneC" placeholder="Zone C" onChange={this.handleFormFieldsChange} />
+                                                                id="zoneC" placeholder="Zone C" value={zoneC}
+                                                                onChange={this.handleFormFieldsChange} />
                                                             {zoneCError && <span className='errorMsg'>{zoneCError}</span>}
                                                         </div>
                                                     </div>
@@ -202,7 +222,8 @@ export default class AddZone extends Component {
                                                         <div className="mb-4">
                                                             <label htmlFor="zoneD" className="form-label">Zone D</label>
                                                             <input type="text" className="form-control" name="zoneD"
-                                                                id="zoneD" placeholder="Zone D" onChange={this.handleFormFieldsChange} />
+                                                                id="zoneD" placeholder="Zone D" value={zoneD}
+                                                                onChange={this.handleFormFieldsChange} />
                                                             {zoneDError && <span className='errorMsg'>{zoneDError}</span>}
                                                         </div>
                                                     </div>
@@ -213,7 +234,8 @@ export default class AddZone extends Component {
                                                         <div className="mb-4">
                                                             <label htmlFor="zoneE" className="form-label">Zone E</label>
                                                             <input type="text" className="form-control" name="zoneE"
-                                                                id="zoneE" placeholder="Zone E" onChange={this.handleFormFieldsChange} />
+                                                                id="zoneE" placeholder="Zone E" value={zoneE}
+                                                                onChange={this.handleFormFieldsChange} />
                                                             {zoneEError && <span className='errorMsg'>{zoneEError}</span>}
                                                         </div>
                                                     </div>

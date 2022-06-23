@@ -16,7 +16,6 @@ class UpdateOffer extends Component {
         this.state = {
             fields: {},
             formErorrs: {},
-            fetchData: {}
         }
     }
 
@@ -33,8 +32,6 @@ class UpdateOffer extends Component {
             'Authorization': `Bearer ${token}`
         },
         }).then(response => {
-
-            // this.setState({ fetchData : response.data.data });
             fields["offerTitle"] = response.data.data.title;
             fields["offerDescription"] = response.data.data.description;
             this.setState({ fields : fields });

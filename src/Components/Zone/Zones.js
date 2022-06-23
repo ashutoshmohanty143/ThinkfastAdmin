@@ -31,9 +31,39 @@ export default class Zones extends Component {
     });
   }
 
-  handleDeleteRecord = () =>{
-    alert("Record Deleted Successfully");
+  onCancel = () =>{
+    return false;
   }
+
+  handleDeleteRecord = (event,id) =>{
+    event.preventDefault();
+    //console.log(id);            
+            
+    const apiUrl =  `http://localhost:5000/api/curd/doc/${id}/?collection=zones`;              
+    const token = sessionStorage.getItem("userToken");
+
+    axios.delete(apiUrl, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        }).then(response => {
+        swal({
+          text: "Zone deleted successfully!!!", 
+          icon: "error",
+          dangerMode: true
+        });
+        const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
+        swalOkBtn.addEventListener('click', function(){
+            window.location.href = "/zones";
+        });
+        
+
+      }).catch(error => {
+        console.log("error", error)
+      });
+  }
+
+
   render() {
 
     const { zoneLists } = this.state;
@@ -258,9 +288,10 @@ export default class Zones extends Component {
                         <td>{item.zoneD}</td>
                         <td>{item.zoneE}</td>
                         <td>
-                          <a href=''><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                          {/* <a href=''><i className="bi bi-pencil-square text-success"> Edit</i></a> */}
+                          <Link to={`/updatezone/${item._id}`}> <i className="bi bi-pencil-square text-success"> Edit</i> </Link>
                           <span> / </span>
-                          <a href='' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
+                          <a href='' onClick={(event) => this.handleDeleteRecord(event, item._id)}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>

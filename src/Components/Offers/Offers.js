@@ -27,8 +27,11 @@ export default class Offers extends Component {
           'Authorization': `Bearer ${token}`
         },
         }).then(response => {
-        swal("Your offer deleted successfully!!!", "danger");
-        //console.log(document.querySelectorAll('.swal-button--confirm')[0]);
+        swal({
+          text: "Offer deleted successfully!!!", 
+          icon: "error",
+          dangerMode: true
+        });
         const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
         swalOkBtn.addEventListener('click', function(){
             window.location.href = "/offers";
