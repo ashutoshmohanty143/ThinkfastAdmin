@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import "./offers.css"
 import axios from 'axios';
 import swal from 'sweetalert';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
 import Header from '../Common/Header';
@@ -15,17 +17,22 @@ class AddOffers extends Component {
         super(props);        
         this.state = {
             fields: {},
-            formErorrs: {}
+            formErorrs: {},
+            offerTitle: ""
         }
     }
 
 
-    handleFormFieldsChange = event => {
-        let fields = this.state.fields;
-        fields[event.target.name] = event.target.value;
-        this.setState({ fields });  
-        console.log(fields['offerTitle'])
-        console.log(fields['offerDescription'])   
+    handleFormFieldsChange = (event, editor) => {
+        // let fields = this.state.fields;
+        // fields[event.target.name] = event.target.value;
+        // this.setState({ fields });  
+        // console.log(fields['offerTitle'])
+        // console.log(fields['offerDescription']) 
+        
+        // let fields = editor.getData();
+        this.setState({ offerTitle : editor.getData() });
+        console.log(this.state.offerTitle)
     }
 
     formValidate(){
@@ -146,16 +153,28 @@ render() {
 
                                     <div className="mb-4">
                                         <label htmlFor="offerTitle" className="form-label"> Title </label>
-                                        <input type="text" className="form-control" name="offerTitle" id="offerTitle"
-                                            placeholder="Title" onChange={this.handleFormFieldsChange} />
+                                        {/* <input type="text" className="form-control" name="offerTitle" id="offerTitle"
+                                            placeholder="Title" onChange={this.handleFormFieldsChange} /> */}
+                                        <CKEditor
+                                                name="offerTitle" id="offerTitle" 
+                                                editor={ ClassicEditor }
+                                                data=""
+                                                onChange={this.handleFormFieldsChange}
+                                        />
                                         {offerTitleErr && <span className='errorMsg'>{offerTitleErr}</span>}
                                     </div>
 
                                     <div className='mb-4'>
                                         <label htmlFor="offerDescription" className="form-label"> Description </label>
-                                        <textarea rows={6} className="form-control" name="offerDescription"
+                                        {/* <textarea rows={6} className="form-control" name="offerDescription"
                                             id="offerDescription" placeholder="Offer Description" 
-                                            onChange={this.handleFormFieldsChange} />
+                                            onChange={this.handleFormFieldsChange} /> */}
+                                        <CKEditor
+                                                name="offerDescription" id="offerDescription"
+                                                editor={ ClassicEditor }
+                                                data=""
+                                                onChange={this.handleFormFieldsChange}
+                                        />
                                         {offerDescriptionErr && <span className='errorMsg'>{offerDescriptionErr}</span>}
                                     </div>
 
