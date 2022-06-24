@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import "./offers.css"
 import axios from 'axios';
 import swal from 'sweetalert';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
 import Header from '../Common/Header';
@@ -16,6 +18,8 @@ class UpdateOffer extends Component {
         this.state = {
             fields: {},
             formErorrs: {},
+            offerTitle: "",
+            offerDescription: ""
         }
     }
 
@@ -32,8 +36,8 @@ class UpdateOffer extends Component {
             'Authorization': `Bearer ${token}`
         },
         }).then(response => {
-            fields["offerTitle"] = response.data.data.title;
-            fields["offerDescription"] = response.data.data.description;
+            this.state.offerTitle = response.data.data.title;
+            this.state.offerDescription = response.data.data.description;
             this.setState({ fields : fields });
         }).catch(error => {
 
@@ -42,21 +46,23 @@ class UpdateOffer extends Component {
         });
     }
 
+    handleofferTitleFieldsChange = (event, editor) => {
+        this.setState({ offerTitle : editor.getData() });
+        // console.log(this.state.offerTitle)
+    }
 
-
-
-    handleFormFieldsChange = event => {
-        let fields = this.state.fields;
-        fields[event.target.name] = event.target.value;
-        this.setState({ fields });    
+    handleofferDescriptionFieldsChange = (event, editor) => {
+        this.setState({ offerDescription : editor.getData() });
+        // console.log(this.state.offerDescription)
     }
 
     formValidate(){
-        let fields = this.state.fields;
+        let offerTitle = this.state.offerTitle;
+        let offerDescription = this.state.offerDescription;
         let erorrs = {};
         let formIsValid = true;
     
-        if (!fields["offerTitle"]) {
+        if (!offerTitle) {
             formIsValid = false;
             erorrs["offerTitleErr"]  = 'Title Cannot be empty';
         } else {
@@ -64,7 +70,7 @@ class UpdateOffer extends Component {
             erorrs["offerTitleErr"]  = '';
         }
 
-        if (!fields["offerDescription"]) {
+        if (!offerDescription) {
             formIsValid = false;
             erorrs["offerDescriptionErr"] = 'Description Cannot be empty';
         } else {
@@ -79,8 +85,8 @@ class UpdateOffer extends Component {
     handleSubmit = event =>{
         event.preventDefault();
    
-            let title = this.state.fields['offerTitle'];
-            let description = this.state.fields['offerDescription'];
+            let title = this.state.offerTitle;
+            let description = this.state.offerDescription;
             let path = window.location.pathname;
             let id = path.split('/')[2];
             
@@ -119,7 +125,7 @@ class UpdateOffer extends Component {
 
 render() {
     
-    const { offerTitle, offerDescription } =  this.state.fields;
+    const { offerTitle, offerDescription } =  this.state;
     const { offerTitleErr, offerDescriptionErr }  = this.state.formErorrs;
     
     return (
@@ -165,17 +171,31 @@ render() {
 
                                     <div className="mb-4">
                                         <label htmlFor="offerTitle" className="form-label"> Title </label>
-                                        <input type="text" className="form-control" name="offerTitle" 
+                                        {/* <input type="text" className="form-control" name="offerTitle" 
                                             id="offerTitle"  value={offerTitle} 
-                                            placeholder="Title" onChange={this.handleFormFieldsChange} />
+                                            placeholder="Title" onChange={this.handleFormFieldsChange} /> */}
+                                        <CKEditor
+                                                name="offerTitle" id="offerTitle" 
+                                                editor={ ClassicEditor }
+                                                data={offerTitle}
+                                                onChange={this.handleofferTitleFieldsChange}
+                                                height={200+"px"}
+                                        />
                                         {offerTitleErr && <span className='errorMsg'>{offerTitleErr}</span>}
                                     </div>
 
                                     <div className='mb-4'>
                                         <label htmlFor="offerDescription" className="form-label"> Description </label>
-                                        <textarea rows={6} className="form-control" name="offerDescription"
+                                        {/* <textarea rows={6} className="form-control" name="offerDescription"
                                             id="offerDescription" placeholder="Offer Description" 
-                                            value={offerDescription} onChange={this.handleFormFieldsChange} />
+                                            value={offerDescription} onChange={this.handleFormFieldsChange} /> */}
+                                        <CKEditor
+                                                name="offerDescription" id="offerDescription"
+                                                editor={ ClassicEditor }
+                                                data={offerDescription}
+                                                onChange={this.handleofferDescriptionFieldsChange}
+                                                rows={5}
+                                        />
                                         {offerDescriptionErr && <span className='errorMsg'>{offerDescriptionErr}</span>}
                                     </div>
 

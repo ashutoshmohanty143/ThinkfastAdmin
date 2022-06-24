@@ -18,29 +18,45 @@ class AddOffers extends Component {
         this.state = {
             fields: {},
             formErorrs: {},
-            offerTitle: ""
+            offerTitle: "",
+            offerDescription: ""
         }
     }
 
 
-    handleFormFieldsChange = (event, editor) => {
-        // let fields = this.state.fields;
-        // fields[event.target.name] = event.target.value;
-        // this.setState({ fields });  
-        // console.log(fields['offerTitle'])
-        // console.log(fields['offerDescription']) 
+    // handleFormFieldsChange = (event, editor) => {
+    //     // let fields = this.state.fields;
+    //     // fields[event.target.name] = event.target.value;
+    //     // this.setState({ fields });  
+    //     // console.log(fields['offerTitle'])
+    //     // console.log(fields['offerDescription']) 
         
-        // let fields = editor.getData();
+    //     // let fields = this.state.fields;
+    //     // fields[event.target.name] = editor.getData();
+    //     // this.setState({ fields });
+    //     // console.log(fields['offerTitle'])
+
+    //     this.setState({ offerTitle : editor.getData() });
+    //     console.log(this.state.offerTitle)
+    // }
+
+    handleofferTitleFieldsChange = (event, editor) => {
         this.setState({ offerTitle : editor.getData() });
-        console.log(this.state.offerTitle)
+        // console.log(this.state.offerTitle)
+    }
+
+    handleofferDescriptionFieldsChange = (event, editor) => {
+        this.setState({ offerDescription : editor.getData() });
+        // console.log(this.state.offerDescription)
     }
 
     formValidate(){
-        let fields = this.state.fields;
+        let offerTitle = this.state.offerTitle;
+        let offerDescription = this.state.offerDescription;
         let erorrs = {};
         let formIsValid = true;
     
-        if (!fields["offerTitle"]) {
+        if (!offerTitle) {
             formIsValid = false;
             erorrs["offerTitleErr"]  = 'Title Cannot be empty';
         } else {
@@ -48,12 +64,10 @@ class AddOffers extends Component {
             erorrs["offerTitleErr"]  = '';
         }
 
-        if (!fields["offerDescription"]) {
-            console.log('first')
+        if (!offerDescription) {
             formIsValid = false;
             erorrs["offerDescriptionErr"] = 'Description Cannot be empty';
         } else {
-            console.log('last')
             formIsValid = true;
             erorrs["offerDescriptionErr"] = '';
         }       
@@ -65,8 +79,8 @@ class AddOffers extends Component {
     handleSubmit = event =>{
         event.preventDefault();
         if(this.formValidate()) {            
-            let title = this.state.fields['offerTitle'];
-            let description = this.state.fields['offerDescription'];
+            let title = this.state.offerTitle;
+            let description = this.state.offerDescription;
             
             const apiUrl =  'http://localhost:5000/api/curd/doc';
             const formData = {
@@ -159,7 +173,8 @@ render() {
                                                 name="offerTitle" id="offerTitle" 
                                                 editor={ ClassicEditor }
                                                 data=""
-                                                onChange={this.handleFormFieldsChange}
+                                                onChange={this.handleofferTitleFieldsChange}
+                                                height={200+"px"}
                                         />
                                         {offerTitleErr && <span className='errorMsg'>{offerTitleErr}</span>}
                                     </div>
@@ -173,11 +188,11 @@ render() {
                                                 name="offerDescription" id="offerDescription"
                                                 editor={ ClassicEditor }
                                                 data=""
-                                                onChange={this.handleFormFieldsChange}
+                                                onChange={this.handleofferDescriptionFieldsChange}
+                                                rows={5}
                                         />
                                         {offerDescriptionErr && <span className='errorMsg'>{offerDescriptionErr}</span>}
                                     </div>
-
                                     <div className='text-end mt-5'><button className="btn btn-primary btn-sm">Submit</button></div>
                                 </form>
                             </div>
