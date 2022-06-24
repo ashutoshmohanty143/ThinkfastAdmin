@@ -83,6 +83,8 @@ class AddOffers extends Component {
                 }).then(response => {
                 console.log('response', response);
                 swal("Thank you!", "Offer added successfully!!!", "success");
+
+                
                 //console.log(document.querySelectorAll('.swal-button--confirm')[0]);
                 const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
                 swalOkBtn.addEventListener('click', function(){
