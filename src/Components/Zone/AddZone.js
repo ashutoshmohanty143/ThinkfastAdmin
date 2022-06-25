@@ -223,11 +223,11 @@ export default class AddZone extends Component {
 
                                                     <div className="col-sm-6">
                                                         <div className="mb-4">
-                                                            <label htmlFor="paymentStaus" className="form-label">Select Payment Staus</label>
+                                                            <label htmlFor="paymentStaus" className="form-label">Select Payment Mode</label>
                 
                                                             <div className="tom-select-custom">
                                                                 <select className="js-select form-select tomselected" name="paymentStaus" id="paymentStaus" onChange={this.handleFormFieldsChange}>
-                                                                    <option value="0">Select your payment staus</option>
+                                                                    <option value="0">Select your payment mode</option>
                                                                     <option value="Free">Free</option>
                                                                     <option value="Paid">Paid</option>
                                                                 </select>

@@ -41,7 +41,7 @@ export default function SideNav() {
                 id="navbarVerticalMenu"
                 className="nav nav-pills nav-vertical card-navbar-nav"
               >
-                <div className="nav-item">
+                {/* <div className="nav-item">
                   <a
                     className="nav-link dropdown-toggle active"
                     href="#navbarVerticalMenuDashboards"
@@ -61,11 +61,19 @@ export default function SideNav() {
                     <NavLink className="nav-link" to="/dashboard">Home</NavLink>
                   
                   </div>
-                </div>
-                <span className="dropdown-header mt-4">Pages</span>
+                </div> */}
+
+                  <div class="nav-item">
+                    <NavLink className="nav-link" to="/dashboard"><i className="bi-house-door nav-icon"></i> Dashboard</NavLink>
+                  </div>
+                {/* <span className="dropdown-header mt-4">Pages</span> */}
                 <small className="bi-three-dots nav-subtitle-replacer"></small>
                 <div className="navbar-nav nav-compact"></div>
                 <div id="navbarVerticalMenuPagesMenu">
+                  <div class="nav-item">
+                    <NavLink className="nav-link" to="/offers"><i class="bi-eye nav-icon"></i> Offers</NavLink>
+                  </div>
+
                   <div className="nav-item">
                     <a
                       className="nav-link dropdown-toggle "
@@ -77,22 +85,54 @@ export default function SideNav() {
                       aria-controls="navbarVerticalMenuPagesUsersMenu"
                     >
                       <i className="bi-people nav-icon"></i>
-                      <span className="nav-link-title">Manage Pages</span>
+                      <span className="nav-link-title">SLA</span>
                     </a>
                     <div
                       id="navbarVerticalMenuPagesUsersMenu"
                       className="nav-collapse collapse show"
                       data-bs-parent="#navbarVerticalMenuPagesMenu"
                     >
-                      <NavLink className="nav-link" to="/users">Users</NavLink>
-                      <NavLink className="nav-link" to="/offers">Offers</NavLink>
                       <NavLink className="nav-link" to="/zones">Zones</NavLink>
                       <NavLink className="nav-link" to="/slots">Slots</NavLink>
+                      <NavLink className="nav-link" to="/wirehouse">Wirehouse</NavLink>
+
+                      {/* <NavLink className="nav-link" to="/users">Users</NavLink>
+                      <NavLink className="nav-link" to="/offers">Offers</NavLink>
                       <NavLink className="nav-link" to="/discounts">Discounts</NavLink>
-                      <NavLink className="nav-link" to="/orders">Orders</NavLink>
+                      <NavLink className="nav-link" to="/orders">Orders</NavLink> */}
                     </div>
                   </div>
-                
+                  
+                  <div class="nav-item">
+                    <NavLink className="nav-link" to="/orders"><i class="bi-eye nav-icon"></i> Orders</NavLink>
+                  </div>
+
+                  <div class="nav-item">
+                    <NavLink className="nav-link" to="/offers"><i class="bi-eye nav-icon"></i> Users</NavLink>
+                  </div>
+
+                  <div className="nav-item">
+                    <a
+                      className="nav-link dropdown-toggle "
+                      href="#navbarVerticalMenuPagesUsersMenu"
+                      role="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#navbarVerticalMenuPagesUsersMenu"
+                      aria-expanded="false"
+                      aria-controls="navbarVerticalMenuPagesUsersMenu"
+                    >
+                      <i className="bi-people nav-icon"></i>
+                      <span className="nav-link-title">Settings</span>
+                    </a>
+                    <div
+                      id="navbarVerticalMenuPagesUsersMenu"
+                      className="nav-collapse collapse show"
+                      data-bs-parent="#navbarVerticalMenuPagesMenu"
+                    >
+                      <NavLink className="nav-link" to="/popup-settings">Popup Settings</NavLink>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>
