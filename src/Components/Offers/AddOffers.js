@@ -174,7 +174,7 @@ render() {
                                                 editor={ ClassicEditor }
                                                 data=""
                                                 onChange={this.handleofferTitleFieldsChange}
-                                                height={200+"px"}
+                                                height={400+"px"}
                                         />
                                         {offerTitleErr && <span className='errorMsg'>{offerTitleErr}</span>}
                                     </div>
@@ -189,7 +189,7 @@ render() {
                                                 editor={ ClassicEditor }
                                                 data=""
                                                 onChange={this.handleofferDescriptionFieldsChange}
-                                                rows={5}
+                                                rows={10}
                                         />
                                         {offerDescriptionErr && <span className='errorMsg'>{offerDescriptionErr}</span>}
                                     </div>

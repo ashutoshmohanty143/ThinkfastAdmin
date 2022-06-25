@@ -406,8 +406,8 @@ export default class Offers extends Component {
                           <th scope="col" className="table-column-pe-0">
                             Sl. No#
                           </th>
-                          <th className="table-column-ps-0">Offer Title</th>
-                          <th>Offer Description</th>
+                          <th className="w-25">Offer Title</th>
+                          <th className="w-50">Offer Description</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -417,10 +417,10 @@ export default class Offers extends Component {
                           ? offerLists.map((item, i) => (
                               <tr key={item._id}>
                                 <td className="table-column-pe-0">{i + 1}</td>
-                                <td className="table-column-pe-0">
+                                <td className="w-25">
                                   {item.title}{" "}
                                 </td>
-                                <td>{item.description}</td>
+                                <td className="w-50">{item.description}</td>
                                 <td>
                                   <Link to={`/updateoffer/${item._id}`}>
                                     {" "}

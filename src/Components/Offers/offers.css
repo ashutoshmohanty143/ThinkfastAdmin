@@ -1,7 +1,8 @@
-.RichTextEditor__editor___1QqIU {
-    cursor: text;
-    font-size: 16px;
-    min-height: 220px;
-    max-height: 250px;
+.ck-file-dialog-button{
+    display: none;
+  }
+  .ck-editor__editable{
+    min-height: 150px;
+    max-height: 150px;
     overflow-y: scroll;
-}
+  }

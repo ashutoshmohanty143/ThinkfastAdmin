@@ -6,6 +6,7 @@ import swal from 'sweetalert';
 import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
+import ApiServices from '../Common/ApiServices';
 
 export default class Zones extends Component {
   constructor(props){
@@ -16,23 +17,13 @@ export default class Zones extends Component {
   }
 
   componentDidMount(){
-    const apiUrl = "http://localhost:5000/api/curd/doc/?collection=zones";
-    const token = sessionStorage.getItem("userToken");
-    axios.get(apiUrl, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-    }).then(response => {
-      //if(response == 'Invalid Token') redirect to login
-      // console.log('response', response.data.data);
+    const collectionName = "zones";
+    ApiServices.GetAllRecords(collectionName).then(response => {
+      console.log(response.data.data);
       this.setState({ zoneLists : response.data.data }); 
     }).catch(error => {
       console.log("error", error)
     });
-  }
-
-  onCancel = () =>{
-    return false;
   }
 
   handleDeleteRecord = (event,id) =>{
@@ -263,30 +254,29 @@ export default class Zones extends Component {
                     <thead className="thead-light">  
                       <tr>
                         <th scope="col" className="table-column-pe-0">
-                          SL No.
+                          SL No.#
                         </th>
-                        <th className="table-column-ps-0">Zone A</th>
-                        <th>Zone B</th>
-                        <th>Zone C</th>
-                        <th>Zone D</th>
-                        <th>Zone E</th>
+                        <th >Zone Name</th>
+                        <th>Shipping Time</th>
+                        <th>Zone Description</th>
+                        <th>Payment Status</th>
+                        <th>Delivery Charge</th>
                         <th>Action</th>
                       </tr>
                       
                     </thead>
 
                     <tbody>
-                    { zoneLists ? 
-                              zoneLists.map((item, i) =>
+                    { zoneLists ? zoneLists.map((item, i) =>
                       <tr key={item._id}> 
                         <td className="table-column-pe-0">
                           {i+1}
                         </td>
-                        <td className="table-column-ps-0">{item.zoneA}</td>
-                        <td>{item.zoneB}</td>
-                        <td>{item.zoneC}</td>
-                        <td>{item.zoneD}</td>
-                        <td>{item.zoneE}</td>
+                        <td >{item.zoneName}</td>
+                        <td>{item.shippingTime}</td>
+                        <td>{item.zoneDescription}</td>
+                        <td>{item.paymentStaus}</td>
+                        <td>{item.deliveryCharge}</td>
                         <td>
                           {/* <a href=''><i className="bi bi-pencil-square text-success"> Edit</i></a> */}
                           <Link to={`/updatezone/${item._id}`}> <i className="bi bi-pencil-square text-success"> Edit</i> </Link>

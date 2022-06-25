@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios';
+
 import swal from 'sweetalert';
 
 import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
+
+import CommonMethods from '../Common/CommonMethods';
+import ApiServices from '../Common/ApiServices';
+
 
 export default class AddZone extends Component {
     constructor(props) {
@@ -19,96 +23,106 @@ export default class AddZone extends Component {
     handleFormFieldsChange = event => {
         let fields = this.state.fields;
         fields[event.target.name] = event.target.value;
+
+        if (event.target.value == "Free") {
+            fields['deliveryCharge'] = 0;
+        } else if(event.target.value == "Paid"){
+            fields['deliveryCharge'] = "";
+        }
+
         this.setState({ fields });  
+        //console.log(fields);
     }
 
     formValidate(){
         let fields = this.state.fields;
         let Errors = {};
         let formIsValid = true;
-    
-        if (!fields["zoneA"]) {
+
+        var selectZone = document.getElementById('selectZone');
+        var selectZoneValue = selectZone.options[selectZone.selectedIndex].value;
+
+        if (selectZoneValue == 0) {
             formIsValid = false;
-            Errors["zoneAError"]  = 'Zone A cannot be empty';
+            Errors["zoneError"]  = 'Please Select Zone';
         } else {
             formIsValid = true;
-            Errors["zoneAError"]  = '';
+            Errors["zoneError"]  = '';
+        }
+    
+        if (!fields["shippingTime"]) {
+            formIsValid = false;
+            Errors["shippingTimeError"]  = 'Shipping Time cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["shippingTimeError"]  = '';
         }
 
-        if (!fields["zoneB"]) {
+        if (!fields["zoneDescription"]) {
             formIsValid = false;
-            Errors["zoneBError"]  = 'Zone B cannot be empty';
+            Errors["zoneDescriptionError"]  = 'Description cannot be empty';
         } else {
             formIsValid = true;
-            Errors["zoneBError"]  = '';
+            Errors["zoneDescriptionError"]  = '';
         }   
         
-        if (!fields["zoneC"]) {
+        var selectPaymentStaus = document.getElementById('paymentStaus');
+        var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
+        //console.log(selectPaymentStausValue);
+
+        if (selectPaymentStausValue == 0) {
             formIsValid = false;
-            Errors["zoneCError"]  = 'Zone C cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["zoneCError"]  = '';
+            Errors["paymentStausError"]  = 'Please Select Payment Status';
         } 
 
-        if (!fields["zoneD"]) {
-            formIsValid = false;
-            Errors["zoneDError"]  = 'Zone D cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["zoneDError"]  = '';
-        } 
-
-        if (!fields["zoneE"]) {
-            formIsValid = false;
-            Errors["zoneEError"]  = 'Zone E cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["zoneEError"]  = '';
-        } 
-        
         this.setState({ formErrors : Errors });
-        return formIsValid; 
+        return formIsValid;
+    }
+
+    deliveryChargeNumberValidate = event => {
+        CommonMethods.numberValidation(event);
+        
     }
 
     handleSubmit = event =>{
         event.preventDefault();
-        if(this.formValidate()) {            
-            let {zoneA, zoneB, zoneC, zoneD, zoneE} = this.state.fields;
+        if(this.formValidate()) {   
             
-            const apiUrl =  'http://localhost:5000/api/curd/doc';
+            let {selectZone, shippingTime, zoneDescription, paymentStaus, deliveryCharge} = this.state.fields;
+            
             const formData = {
                 "collection" : "zones",
                 "data": {
-                        "zoneA": zoneA,
-                        "zoneB": zoneB,
-                        "zoneC": zoneC,
-                        "zoneD": zoneD,
-                        "zoneE": zoneE
+                        "zoneName": selectZone,
+                        "shippingTime": shippingTime,
+                        "zoneDescription": zoneDescription,
+                        "paymentStaus": paymentStaus,
+                        "deliveryCharge": deliveryCharge
                 },
                 "meta" : {
-                    "duplicate" : [],
+                    "duplicate" : ['selectZone'],
                     "multiInsert": false
                 }
-            };                
-            const token = sessionStorage.getItem("userToken");
+            };   
 
-            axios.post(apiUrl, formData, {
-                headers: {
-                  'Authorization': `Bearer ${token}`
-                },
-                }).then(response => {
-                // console.log('response', response);   
-                swal("Thank you!", "Zones added successfully!!!", "success");
-                const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
-                swalOkBtn.addEventListener('click', function(){
-                    window.location.href = "/zones";
-                });    
-              }).catch(error => {
-                console.log("error", error)
-              });
+            ApiServices.AddRecord(formData).then(response => {                
+                if(response.status == 200 && response.data.status){
+                    swal("Thank you!", "Zones added successfully!!!", "success");
+                    //console.log(response.data.data);
+                }           
+            }).catch(error => {
+                //return error;
+                console.log(error);
+            });; 
 
-            swal("Thank you!", "Zones added successfully!!!", "success");
+            //console.log(response);
+
+            // swal("Thank you!", "Zones added successfully!!!", "success");
+            // const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
+            // swalOkBtn.addEventListener('click', function(){
+            //     window.location.href = "/zones";
+            // });
+            // swal("Thank you!", "Zones added successfully!!!", "success");
 
           } else {
             console.log("Form Validation Error");
@@ -121,7 +135,11 @@ export default class AddZone extends Component {
 
 
     render() {
-        const { zoneAError, zoneBError, zoneCError, zoneDError, zoneEError }  = this.state.formErrors;
+        const { zoneError, shippingTimeError, zoneDescriptionError, paymentStausError,deliveryChargeError }  = this.state.formErrors;
+        const { paymentStaus } = this.state.fields;
+        // if(paymentStaus == "paid"){
+
+        // }
     return (
         <>
         {sessionStorage.getItem('userToken') ?
@@ -166,40 +184,29 @@ export default class AddZone extends Component {
                                                 <div className="row">
                                                     <div className="col-sm-6">
                                                         <div className="mb-4">
-                                                            <label htmlFor="zoneA" className="form-label">Zone A</label>
-                                                            <input type="text" className="form-control" name="zoneA"
-                                                                id="zoneA" placeholder="Zone A" onChange={this.handleFormFieldsChange} />
-                                                            {zoneAError && <span className='errorMsg'>{zoneAError}</span>}
+                                                            <label htmlFor="selectZone" className="form-label">Select Zone</label>
+                
+                                                            <div className="tom-select-custom">
+                                                                <select className="js-select form-select tomselected" name="selectZone" id="selectZone" onChange={this.handleFormFieldsChange}>
+                                                                    <option value="0">Select your zone</option>
+                                                                    <option value="Zone A">Zone A</option>
+                                                                    <option value="Zone B">Zone B</option>
+                                                                    <option value="Zone C">Zone C</option>
+                                                                    <option value="Zone D">Zone D</option>
+                                                                    <option value="Zone E">Zone E</option>
+                                                                </select>
+                                                            </div>
+                                                            {zoneError && <span className='errorMsg'>{zoneError}</span>}
                                                         </div>
                                                     </div>
 
                                                     <div className="col-sm-6">
                                                         <div className="mb-4">
-                                                            <label htmlFor="zoneB" className="form-label">Zone B</label>
-                                                            <input type="text" className="form-control" name="zoneB"
-                                                                id="zoneB" placeholder="Zone B" onChange={this.handleFormFieldsChange} />
-                                                            {zoneBError && <span className='errorMsg'>{zoneBError}</span>}
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                            <label htmlFor="shippingTime" className="form-label">Shipping Time</label>
 
-                                                <div className="row">
-                                                    <div className="col-sm-6">
-                                                        <div className="mb-4">
-                                                            <label htmlFor="zoneC" className="form-label">Zone C</label>
-                                                            <input type="text" className="form-control" name="zoneC"
-                                                                id="zoneC" placeholder="Zone C" onChange={this.handleFormFieldsChange} />
-                                                            {zoneCError && <span className='errorMsg'>{zoneCError}</span>}
-                                                        </div>
-                                                    </div>
+                                                            <input type="text" className="form-control" name="shippingTime" id="shippingTime" placeholder="Shipping Time" onChange={this.handleFormFieldsChange} />
 
-
-                                                    <div className="col-sm-6">
-                                                        <div className="mb-4">
-                                                            <label htmlFor="zoneD" className="form-label">Zone D</label>
-                                                            <input type="text" className="form-control" name="zoneD"
-                                                                id="zoneD" placeholder="Zone D" onChange={this.handleFormFieldsChange} />
-                                                            {zoneDError && <span className='errorMsg'>{zoneDError}</span>}
+                                                            {shippingTimeError && <span className='errorMsg'>{shippingTimeError}</span>}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -207,10 +214,36 @@ export default class AddZone extends Component {
                                                 <div className="row">
                                                     <div className="col-sm-6">
                                                         <div className="mb-4">
-                                                            <label htmlFor="zoneE" className="form-label">Zone E</label>
-                                                            <input type="text" className="form-control" name="zoneE"
-                                                                id="zoneE" placeholder="Zone E" onChange={this.handleFormFieldsChange} />
-                                                            {zoneEError && <span className='errorMsg'>{zoneEError}</span>}
+                                                            <label htmlFor="zoneDescription" className="form-label">Zone Description</label>
+                                                            <input type="text" className="form-control" name="zoneDescription" id="zoneDescription" placeholder="Zone Description" onChange={this.handleFormFieldsChange} />
+                                                            {zoneDescriptionError && <span className='errorMsg'>{zoneDescriptionError}</span>}
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div className="col-sm-6">
+                                                        <div className="mb-4">
+                                                            <label htmlFor="paymentStaus" className="form-label">Select Payment Staus</label>
+                
+                                                            <div className="tom-select-custom">
+                                                                <select className="js-select form-select tomselected" name="paymentStaus" id="paymentStaus" onChange={this.handleFormFieldsChange}>
+                                                                    <option value="0">Select your payment staus</option>
+                                                                    <option value="Free">Free</option>
+                                                                    <option value="Paid">Paid</option>
+                                                                </select>
+                                                            </div>
+                                                            {paymentStausError && <span className='errorMsg'>{paymentStausError}</span>}
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className={`row ${paymentStaus=='Paid' ? "" : 'd-none' }`}>
+                                                    <div className="col-sm-6">
+                                                        <div className="mb-4">
+                                                            <label htmlFor="deliveryCharge" className="form-label">Delivery Charge</label>
+                                                            <input type="text" className="form-control" name="deliveryCharge" id="deliveryCharge" placeholder="Delivery Charge" onChange={this.handleFormFieldsChange} onInput={ this.deliveryChargeNumberValidate} />
+                                                            {deliveryChargeError && <span className='errorMsg'>{deliveryChargeError}</span>}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -221,13 +254,8 @@ export default class AddZone extends Component {
 
                                     </div>
                                 </div>
-
                             </div>
-                        
-
                     </div>
-
-
                 </main>
                 <Footer />
             </div> : window.location.href = "/"}
