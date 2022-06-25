@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import "./offers.css"
-import axios from 'axios';
 import swal from 'sweetalert';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
+import ApiServices from '../Common/ApiServices';
+import { WithRouter } from '../Common/WithRouter';
 
 import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
@@ -13,8 +13,8 @@ import Footer from '../Common/Footer';
 
 
 class AddOffers extends Component {
-    constructor(props) {
-        super(props);        
+    constructor() {
+        super();        
         this.state = {
             fields: {},
             formErorrs: {},
@@ -23,31 +23,12 @@ class AddOffers extends Component {
         }
     }
 
-
-    // handleFormFieldsChange = (event, editor) => {
-    //     // let fields = this.state.fields;
-    //     // fields[event.target.name] = event.target.value;
-    //     // this.setState({ fields });  
-    //     // console.log(fields['offerTitle'])
-    //     // console.log(fields['offerDescription']) 
-        
-    //     // let fields = this.state.fields;
-    //     // fields[event.target.name] = editor.getData();
-    //     // this.setState({ fields });
-    //     // console.log(fields['offerTitle'])
-
-    //     this.setState({ offerTitle : editor.getData() });
-    //     console.log(this.state.offerTitle)
-    // }
-
     handleofferTitleFieldsChange = (event, editor) => {
         this.setState({ offerTitle : editor.getData() });
-        // console.log(this.state.offerTitle)
     }
 
     handleofferDescriptionFieldsChange = (event, editor) => {
         this.setState({ offerDescription : editor.getData() });
-        // console.log(this.state.offerDescription)
     }
 
     formValidate(){
@@ -82,7 +63,6 @@ class AddOffers extends Component {
             let title = this.state.offerTitle;
             let description = this.state.offerDescription;
             
-            const apiUrl =  'http://localhost:5000/api/curd/doc';
             const formData = {
                 "collection" : "offers",
                 "data": {
@@ -95,22 +75,20 @@ class AddOffers extends Component {
                     "multiInsert": false
                 }
             };                
-            const token = sessionStorage.getItem("userToken");
 
-            axios.post(apiUrl, formData, {
-                headers: {
-                  'Authorization': `Bearer ${token}`
-                },
-                }).then(response => {
+            ApiServices.AddRecord(formData).then(response => {
                 console.log('response', response);
                 swal("Thank you!", "Offer added successfully!!!", "success");
-
-                
-                //console.log(document.querySelectorAll('.swal-button--confirm')[0]);
                 const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
-                swalOkBtn.addEventListener('click', function(){
-                    window.location.href = "/offers";
-                });
+                
+                        swalOkBtn.addEventListener('click', () => {
+                            // window.location.href = "/offers";
+                            // this.props.history.push('/offers');
+                            // <Navigate to="/offers" replace={true} />
+                            // <Link to='/offers'> </Link>
+                            this.props.navigate('/offers')
+                        })
+               
         
               }).catch(error => {
                 console.log("error", error)
@@ -215,4 +193,4 @@ render() {
 }
 
 
-export default AddOffers;
+export default WithRouter(AddOffers);

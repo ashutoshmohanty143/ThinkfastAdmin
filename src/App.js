@@ -18,17 +18,13 @@ import UpdateZone from './Components/Zone/UpdateZone';
 
 
 function App() {
-  const setSession = function setSessionValue(){
-    let session = false;
-    return session;
-  }
+
   return (
-    <div className="App" >
+    <>
+      
       <BrowserRouter>
         <Routes>
-    
             <Route exact path="/" element={<Login />} />
-            {/* <Route index element={<Home />} /> */}
             <Route exact path="/dashboard" element={<Dashboard />} />
             <Route exact path="/users" element={<Users />} />
             <Route exact path="/adduser" element={<AddUser />} />
@@ -37,17 +33,17 @@ function App() {
             <Route exact path="/updateoffer/:id" element={<UpdateOffer />} />
             <Route exact path="/zones" element={<Zones />} />
             <Route exact path="/addzone" element={<AddZone />} />
-            <Route exact path="/updateZONE/:id" element={<UpdateZone />} />
+            <Route exact path="/updatezone/:id" element={<UpdateZone />} />
             <Route exact path="/slots" element={<Slots />} />
             <Route exact path="/addslot" element={<AddSlot />} />
             <Route exact path="/discounts" element={<Discounts />} />
             <Route exact path="/adddiscount" element={<AddDiscount />} />
             <Route exact path="/orders" element={<Orders />} />
-            <Route exact path="*" element={<PageNotFound />} />
-          
+            <Route exact path="*" element={<PageNotFound />} /> 
         </Routes>
       </BrowserRouter>
-    </div>
+    
+    </>
     
   );
 }
