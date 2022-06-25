@@ -21,6 +21,14 @@ class ApiServices {
           });
     }
 
+    DeleteRecord(id, collectionName){
+        return axios.delete(API_BASE_URL+"/"+id+"/?collection="+collectionName, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            },
+          });
+    }
+
 }
 
 export default new ApiServices();

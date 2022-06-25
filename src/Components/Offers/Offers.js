@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
 
 import Header from "../Common/Header";
 import SideNav from "../Common/SideNav";
 import Footer from "../Common/Footer";
+import ApiServices from '../Common/ApiServices';
+import { WithRouter } from '../Common/WithRouter';
 
-export default class Offers extends Component {
+class Offers extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,43 +17,36 @@ export default class Offers extends Component {
     };
   }
 
+  componentDidMount() {
+    const collectionName = "offers";
+    ApiServices.GetAllRecords(collectionName)
+      .then((response) => {
+        this.setState({ offerLists: response.data.data });
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+}
+
+
   handleDeleteRecord = (event, id) => {
     event.preventDefault();
-    //console.log(id);
-
-    const apiUrl = `http://localhost:5000/api/curd/doc/${id}/?collection=offers`;
-    const token = sessionStorage.getItem("userToken");
-
-    axios
-      .delete(apiUrl, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+    const collectionName = "offers";
+    ApiServices.DeleteRecord(id, collectionName)
       .then((response) => {
         swal({
           text: "Offer deleted successfully!!!",
           icon: "error",
           dangerMode: true,
         }).then(function () {
-          //window.location = "redirectURL";
           console.log(111);
+          // this.props.navigate('/offers')
         });
-        //console.log(response);
-        const index = this.state.offerLists
-          .map((object) => object._id)
-          .indexOf(id);
-        //console.log(index);
-
-        //this.state.offerLists[index] = response.data.data;
-        this.state.offerLists.splice(index, 1);
-        //console.log(this.state.offerLists);
-        this.setState({ offerLists: this.state.offerLists });
-
-        // const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
-        // swalOkBtn.addEventListener('click', function(){
-        //     window.location.href = "/offers";
-        // });
+        // const index = this.state.offerLists
+        //   .map((object) => object._id)
+        //   .indexOf(id);
+        // this.state.offerLists.splice(index, 1);
+        // this.setState({ offerLists: this.state.offerLists });
       })
       .catch((error) => {
         console.log("error", error);
@@ -91,57 +86,12 @@ export default class Offers extends Component {
       const index = this.state.offerLists.map((object) => object._id).indexOf(id);
       this.state.offerLists[index] = response.data.data;
       this.setState({ offerLists: this.state.offerLists });
-      // swal({
-      //     title: "Thank you!",
-      //     text: `Offer ${status ? "Disabled" : "Enabled"} successfully!!!`,
-      //     type: "success"
-      // }).then(function() {
-      //   console.log(this.state);
-      //   //window.location = "redirectURL";
-      //   //const index = this.state.offerLists.map((object) => object._id).indexOf(id);
-      //   //this.state.offerLists[index] = response.data.data;
-      //   //this.setState({ offerLists: this.state.offerLists });
-      // });        
-
-        //console.log(index);
-        //console.log(this.state.offerLists);
-        //this.setState({offerLists: })
-        //if(response.data.data.isEnabled === )
-        //this.setState({ offerLists : response });
-        //swal("Thank you!", `Offer ${status ? 'Disabled' : 'Enabled'} successfully!!!`, "success");
-
-        //console.log(document.querySelectorAll('.swal-button--confirm')[0]);
-        // const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
-        // swalOkBtn.addEventListener('click', function(){
-        //     window.location.href = "/offers";
-        // });
     }).catch((error) => {
         console.log("error", error);
     });
   };
 
-  fetchOffers() {
-    const apiUrl = "http://localhost:5000/api/curd/doc/?collection=offers";
-    const token = sessionStorage.getItem("userToken");
-    axios
-      .get(apiUrl, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        //if(response == 'Invalid Token') redirect to login
-        //console.log('response', response.data.data);
-        this.setState({ offerLists: response.data.data });
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  }
-
-  componentDidMount() {
-    this.fetchOffers();
-  }
+  
 
   render() {
     const { offerLists } = this.state;
@@ -404,10 +354,10 @@ export default class Offers extends Component {
                       <thead className="thead-light">
                         <tr>
                           <th scope="col" className="table-column-pe-0">
-                            Sl. No#
+                            SL No.
                           </th>
-                          <th className="w-25">Offer Title</th>
-                          <th className="w-50">Offer Description</th>
+                          <th>Offer Title</th>
+                          <th>Offer Description</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -516,3 +466,5 @@ export default class Offers extends Component {
     );
   }
 }
+
+export default WithRouter(Offers);
