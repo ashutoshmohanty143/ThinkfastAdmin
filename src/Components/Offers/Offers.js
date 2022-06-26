@@ -34,15 +34,21 @@ class Offers extends Component {
     const collectionName = "offers";
     ApiServices.DeleteRecord(id, collectionName)
       .then((response) => {
-        const index = this.state.offerLists.map((object) => object._id).indexOf(id);
-        this.state.offerLists.splice(index, 1);
-        this.setState({ offerLists: this.state.offerLists });
-        swal({
-          text: "Offer deleted successfully!!!",
-          icon: "error",
-          dangerMode: true,
-        })
-        
+
+        if(response.status == 200 && response.data.status == "success"){
+          swal({
+            text: "Offer deleted successfully!!!",
+            icon: "error",
+            dangerMode: true,
+          }).then((value) => {
+              if(value){
+                  //this.props.navigate('/offers');
+                  const index = this.state.offerLists.map((object) => object._id).indexOf(id);
+                  this.state.offerLists.splice(index, 1);
+                  this.setState({ offerLists: this.state.offerLists });
+              }
+          });
+      }        
       })
       .catch((error) => {
         console.log("error", error);

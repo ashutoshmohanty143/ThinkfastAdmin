@@ -83,14 +83,14 @@ class AddOffers extends Component {
             // }
 
             ApiServices.AddRecord(formData).then(response => {
-                console.log(response);
-                // if(response.status && response){
-                //     swal("Thank you!", "Offer added successfully!!!", "success").then((value) => {
-                //         if(value){
-                //             this.props.navigate('/offers');
-                //         }
-                //     });
-                // }
+                //console.log(response);
+                if(response.status == 200 && response.data.status == "success"){
+                    swal("Thank you!", "Offer added successfully!!!", "success").then((value) => {
+                        if(value){
+                            this.props.navigate('/offers');
+                        }
+                    });
+                }
                 
                 //this.props.history.push('/offers');
 
