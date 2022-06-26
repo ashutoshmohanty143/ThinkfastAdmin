@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect, Navigate } from 'react-router-dom'
 import "./offers.css"
 import swal from 'sweetalert';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -11,10 +11,12 @@ import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
 
+//import { withRouter } from "react-router";
+
 
 class AddOffers extends Component {
-    constructor() {
-        super();        
+    constructor(props) {
+        super(props);        
         this.state = {
             fields: {},
             formErorrs: {},
@@ -74,20 +76,39 @@ class AddOffers extends Component {
                     "duplicate" : [],
                     "multiInsert": false
                 }
-            };                
+            };     
+            
+            // redirectMethod = (offers) => {
+            //     this.props.navigate(`/${offers}`);
+            // }
 
             ApiServices.AddRecord(formData).then(response => {
-                console.log('response', response);
-                swal("Thank you!", "Offer added successfully!!!", "success");
-                const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
+                console.log(response);
+                // if(response.status && response){
+                //     swal("Thank you!", "Offer added successfully!!!", "success").then((value) => {
+                //         if(value){
+                //             this.props.navigate('/offers');
+                //         }
+                //     });
+                // }
                 
-                        swalOkBtn.addEventListener('click', () => {
-                            // window.location.href = "/offers";
-                            // this.props.history.push('/offers');
-                            // <Navigate to="/offers" replace={true} />
-                            // <Link to='/offers'> </Link>
-                            this.props.navigate('/offers')
-                        })
+                //this.props.history.push('/offers');
+
+                // const push = () => {
+                //     this.props.history.push("/offers");
+                // };
+
+                //console.log('response', response);
+                // swal("Thank you!", "Offer added successfully!!!", "success");
+                // const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
+                // this.props.history.push('/offers');
+                // swalOkBtn.addEventListener('click', () => {
+                //     // window.location.href = "/offers";
+                //     // this.props.history.push('/offers');
+                //     // <Navigate to="/offers" replace={true} />
+                //     // <Link to='/offers'> </Link>
+                //     this.props.navigate('/offers')
+                // })
                
         
               }).catch(error => {
@@ -194,3 +215,4 @@ render() {
 
 
 export default WithRouter(AddOffers);
+//export default AddOffers;

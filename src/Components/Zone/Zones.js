@@ -74,7 +74,7 @@ export default class Zones extends Component {
                     <div className="col-md-auto">
                       <Link className="btn btn-primary" to="/addzone">Add New</Link>
                     </div>
-  
+                  
                   </div>
   
   

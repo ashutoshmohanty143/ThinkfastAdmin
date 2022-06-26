@@ -77,18 +77,18 @@ export default function SideNav() {
                   <div className="nav-item">
                     <a
                       className="nav-link dropdown-toggle "
-                      href="#navbarVerticalMenuPagesUsersMenu"
+                      href="#sla"
                       role="button"
                       data-bs-toggle="collapse"
-                      data-bs-target="#navbarVerticalMenuPagesUsersMenu"
+                      data-bs-target="#sla"
                       aria-expanded="false"
-                      aria-controls="navbarVerticalMenuPagesUsersMenu"
+                      aria-controls="sla"
                     >
                       <i className="bi-people nav-icon"></i>
                       <span className="nav-link-title">SLA</span>
                     </a>
                     <div
-                      id="navbarVerticalMenuPagesUsersMenu"
+                      id="sla"
                       className="nav-collapse collapse show"
                       data-bs-parent="#navbarVerticalMenuPagesMenu"
                     >
@@ -108,24 +108,24 @@ export default function SideNav() {
                   </div>
 
                   <div class="nav-item">
-                    <NavLink className="nav-link" to="/offers"><i class="bi-eye nav-icon"></i> Users</NavLink>
+                    <NavLink className="nav-link" to="/users"><i class="bi-eye nav-icon"></i> Users</NavLink>
                   </div>
 
                   <div className="nav-item">
                     <a
                       className="nav-link dropdown-toggle "
-                      href="#navbarVerticalMenuPagesUsersMenu"
+                      href="#settings"
                       role="button"
                       data-bs-toggle="collapse"
-                      data-bs-target="#navbarVerticalMenuPagesUsersMenu"
+                      data-bs-target="#settings"
                       aria-expanded="false"
-                      aria-controls="navbarVerticalMenuPagesUsersMenu"
+                      aria-controls="settings"
                     >
                       <i className="bi-people nav-icon"></i>
                       <span className="nav-link-title">Settings</span>
                     </a>
                     <div
-                      id="navbarVerticalMenuPagesUsersMenu"
+                      id="settings"
                       className="nav-collapse collapse show"
                       data-bs-parent="#navbarVerticalMenuPagesMenu"
                     >
