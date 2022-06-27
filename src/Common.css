@@ -6,6 +6,9 @@
 .errorBorder{
   border:1px solid red !important;
 }
+.table-nowrap td, .table-nowrap th{
+  white-space: normal;
+}
 
 
 /* .ck-dropdown */

@@ -5,12 +5,13 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
+import ApiServices from "../Common/ApiServices";
 
 import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
 
+import { WithRouter } from '../Common/WithRouter';
 
 class UpdateOffer extends Component {
     constructor(props) {
@@ -24,26 +25,20 @@ class UpdateOffer extends Component {
     }
 
     componentDidMount(){
-        // let id = this.props.match.params.id;
-        // console.log(id);
-        let fields = {};
-        let path = window.location.pathname;
-        let id = path.split('/')[2];
-        const apiUrl = `http://localhost:5000/api/curd/doc/${id}/?collection=offers`;
-        const token = sessionStorage.getItem("userToken");
-        axios.get(apiUrl, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        },
-        }).then(response => {
+        const fields = {};
+        const collectionName = "offers";
+        const path = window.location.pathname;
+        const id = path.split('/')[2];
+        ApiServices.GetSingleRecordById(id,collectionName)
+        .then((response) => {
             this.state.offerTitle = response.data.data.title;
             this.state.offerDescription = response.data.data.description;
             this.setState({ fields : fields });
-        }).catch(error => {
+        })
+      .catch((error) => {
+            console.log("error", error);
+      });
 
-            console.log("error", error)
-
-        });
     }
 
     handleofferTitleFieldsChange = (event, editor) => {
@@ -84,41 +79,38 @@ class UpdateOffer extends Component {
     
     handleSubmit = event =>{
         event.preventDefault();
-   
-            let title = this.state.offerTitle;
-            let description = this.state.offerDescription;
-            let path = window.location.pathname;
-            let id = path.split('/')[2];
-            
-            const apiUrl =  'http://localhost:5000/api/curd/doc';
-            const formData = {
-                "collection" : "offers",
-                "id": `${id}`,
-                "data": {        
-                        "title": title,
-                        "description": description
-                },
-                "meta" : {
-                    "duplicate" : []
-                }
-            };                
-            const token = sessionStorage.getItem("userToken");
+        let title = this.state.offerTitle;
+        let description = this.state.offerDescription;
+        let path = window.location.pathname;
+        let id = path.split('/')[2];
+        const formData = {
+            "collection" : "offers",
+            "id": id,
+            "data": {        
+                    "title": title,
+                    "description": description
+            },
+            "meta" : {
+                "duplicate" : []
+            }
+        }; 
 
-            axios.put(apiUrl, formData, {
-                headers: {
-                  'Authorization': `Bearer ${token}`
-                },
-                }).then(response => {
-                swal("Thank you!", "Offer updated successfully!!!", "success");
-                //console.log(document.querySelectorAll('.swal-button--confirm')[0]);
-                const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
-                swalOkBtn.addEventListener('click', function(){
-                    window.location.href = "/offers";
+        ApiServices.UpdateRecord(formData).then((response) => {
+            if (response.status == 200 && response.data.status == "success") {
+                swal({
+                    title: "Thank you!",
+                    text: `Offer Updated successfully!!!`,
+                    type: "success",
+                }).then((value) => {
+                    if (value) {
+                        this.props.navigate('/offers');
+                    }
                 });
-        
-              }).catch(error => {
-                console.log("error", error)
-              });
+            }
+        })
+      .catch((error) => {
+        console.log("error", error);
+      });
                
     }
     
@@ -220,5 +212,4 @@ render() {
 }
 }
 
-
-export default UpdateOffer;
+export default WithRouter(UpdateOffer);

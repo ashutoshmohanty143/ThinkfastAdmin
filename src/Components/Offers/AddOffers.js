@@ -76,11 +76,7 @@ class AddOffers extends Component {
                     "duplicate" : [],
                     "multiInsert": false
                 }
-            };     
-            
-            // redirectMethod = (offers) => {
-            //     this.props.navigate(`/${offers}`);
-            // }
+            };
 
             ApiServices.AddRecord(formData).then(response => {
                 //console.log(response);
@@ -91,25 +87,6 @@ class AddOffers extends Component {
                         }
                     });
                 }
-                
-                //this.props.history.push('/offers');
-
-                // const push = () => {
-                //     this.props.history.push("/offers");
-                // };
-
-                //console.log('response', response);
-                // swal("Thank you!", "Offer added successfully!!!", "success");
-                // const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
-                // this.props.history.push('/offers');
-                // swalOkBtn.addEventListener('click', () => {
-                //     // window.location.href = "/offers";
-                //     // this.props.history.push('/offers');
-                //     // <Navigate to="/offers" replace={true} />
-                //     // <Link to='/offers'> </Link>
-                //     this.props.navigate('/offers')
-                // })
-               
         
               }).catch(error => {
                 console.log("error", error)
@@ -146,7 +123,9 @@ render() {
 
                             <h1 className="page-header-title">Add Offers</h1>
                         </div>
-
+                        <div class="col-md-auto">
+                            <Link class="btn btn-primary" to="/offers">Back</Link>
+                        </div>
                     </div>
 
                 </div>

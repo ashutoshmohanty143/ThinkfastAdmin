@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import swal from 'sweetalert';
-
+import { WithRouter } from '../Common/WithRouter';
 import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
@@ -11,7 +11,7 @@ import CommonMethods from '../Common/CommonMethods';
 import ApiServices from '../Common/ApiServices';
 
 
-export default class AddZone extends Component {
+class AddZone extends Component {
     constructor(props) {
         super(props);        
         this.state = {
@@ -25,7 +25,7 @@ export default class AddZone extends Component {
         fields[event.target.name] = event.target.value;
 
         if (event.target.value == "Free") {
-            fields['deliveryCharge'] = 0;
+            fields['deliveryCharge'] = "";
         } else if(event.target.value == "Paid"){
             fields['deliveryCharge'] = "";
         }
@@ -58,13 +58,13 @@ export default class AddZone extends Component {
             Errors["shippingTimeError"]  = '';
         }
 
-        if (!fields["zoneDescription"]) {
-            formIsValid = false;
-            Errors["zoneDescriptionError"]  = 'Description cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["zoneDescriptionError"]  = '';
-        }   
+        // if (!fields["zoneDescription"]) {
+        //     formIsValid = false;
+        //     Errors["zoneDescriptionError"]  = 'Description cannot be empty';
+        // } else {
+        //     formIsValid = true;
+        //     Errors["zoneDescriptionError"]  = '';
+        // }   
         
         var selectPaymentStaus = document.getElementById('paymentStaus');
         var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
@@ -73,7 +73,12 @@ export default class AddZone extends Component {
         if (selectPaymentStausValue == 0) {
             formIsValid = false;
             Errors["paymentStausError"]  = 'Please Select Payment Status';
-        } 
+        }
+
+        if (!fields['deliveryCharge']) {
+            formIsValid = false;
+            Errors["deliveryChargeError"]  = 'Delivery Charge cannot be empty';
+        }
 
         this.setState({ formErrors : Errors });
         return formIsValid;
@@ -95,7 +100,7 @@ export default class AddZone extends Component {
                 "data": {
                         "zoneName": selectZone,
                         "shippingTime": shippingTime,
-                        "zoneDescription": zoneDescription,
+                        // "zoneDescription": zoneDescription,
                         "paymentStaus": paymentStaus,
                         "deliveryCharge": deliveryCharge
                 },
@@ -105,24 +110,22 @@ export default class AddZone extends Component {
                 }
             };   
 
-            ApiServices.AddRecord(formData).then(response => {                
+            ApiServices.AddRecord(formData).then(response => {    
+                //console.log(response.data.data);            
                 if(response.status == 200 && response.data.status){
-                    swal("Thank you!", "Zones added successfully!!!", "success");
-                    //console.log(response.data.data);
+                    swal("Thank you!", "Zone added successfully!!!", "success").then((value) => {
+                        if(value){
+                            this.props.navigate('/zones');
+                        }
+                    });
+                    
                 }           
             }).catch(error => {
                 //return error;
                 console.log(error);
             });; 
 
-            //console.log(response);
-
-            // swal("Thank you!", "Zones added successfully!!!", "success");
-            // const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
-            // swalOkBtn.addEventListener('click', function(){
-            //     window.location.href = "/zones";
-            // });
-            // swal("Thank you!", "Zones added successfully!!!", "success");
+            
 
           } else {
             console.log("Form Validation Error");
@@ -137,9 +140,13 @@ export default class AddZone extends Component {
     render() {
         const { zoneError, shippingTimeError, zoneDescriptionError, paymentStausError,deliveryChargeError }  = this.state.formErrors;
         const { paymentStaus } = this.state.fields;
-        // if(paymentStaus == "paid"){
-
-        // }
+        //var test = "d-none";
+        if(paymentStaus == undefined || paymentStaus == 0) {
+            var test = "d-none";
+        } else{
+            var test = "";
+        }
+        //console.log(paymentStaus);
     return (
         <>
         {sessionStorage.getItem('userToken') ?
@@ -163,7 +170,9 @@ export default class AddZone extends Component {
 
                                     <h1 className="page-header-title">Add Zones</h1>
                                 </div>
-
+                                <div class="col-md-auto">
+                                    <Link class="btn btn-primary" to="/zones">Back</Link>
+                                </div>
                             </div>
 
                         </div>
@@ -173,11 +182,9 @@ export default class AddZone extends Component {
                                     <div className="card mb-3 mb-lg-5">
 
                                         <div className="card-header">
-                                            <h4 className="card-header-title">Zone Information</h4>
+                                            <h4 className="card-header-title">Enter Zone Information</h4>
                                         </div>
-
-
-
+                                        
                                         <div className="card-body">
                                             <form method='post' onSubmit={this.handleSubmit}>
 
@@ -212,13 +219,13 @@ export default class AddZone extends Component {
                                                 </div>
 
                                                 <div className="row">
-                                                    <div className="col-sm-6">
+                                                    {/* <div className="col-sm-6">
                                                         <div className="mb-4">
                                                             <label htmlFor="zoneDescription" className="form-label">Zone Description</label>
                                                             <input type="text" className="form-control" name="zoneDescription" id="zoneDescription" placeholder="Zone Description" onChange={this.handleFormFieldsChange} />
                                                             {zoneDescriptionError && <span className='errorMsg'>{zoneDescriptionError}</span>}
                                                         </div>
-                                                    </div>
+                                                    </div> */}
 
 
                                                     <div className="col-sm-6">
@@ -236,10 +243,9 @@ export default class AddZone extends Component {
 
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                                <div className={`row ${paymentStaus=='Paid' ? "" : 'd-none' }`}>
-                                                    <div className="col-sm-6">
+                                                    
+                                                    <div className={`col-sm-6 ${test}`}>
+                                                    {/* ${paymentStaus==0 || undefined ? "d-none" : '' }`} */}
                                                         <div className="mb-4">
                                                             <label htmlFor="deliveryCharge" className="form-label">Delivery Charge</label>
                                                             <input type="text" className="form-control" name="deliveryCharge" id="deliveryCharge" placeholder="Delivery Charge" onChange={this.handleFormFieldsChange} onInput={ this.deliveryChargeNumberValidate} />
@@ -248,7 +254,9 @@ export default class AddZone extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div className='text-end'><button className="btn btn-primary btn-sm">Submit</button></div>
+                                                
+
+                                                <div className='text-end'><button className="btn btn-primary btn-sm">Add</button></div>
                                             </form>
                                         </div>
 
@@ -263,3 +271,5 @@ export default class AddZone extends Component {
     )
   }
 }
+
+export default WithRouter(AddZone);

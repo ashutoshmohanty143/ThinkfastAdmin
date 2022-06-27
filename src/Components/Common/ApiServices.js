@@ -21,12 +21,28 @@ class ApiServices {
           });
     }
 
+    GetSingleRecordById(id,collectionName){
+      return axios.get(API_BASE_URL+"/"+id+"/?collection="+collectionName, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+        });
+    }
+
     DeleteRecord(id, collectionName){
         return axios.delete(API_BASE_URL+"/"+id+"/?collection="+collectionName, {
             headers: {
               'Authorization': `Bearer ${token}`
             },
-          });
+        });
+    }
+
+    UpdateRecord(formData){
+        return axios.put(API_BASE_URL,formData, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+        });
     }
 
 }

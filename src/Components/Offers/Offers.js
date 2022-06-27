@@ -6,8 +6,8 @@ import swal from "sweetalert";
 import Header from "../Common/Header";
 import SideNav from "../Common/SideNav";
 import Footer from "../Common/Footer";
-import ApiServices from '../Common/ApiServices';
-import { WithRouter } from '../Common/WithRouter';
+import ApiServices from "../Common/ApiServices";
+import { WithRouter } from "../Common/WithRouter";
 
 class Offers extends Component {
   constructor(props) {
@@ -26,74 +26,79 @@ class Offers extends Component {
       .catch((error) => {
         console.log("error", error);
       });
-}
-
+  }
 
   handleDeleteRecord = (event, id) => {
     event.preventDefault();
     const collectionName = "offers";
-    ApiServices.DeleteRecord(id, collectionName)
-      .then((response) => {
 
-        if(response.status == 200 && response.data.status == "success"){
-          swal({
-            text: "Offer deleted successfully!!!",
-            icon: "error",
-            dangerMode: true,
-          }).then((value) => {
-              if(value){
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this offer",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        ApiServices.DeleteRecord(id, collectionName)
+          .then((response) => {
+            if (response.status === 200 && response.data.status === "success") {
+              swal("This offer has been deleted!", {
+                icon: "success",
+              }).then((value) => {
+                if (value) {
                   //this.props.navigate('/offers');
-                  const index = this.state.offerLists.map((object) => object._id).indexOf(id);
+                  const index = this.state.offerLists
+                    .map((object) => object._id)
+                    .indexOf(id);
                   this.state.offerLists.splice(index, 1);
                   this.setState({ offerLists: this.state.offerLists });
-              }
+                }
+              });
+            }
+          })
+          .catch((error) => {
+            console.log("error", error);
           });
-      }        
+      }
+    });
+  };
+
+  handleStatusChange = (e, id, status) => {
+    e.preventDefault();
+    const formData = {
+      collection: "offers",
+      id: id,
+      data: {
+        isEnabled: status ? false : true,
+      },
+      meta: {
+        duplicate: [],
+        multiInsert: false,
+      },
+    };
+    ApiServices.UpdateRecord(formData)
+      .then((response) => {
+        if (response.status == 200 && response.data.status == "success") {
+          swal({
+            title: "Thank you!",
+            text: `Offer ${status ? "Disabled" : "Enabled"} successfully!!!`,
+            type: "success",
+          }).then((value) => {
+            if (value) {
+              const index = this.state.offerLists
+                .map((object) => object._id)
+                .indexOf(id);
+              this.state.offerLists[index] = response.data.data;
+              this.setState({ offerLists: this.state.offerLists });
+            }
+          });
+        }
       })
       .catch((error) => {
         console.log("error", error);
       });
   };
-
-  handleStatusChange = (event, id, status) => {
-    event.preventDefault();
-    //console.log(id);
-
-      const apiUrl = "http://localhost:5000/api/curd/doc";
-      const formData = {
-        collection: "offers",
-        id: id,
-        data: {
-          isEnabled: status ? false : true,
-        },
-        meta: {
-          duplicate: [],
-          multiInsert: false,
-        },
-      };
-      const token = sessionStorage.getItem("userToken");
-
-      axios.put(apiUrl, formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-      }).then((response) => {
-        //console.log('api response after status change', response.data.data);
-        //console.log('state object', this.state.offerLists);
-        swal({
-          title: "Thank you!",
-          text: `Offer ${status ? "Disabled" : "Enabled"} successfully!!!`,
-          type: "success"
-      });
-      const index = this.state.offerLists.map((object) => object._id).indexOf(id);
-      this.state.offerLists[index] = response.data.data;
-      this.setState({ offerLists: this.state.offerLists });
-    }).catch((error) => {
-        console.log("error", error);
-    });
-  };
-
-  
 
   render() {
     const { offerLists } = this.state;
@@ -369,11 +374,9 @@ class Offers extends Component {
                           ? offerLists.map((item, i) => (
                               <tr key={item._id}>
                                 <td className="table-column-pe-0">{i + 1}</td>
-                                <td className="w-25">
-                                  {item.title}{" "}
-                                </td>
+                                <td className="w-25">{item.title} </td>
                                 <td className="w-50">{item.description}</td>
-                                <td>
+                                {/* <td>
                                   <Link to={`/updateoffer/${item._id}`}>
                                     {" "}
                                     <i className="bi bi-pencil-square text-success">
@@ -382,7 +385,6 @@ class Offers extends Component {
                                     </i>{" "}
                                   </Link>
                                   <span> / </span>
-                                  {/* <Link to={`/deleteoffer/${item._id}`}></Link> */}
                                   <a
                                     href=""
                                     onClick={(event) =>
@@ -410,6 +412,71 @@ class Offers extends Component {
                                       {item.isEnabled ? "Disable" : "Enable"}
                                     </i>
                                   </a>
+                                </td> */}
+                                <td>
+                                  <div class="btn-group" role="group">
+                                    <Link
+                                      className="btn btn-white btn-sm"
+                                      to={`/updateoffer/${item._id}`}
+                                    >
+                                      {" "}
+                                      <i className="bi-pencil-fill me-1">
+                                        {" "}
+                                        Edit
+                                      </i>{" "}
+                                    </Link>
+
+                                    <div class="btn-group">
+                                      <button
+                                        type="button"
+                                        class="btn btn-white btn-icon btn-sm dropdown-toggle dropdown-toggle-empty"
+                                        id="productsEditDropdown1"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      ></button>
+
+                                      <div
+                                        class="dropdown-menu dropdown-menu-end mt-1"
+                                        aria-labelledby="productsEditDropdown1"
+                                      >
+                                        <a
+                                          className="dropdown-item"
+                                          href=""
+                                          onClick={(event) =>
+                                            this.handleDeleteRecord(
+                                              event,
+                                              item._id
+                                            )
+                                          }
+                                        >
+                                          <i className="bi-trash dropdown-item-icon">
+                                            {" "}
+                                          </i>{" "}
+                                          Delete
+                                        </a>
+
+                                        <a
+                                          className="dropdown-item"
+                                          href=""
+                                          onClick={
+                                            (e) => this.handleStatusChange(
+                                              e,
+                                              item._id,
+                                              item.isEnabled
+                                            )
+                                          }
+                                        >
+                                          <i className="bi-trash dropdown-item-icon">
+                                            {" "}
+                                          </i>{" "}
+                                          {item.isEnabled
+                                            ? "Disable"
+                                            : "Enable"}
+                                        </a>
+                                                                                
+                                      </div>
+                                    </div>
+                                  </div>
                                 </td>
                               </tr>
                             ))
