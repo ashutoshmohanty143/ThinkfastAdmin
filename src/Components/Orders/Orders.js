@@ -15,7 +15,7 @@ export default class Orders extends Component {
             <Header />
             <SideNav />
             <main id="content" role="main" className="main">
-              <div class="content container-fluid">
+              <div className="content container-fluid">
                 <div className="page-header">
                   <div className="row align-items-center mb-3">
                     <div className="col-md mb-2 mb-md-0">

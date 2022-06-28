@@ -9,7 +9,7 @@ import swal from 'sweetalert';
 import { WithRouter } from '../Common/WithRouter';
 import ApiServices from '../Common/ApiServices';
 
-class AddSlot extends Component {
+class UpdateSlot extends Component {
     constructor(props) {
         super(props);        
         this.state = {
@@ -18,10 +18,23 @@ class AddSlot extends Component {
         }
     }
 
+    componentDidMount(){
+        const collectionName = "slots";
+        const path = window.location.pathname;
+        const id = path.split('/')[2];
+        ApiServices.GetSingleRecordById(id,collectionName)
+        .then((response) => {
+            this.setState({ fields : response.data.data });
+        })
+      .catch((error) => {
+            console.log("error", error);
+      });
+    }
+
     handleFormFieldsChange = event => {
         let fields = this.state.fields;
         fields[event.target.name] = event.target.value;
-        this.setState({ fields });     
+        this.setState({ fields });   
     }
 
     formValidate(){
@@ -30,7 +43,7 @@ class AddSlot extends Component {
 
         var slotName = document.getElementById('slotName');
         var slotNameValue = slotName.options[slotName.selectedIndex].value;
-        if (slotNameValue == 0) {
+        if (slotNameValue === 0) {
             formIsValid = false;
             Errors["slotNameError"]  = 'Please Select Slot';
         } else {
@@ -40,7 +53,7 @@ class AddSlot extends Component {
         
         var slotTime = document.getElementById('slotTime');
         var slotTimeValue = slotTime.options[slotTime.selectedIndex].value;
-        if (slotTimeValue == 0) {
+        if (slotTimeValue === 0) {
             formIsValid = false;
             Errors["slotTimeError"]  = 'Please Select Slot Time';
         } else {
@@ -54,36 +67,43 @@ class AddSlot extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        if(this.formValidate()) {   
-            let { slotName, slotTime } = this.state.fields;
-            const formData = {
-                "collection" : "slots",
-                "data": {
-                        "slotName": slotName,
-                        "slotTime": slotTime,
-                },
-                "meta" : {
-                    "duplicate" : [],
-                    "multiInsert": false
-                }
-            };   
-            ApiServices.AddRecord(formData).then(response => {    
-                if(response.status == 200 && response.data.status){
-                    swal("Thank you!", "Slot added successfully!!!", "success").then((value) => {
-                        if(value){
-                            this.props.navigate('/slots');
-                        }
-                    });
-                }           
-            }).catch(error => {
-                console.log(error);
-            });; 
-          } else {
-            console.log("Form Validation Error");
-          } 
+        console.log(this.state.fields["slotName"]);
+        // if(this.formValidate()) {   
+        //     let { slotName, slotTime } = this.state.fields;
+        //     const formData = {
+        //         "collection" : "slots",
+        //         "data": {
+        //                 "slotName": slotName,
+        //                 "slotTime": slotTime,
+        //         },
+        //         "meta" : {
+        //             "duplicate" : [],
+        //             "multiInsert": false
+        //         }
+        //     };   
+        //     ApiServices.UpdateRecord(formData).then((response) => {
+        //         if (response.status === 200 && response.data.status === "success") {
+        //             swal({
+        //                 title: "Thank you!",
+        //                 text: `Slot Updated successfully!!!`,
+        //                 type: "success",
+        //             }).then((value) => {
+        //                 if (value) {
+        //                     this.props.navigate('/slots');
+        //                 }
+        //             });
+        //         }
+        //     })
+        //   .catch((error) => {
+        //     console.log("error", error);
+        //   });  
+        //   } else {
+        //     console.log("Form Validation Error");
+        //   } 
     }
 
   render() {
+    let { slotName, slotTime } = this.state.fields;
     const { slotNameError, slotTimeError }  = this.state.formErrors;
     return (
         <>
@@ -131,7 +151,7 @@ class AddSlot extends Component {
                                                 <label htmlFor="slotName" className="form-label">Select Slot</label>
                                                 <div className="tom-select-custom">
                                                     <select className="js-select form-select tomselected" 
-                                                    name="slotName" id="slotName" onChange={this.handleFormFieldsChange}>
+                                                    name="slotName" id="slotName" onChange={this.handleFormFieldsChange} value={slotName}>
                                                         <option value="0">Select slot</option>
                                                         <option value="Slot 1">Slot 1</option>
                                                         <option value="Slot 2">Slot 2</option>
@@ -150,7 +170,7 @@ class AddSlot extends Component {
 
                                                 <div className="tom-select-custom">
                                                     <select className="js-select form-select tomselected" name="slotTime" 
-                                                    id="slotTime" onChange={this.handleFormFieldsChange}>
+                                                    id="slotTime" onChange={this.handleFormFieldsChange} value={slotTime}>
                                                         <option value="0">Select Slot Time</option>
                                                         <option value="9 AM - 11 AM">9 AM - 11 AM</option>
                                                         <option value="11 AM - 1 PM">11 AM - 1 PM</option>
@@ -164,7 +184,7 @@ class AddSlot extends Component {
                                         </div>
 
                                     </div>
-                                    <div className='text-end'><button className="btn btn-primary btn-sm">Add</button></div>
+                                    <div className='text-end'><button className="btn btn-primary btn-sm">Save</button></div>
                                 </form>
                             </div>
 
@@ -185,4 +205,4 @@ class AddSlot extends Component {
   }
 }
 
-export default WithRouter(AddSlot);
+export default WithRouter(UpdateSlot);

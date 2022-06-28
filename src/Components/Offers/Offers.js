@@ -100,6 +100,10 @@ class Offers extends Component {
       });
   };
 
+  htmlToPlainText(text){
+    return text.replace(/<\/?[^>]+>/gi, ' ');
+  }
+
   render() {
     const { offerLists } = this.state;
     //console.log(offerLists);
@@ -118,8 +122,11 @@ class Offers extends Component {
                     </div>
                     <div className="col-md-auto">
                       <Link className="btn btn-primary" to="/addoffer">
-                        Add Offers
+                        Add Offer
                       </Link>
+                      {/* <button className="btn btn-primary" onClick={this.addOffer}>
+                          Add Offer
+                      </button> */}
                     </div>
                   </div>
 
@@ -365,6 +372,7 @@ class Offers extends Component {
                           </th>
                           <th>Offer Title</th>
                           <th>Offer Description</th>
+                          <th>Offer Status</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -374,47 +382,11 @@ class Offers extends Component {
                           ? offerLists.map((item, i) => (
                               <tr key={item._id}>
                                 <td className="table-column-pe-0">{i + 1}</td>
-                                <td className="w-25">{item.title} </td>
-                                <td className="w-50">{item.description}</td>
-                                {/* <td>
-                                  <Link to={`/updateoffer/${item._id}`}>
-                                    {" "}
-                                    <i className="bi bi-pencil-square text-success">
-                                      {" "}
-                                      Edit
-                                    </i>{" "}
-                                  </Link>
-                                  <span> / </span>
-                                  <a
-                                    href=""
-                                    onClick={(event) =>
-                                      this.handleDeleteRecord(event, item._id)
-                                    }
-                                  >
-                                    <i className="bi bi-trash text-danger">
-                                      {" "}
-                                      Delete
-                                    </i>
-                                  </a>
-                                  <span> / </span>
-                                  <a
-                                    href=""
-                                    onClick={(event) =>
-                                      this.handleStatusChange(
-                                        event,
-                                        item._id,
-                                        item.isEnabled
-                                      )
-                                    }
-                                  >
-                                    <i className="bi bi-eye-fill text-primary">
-                                      {" "}
-                                      {item.isEnabled ? "Disable" : "Enable"}
-                                    </i>
-                                  </a>
-                                </td> */}
+                                <td className="w-25">{this.htmlToPlainText(item.title)} </td>
+                                <td className="w-25">{this.htmlToPlainText(item.description)}</td>
+                                <td> {item.isEnabled ? "Enabled" : "Disabled"}</td>
                                 <td>
-                                  <div class="btn-group" role="group">
+                                  <div className="btn-group" role="group">
                                     <Link
                                       className="btn btn-white btn-sm"
                                       to={`/updateoffer/${item._id}`}
@@ -426,17 +398,17 @@ class Offers extends Component {
                                       </i>{" "}
                                     </Link>
 
-                                    <div class="btn-group">
+                                    <div className="btn-group">
                                       <button
                                         type="button"
-                                        class="btn btn-white btn-icon btn-sm dropdown-toggle dropdown-toggle-empty"
+                                        className="btn btn-white btn-icon btn-sm dropdown-toggle dropdown-toggle-empty"
                                         id="productsEditDropdown1"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false"
                                       ></button>
 
                                       <div
-                                        class="dropdown-menu dropdown-menu-end mt-1"
+                                        className="dropdown-menu dropdown-menu-end mt-1"
                                         aria-labelledby="productsEditDropdown1"
                                       >
                                         <a

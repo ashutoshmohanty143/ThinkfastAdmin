@@ -63,15 +63,15 @@ export default function SideNav() {
                   </div>
                 </div> */}
 
-                  <div class="nav-item">
+                  <div className="nav-item">
                     <NavLink className="nav-link" to="/dashboard"><i className="bi-house-door nav-icon"></i> Dashboard</NavLink>
                   </div>
                 {/* <span className="dropdown-header mt-4">Pages</span> */}
                 <small className="bi-three-dots nav-subtitle-replacer"></small>
                 <div className="navbar-nav nav-compact"></div>
                 <div id="navbarVerticalMenuPagesMenu">
-                  <div class="nav-item">
-                    <NavLink className="nav-link" to="/offers"><i class="bi-eye nav-icon"></i> Offers</NavLink>
+                  <div className="nav-item">
+                    <NavLink className="nav-link" to="/offers"><i className="bi-eye nav-icon"></i> Offers</NavLink>
                   </div>
 
                   <div className="nav-item">
@@ -103,12 +103,12 @@ export default function SideNav() {
                     </div>
                   </div>
                   
-                  <div class="nav-item">
-                    <NavLink className="nav-link" to="/orders"><i class="bi-eye nav-icon"></i> Orders</NavLink>
+                  <div className="nav-item">
+                    <NavLink className="nav-link" to="/orders"><i className="bi-eye nav-icon"></i> Orders</NavLink>
                   </div>
 
-                  <div class="nav-item">
-                    <NavLink className="nav-link" to="/users"><i class="bi-eye nav-icon"></i> Users</NavLink>
+                  <div className="nav-item">
+                    <NavLink className="nav-link" to="/users"><i className="bi-eye nav-icon"></i> Users</NavLink>
                   </div>
 
                   <div className="nav-item">

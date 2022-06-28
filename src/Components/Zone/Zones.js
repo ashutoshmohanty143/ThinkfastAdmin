@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios';
 import swal from 'sweetalert';
 
 import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
-import ApiServices from '../Common/ApiServices';
 
-export default class Zones extends Component {
+import ApiServices from '../Common/ApiServices';
+import { WithRouter } from '../Common/WithRouter';
+
+class Zones extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -19,7 +20,6 @@ export default class Zones extends Component {
   componentDidMount(){
     const collectionName = "zones";
     ApiServices.GetAllRecords(collectionName).then(response => {
-      console.log(response.data.data);
       this.setState({ zoneLists : response.data.data }); 
     }).catch(error => {
       console.log("error", error)
@@ -28,30 +28,37 @@ export default class Zones extends Component {
 
   handleDeleteRecord = (event,id) =>{
     event.preventDefault();
-    //console.log(id);            
-            
-    const apiUrl =  `http://localhost:5000/api/curd/doc/${id}/?collection=zones`;              
-    const token = sessionStorage.getItem("userToken");
+    const collectionName = "zones";
 
-    axios.delete(apiUrl, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        }).then(response => {
-        swal({
-          text: "Zone deleted successfully!!!", 
-          icon: "error",
-          dangerMode: true
-        });
-        const swalOkBtn = document.querySelectorAll('.swal-button--confirm')[0];
-        swalOkBtn.addEventListener('click', function(){
-            window.location.href = "/zones";
-        });
-        
-
-      }).catch(error => {
-        console.log("error", error)
-      });
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this zone",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        ApiServices.DeleteRecord(id, collectionName)
+          .then((response) => {
+            if (response.status === 200 && response.data.status === "success") {
+              swal("This zone has been deleted!", {
+                icon: "success",
+              }).then((value) => {
+                if (value) {
+                  const index = this.state.zoneLists
+                    .map((object) => object._id)
+                    .indexOf(id);
+                  this.state.zoneLists.splice(index, 1);
+                  this.setState({ zoneLists: this.state.zoneLists });
+                }
+              });
+            }
+          })
+          .catch((error) => {
+            console.log("error", error);
+          });
+      }
+    });
   }
 
 
@@ -72,7 +79,7 @@ export default class Zones extends Component {
                       <h1 className="page-header-title">Zones </h1>
                     </div>
                     <div className="col-md-auto">
-                      <Link className="btn btn-primary" to="/addzone">Add New</Link>
+                      <Link className="btn btn-primary" to="/addzone">Add Zone</Link>
                     </div>
                   
                   </div>
@@ -258,7 +265,6 @@ export default class Zones extends Component {
                         </th>
                         <th >Zone Name</th>
                         <th>Shipping Time</th>
-                        <th>Zone Description</th>
                         <th>Payment Status</th>
                         <th>Delivery Charge</th>
                         <th>Action</th>
@@ -274,11 +280,9 @@ export default class Zones extends Component {
                         </td>
                         <td >{item.zoneName}</td>
                         <td>{item.shippingTime}</td>
-                        <td>{item.zoneDescription}</td>
                         <td>{item.paymentStaus}</td>
                         <td>{item.deliveryCharge}</td>
                         <td>
-                          {/* <a href=''><i className="bi bi-pencil-square text-success"> Edit</i></a> */}
                           <Link to={`/updatezone/${item._id}`}> <i className="bi bi-pencil-square text-success"> Edit</i> </Link>
                           <span> / </span>
                           <a href='' onClick={(event) => this.handleDeleteRecord(event, item._id)}><i className="bi bi-trash text-danger"> Delete</i></a>
@@ -342,3 +346,5 @@ export default class Zones extends Component {
     )
   }
 }
+
+export default WithRouter(Zones);

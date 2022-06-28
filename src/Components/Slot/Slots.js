@@ -1,15 +1,69 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import swal from 'sweetalert';
 
 import Header from '../Common/Header';
 import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
 
-export default class Slots extends Component {
-  handleDeleteRecord = () =>{
-    alert("Record Deleted Successfully");
+import ApiServices from '../Common/ApiServices';
+import { WithRouter } from '../Common/WithRouter';
+
+class Slots extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        slotLists: []
+    }
   }
+
+  componentDidMount(){
+    const collectionName = "slots";
+    ApiServices.GetAllRecords(collectionName).then(response => {
+      this.setState({ slotLists : response.data.data }); 
+    }).catch(error => {
+      console.log("error", error)
+    });
+  }
+
+  handleDeleteRecord = (event,id) =>{
+    event.preventDefault();
+    const collectionName = "slots";
+
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this slot",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        ApiServices.DeleteRecord(id, collectionName)
+          .then((response) => {
+            if (response.status === 200 && response.data.status === "success") {
+              swal("This slot has been deleted!", {
+                icon: "success",
+              }).then((value) => {
+                if (value) {
+                  const index = this.state.slotLists
+                    .map((object) => object._id)
+                    .indexOf(id);
+                  this.state.slotLists.splice(index, 1);
+                  this.setState({ slotLists: this.state.slotLists });
+                }
+              });
+            }
+          })
+          .catch((error) => {
+            console.log("error", error);
+          });
+      }
+    });
+  }
+
+
   render() {
+    const { slotLists } = this.state;
     return (
         <>
         {sessionStorage.getItem('userToken') ?
@@ -17,7 +71,7 @@ export default class Slots extends Component {
             <Header />
             <SideNav />
             <main id="content" role="main" className="main">
-              <div class="content container-fluid">
+              <div className="content container-fluid">
                 <div className="page-header">
                   <div className="row align-items-center mb-3">
                     <div className="col-md mb-2 mb-md-0">
@@ -206,170 +260,31 @@ export default class Slots extends Component {
                     <thead className="thead-light">
                       <tr>
                         <th scope="col" className="table-column-pe-0">
-                          <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="" id="datatableCheckAll" />
-                            <label className="form-check-label" htmlFor="datatableCheckAll"></label>
-                          </div>
+                            SL No.
                         </th>
-                        <th className="table-column-ps-0">Name</th>
-                        <th>E-mail</th>
-                        <th>Phone</th>
-                        <th>Country</th>
+                        <th className="table-column-ps-0">Slot Name</th>
+                        <th>Slot Time</th>
                         <th>Action</th>
                       </tr>
                     </thead>
 
                     <tbody>
-                      <tr>
+                    { slotLists ? slotLists.map((item, i) =>
+                      <tr key={item._id}>
                         <td className="table-column-pe-0">
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="usersDataCheck1" />
-                            <label className="form-check-label" htmlFor="usersDataCheck1"></label>
-                          </div>
+                          {i+1}
                         </td>
-                        <td className="table-column-ps-0">
-                          <a className="d-flex align-items-center" href="./ecommerce-customer-details.html">
-                            <div className="flex-shrink-0">
-                              <div className="avatar avatar-circle">
-                                <img className="avatar-img" src="./assets/img/160x160/img10.jpg" alt="Image Description" />
-                              </div>
-                            </div>
-                            <div className="flex-grow-1 ms-3">
-                              <span className="h5 text-inherit">Amanda Harvey <i className="bi-patch-check-fill text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Top endorsed"></i></span>
-                            </div>
-                          </a>
-                        </td>
-                        <td>amanda@site.com</td>
-                        <td>+1-202-555-0140</td>
-                        <td>United Kingdom</td>
+                        <td>{item.slotName}</td>
+                        <td>{item.slotTime}</td>
                         <td>
-                          <a href='javasrcipt:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                          <Link to={`/updateslot/${item._id}`}> <i className="bi bi-pencil-square text-success"> Edit</i> </Link>
                           <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
+                          <a href='' onClick={(event) => this.handleDeleteRecord(event, item._id)}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>
-
-                      <tr>
-                        <td className="table-column-pe-0">
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="usersDataCheck2" />
-                            <label className="form-check-label" htmlFor="usersDataCheck2"></label>
-                          </div>
-                        </td>
-                        <td className="table-column-ps-0">
-                          <a className="d-flex align-items-center" href="./ecommerce-customer-details.html">
-                            <div className="flex-shrink-0">
-                              <div className="avatar avatar-soft-primary avatar-circle">
-                                <span className="avatar-initials">A</span>
-                              </div>
-                            </div>
-                            <div className="flex-grow-1 ms-3">
-                              <span className="h5 text-inherit">Anne Richard</span>
-                            </div>
-                          </a>
-                        </td>
-                        <td>anne@site.com</td>
-                        <td>+1-752-235-2353</td>
-                        <td>United States</td>
-                        <td>
-                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
-                          <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
-                        </td>
-
-                      </tr>
-
-                      <tr>
-                        <td className="table-column-pe-0">
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="usersDataCheck3" />
-                            <label className="form-check-label" htmlFor="usersDataCheck3"></label>
-                          </div>
-                        </td>
-                        <td className="table-column-ps-0">
-                          <a className="d-flex align-items-center" href="./ecommerce-customer-details.html">
-                            <div className="flex-shrink-0">
-                              <div className="avatar avatar-circle">
-                                <img className="avatar-img" src="./assets/img/160x160/img3.jpg" alt="Image Description" />
-                              </div>
-                            </div>
-                            <div className="flex-grow-1 ms-3">
-                              <span className="h5 text-inherit">David Harrison</span>
-                            </div>
-                          </a>
-                        </td>
-                        <td>david@site.com</td>
-                        <td>+1-235-364-2611</td>
-                        <td>United States</td>
-                        <td>
-                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
-                          <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
-                        </td>
-
-                      </tr>
-
-                      <tr>
-                        <td className="table-column-pe-0">
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="usersDataCheck4" />
-                            <label className="form-check-label" htmlFor="usersDataCheck4"></label>
-                          </div>
-                        </td>
-                        <td className="table-column-ps-0">
-                          <a className="d-flex align-items-center" href="./ecommerce-customer-details.html">
-                            <div className="flex-shrink-0">
-                              <div className="avatar avatar-circle">
-                                <img className="avatar-img" src="./assets/img/160x160/img5.jpg" alt="Image Description" />
-                              </div>
-                            </div>
-                            <div className="flex-grow-1 ms-3">
-                              <span className="h5 text-inherit">Finch Hoot</span>
-                            </div>
-                          </a>
-                        </td>
-                        <td>finch@site.com</td>
-                        <td>+1-743-632-9574</td>
-                        <td>Argentina</td>
-                        <td>
-                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
-                          <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
-                        </td>
-
-                      </tr>
-
-                      <tr>
-                        <td className="table-column-pe-0">
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="usersDataCheck5" />
-                            <label className="form-check-label" htmlFor="usersDataCheck5"></label>
-                          </div>
-                        </td>
-                        <td className="table-column-ps-0">
-                          <a className="d-flex align-items-center" href="./ecommerce-customer-details.html">
-                            <div className="flex-shrink-0">
-                              <div className="avatar avatar-soft-dark avatar-circle">
-                                <span className="avatar-initials">B</span>
-                              </div>
-                            </div>
-                            <div className="flex-grow-1 ms-3">
-                              <span className="h5 text-inherit">Bob Dean</span>
-                            </div>
-                          </a>
-                        </td>
-                        <td>bob@site.com</td>
-                        <td>+1-854-235-9755</td>
-                        <td>Austria</td>
-                        <td>
-                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
-                          <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
-                        </td>
-
-                      </tr>
-
+                      ): "Data Not Found"
+                    }
                     </tbody>
                   </table>
                 </div>
@@ -424,3 +339,5 @@ export default class Slots extends Component {
     )
   }
 }
+
+export default WithRouter(Slots);

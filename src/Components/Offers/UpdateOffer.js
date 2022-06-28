@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import "./offers.css"
-import axios from 'axios';
 import swal from 'sweetalert';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -17,7 +16,6 @@ class UpdateOffer extends Component {
     constructor(props) {
         super(props);        
         this.state = {
-            fields: {},
             formErorrs: {},
             offerTitle: "",
             offerDescription: ""
@@ -25,15 +23,13 @@ class UpdateOffer extends Component {
     }
 
     componentDidMount(){
-        const fields = {};
         const collectionName = "offers";
         const path = window.location.pathname;
         const id = path.split('/')[2];
         ApiServices.GetSingleRecordById(id,collectionName)
         .then((response) => {
-            this.state.offerTitle = response.data.data.title;
-            this.state.offerDescription = response.data.data.description;
-            this.setState({ fields : fields });
+            this.setState({ offerTitle : response.data.data.title });
+            this.setState({ offerDescription : response.data.data.description });
         })
       .catch((error) => {
             console.log("error", error);
@@ -43,12 +39,10 @@ class UpdateOffer extends Component {
 
     handleofferTitleFieldsChange = (event, editor) => {
         this.setState({ offerTitle : editor.getData() });
-        // console.log(this.state.offerTitle)
     }
 
     handleofferDescriptionFieldsChange = (event, editor) => {
         this.setState({ offerDescription : editor.getData() });
-        // console.log(this.state.offerDescription)
     }
 
     formValidate(){
@@ -96,7 +90,7 @@ class UpdateOffer extends Component {
         }; 
 
         ApiServices.UpdateRecord(formData).then((response) => {
-            if (response.status == 200 && response.data.status == "success") {
+            if (response.status === 200 && response.data.status === "success") {
                 swal({
                     title: "Thank you!",
                     text: `Offer Updated successfully!!!`,
@@ -137,11 +131,11 @@ render() {
                                     <li className="breadcrumb-item">
                                         <Link className="breadcrumb-link" to="/offers">Offers</Link>
                                     </li>
-                                    <li className="breadcrumb-item active" aria-current="page">Add Offer</li>
+                                    <li className="breadcrumb-item active" aria-current="page">Update Offer</li>
                                 </ol>
                             </nav>
 
-                            <h1 className="page-header-title">Add Offers</h1>
+                            <h1 className="page-header-title">Update Offers</h1>
                         </div>
 
                     </div>
@@ -163,9 +157,6 @@ render() {
 
                                     <div className="mb-4">
                                         <label htmlFor="offerTitle" className="form-label"> Title </label>
-                                        {/* <input type="text" className="form-control" name="offerTitle" 
-                                            id="offerTitle"  value={offerTitle} 
-                                            placeholder="Title" onChange={this.handleFormFieldsChange} /> */}
                                         <CKEditor
                                                 name="offerTitle" id="offerTitle" 
                                                 editor={ ClassicEditor }
@@ -178,9 +169,6 @@ render() {
 
                                     <div className='mb-4'>
                                         <label htmlFor="offerDescription" className="form-label"> Description </label>
-                                        {/* <textarea rows={6} className="form-control" name="offerDescription"
-                                            id="offerDescription" placeholder="Offer Description" 
-                                            value={offerDescription} onChange={this.handleFormFieldsChange} /> */}
                                         <CKEditor
                                                 name="offerDescription" id="offerDescription"
                                                 editor={ ClassicEditor }

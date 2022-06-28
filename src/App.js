@@ -15,6 +15,7 @@ import AddSlot from './Components/Slot/AddSlot';
 import Orders from './Components/Orders/Orders';
 import UpdateOffer from './Components/Offers/UpdateOffer';
 import UpdateZone from './Components/Zone/UpdateZone';
+import UpdateSlot from './Components/Slot/UpdateSlot';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route exact path="/updatezone/:id" element={<UpdateZone />} />
             <Route exact path="/slots" element={<Slots />} />
             <Route exact path="/addslot" element={<AddSlot />} />
+            <Route exact path="/updateslot/:id" element={<UpdateSlot />} />
             <Route exact path="/discounts" element={<Discounts />} />
             <Route exact path="/adddiscount" element={<AddDiscount />} />
             <Route exact path="/orders" element={<Orders />} />

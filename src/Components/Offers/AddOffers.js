@@ -25,6 +25,11 @@ class AddOffers extends Component {
         }
     }
 
+    componentDidMount(){
+        // let id = this.props.match.params.id;
+        // console.log(id);
+    }
+
     handleofferTitleFieldsChange = (event, editor) => {
         this.setState({ offerTitle : editor.getData() });
     }
@@ -123,8 +128,8 @@ render() {
 
                             <h1 className="page-header-title">Add Offers</h1>
                         </div>
-                        <div class="col-md-auto">
-                            <Link class="btn btn-primary" to="/offers">Back</Link>
+                        <div className="col-md-auto">
+                            <Link className="btn btn-primary" to="/offers">Back</Link>
                         </div>
                     </div>
 

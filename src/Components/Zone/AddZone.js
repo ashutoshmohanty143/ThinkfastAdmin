@@ -31,7 +31,6 @@ class AddZone extends Component {
         }
 
         this.setState({ fields });  
-        //console.log(fields);
     }
 
     formValidate(){
@@ -39,15 +38,14 @@ class AddZone extends Component {
         let Errors = {};
         let formIsValid = true;
 
-        var selectZone = document.getElementById('selectZone');
-        var selectZoneValue = selectZone.options[selectZone.selectedIndex].value;
-
-        if (selectZoneValue == 0) {
+        var zoneName = document.getElementById('zoneName');
+        var zoneNameValue = zoneName.options[zoneName.selectedIndex].value;
+        if (zoneNameValue == 0) {
             formIsValid = false;
-            Errors["zoneError"]  = 'Please Select Zone';
+            Errors["zoneNameError"]  = 'Please Select Zone';
         } else {
             formIsValid = true;
-            Errors["zoneError"]  = '';
+            Errors["zoneNameError"]  = '';
         }
     
         if (!fields["shippingTime"]) {
@@ -56,51 +54,44 @@ class AddZone extends Component {
         } else {
             formIsValid = true;
             Errors["shippingTimeError"]  = '';
-        }
-
-        // if (!fields["zoneDescription"]) {
-        //     formIsValid = false;
-        //     Errors["zoneDescriptionError"]  = 'Description cannot be empty';
-        // } else {
-        //     formIsValid = true;
-        //     Errors["zoneDescriptionError"]  = '';
-        // }   
+        } 
         
         var selectPaymentStaus = document.getElementById('paymentStaus');
         var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
-        //console.log(selectPaymentStausValue);
-
         if (selectPaymentStausValue == 0) {
             formIsValid = false;
             Errors["paymentStausError"]  = 'Please Select Payment Status';
+        } else {
+            formIsValid = true;
+            Errors["paymentStausError"]  = '';
         }
+
 
         if (!fields['deliveryCharge']) {
             formIsValid = false;
             Errors["deliveryChargeError"]  = 'Delivery Charge cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["deliveryChargeError"]  = '';
         }
 
         this.setState({ formErrors : Errors });
         return formIsValid;
     }
 
-    deliveryChargeNumberValidate = event => {
+    deliveryChargeNumberValidate = (event) => {
         CommonMethods.numberValidation(event);
-        
     }
 
     handleSubmit = event =>{
         event.preventDefault();
         if(this.formValidate()) {   
-            
-            let {selectZone, shippingTime, zoneDescription, paymentStaus, deliveryCharge} = this.state.fields;
-            
+            let {zoneName, shippingTime, paymentStaus, deliveryCharge} = this.state.fields;
             const formData = {
                 "collection" : "zones",
                 "data": {
-                        "zoneName": selectZone,
+                        "zoneName": zoneName,
                         "shippingTime": shippingTime,
-                        // "zoneDescription": zoneDescription,
                         "paymentStaus": paymentStaus,
                         "deliveryCharge": deliveryCharge
                 },
@@ -109,36 +100,26 @@ class AddZone extends Component {
                     "multiInsert": false
                 }
             };   
-
             ApiServices.AddRecord(formData).then(response => {    
-                //console.log(response.data.data);            
                 if(response.status == 200 && response.data.status){
                     swal("Thank you!", "Zone added successfully!!!", "success").then((value) => {
                         if(value){
                             this.props.navigate('/zones');
                         }
                     });
-                    
                 }           
             }).catch(error => {
-                //return error;
                 console.log(error);
             });; 
-
-            
-
           } else {
             console.log("Form Validation Error");
           }        
     }
 
-    onConfirm = () =>{
-        window.location.href = "/zones"
-    }
 
 
     render() {
-        const { zoneError, shippingTimeError, zoneDescriptionError, paymentStausError,deliveryChargeError }  = this.state.formErrors;
+        const { zoneNameError, shippingTimeError, paymentStausError,deliveryChargeError }  = this.state.formErrors;
         const { paymentStaus } = this.state.fields;
         //var test = "d-none";
         if(paymentStaus == undefined || paymentStaus == 0) {
@@ -170,8 +151,8 @@ class AddZone extends Component {
 
                                     <h1 className="page-header-title">Add Zones</h1>
                                 </div>
-                                <div class="col-md-auto">
-                                    <Link class="btn btn-primary" to="/zones">Back</Link>
+                                <div className="col-md-auto">
+                                    <Link className="btn btn-primary" to="/zones">Back</Link>
                                 </div>
                             </div>
 
@@ -191,10 +172,10 @@ class AddZone extends Component {
                                                 <div className="row">
                                                     <div className="col-sm-6">
                                                         <div className="mb-4">
-                                                            <label htmlFor="selectZone" className="form-label">Select Zone</label>
+                                                            <label htmlFor="zoneName" className="form-label">Select Zone</label>
                 
                                                             <div className="tom-select-custom">
-                                                                <select className="js-select form-select tomselected" name="selectZone" id="selectZone" onChange={this.handleFormFieldsChange}>
+                                                                <select className="js-select form-select tomselected" name="zoneName" id="zoneName" onChange={this.handleFormFieldsChange} >
                                                                     <option value="0">Select your zone</option>
                                                                     <option value="Zone A">Zone A</option>
                                                                     <option value="Zone B">Zone B</option>
@@ -203,7 +184,7 @@ class AddZone extends Component {
                                                                     <option value="Zone E">Zone E</option>
                                                                 </select>
                                                             </div>
-                                                            {zoneError && <span className='errorMsg'>{zoneError}</span>}
+                                                            {zoneNameError && <span className='errorMsg'>{zoneNameError}</span>}
                                                         </div>
                                                     </div>
 
@@ -219,15 +200,7 @@ class AddZone extends Component {
                                                 </div>
 
                                                 <div className="row">
-                                                    {/* <div className="col-sm-6">
-                                                        <div className="mb-4">
-                                                            <label htmlFor="zoneDescription" className="form-label">Zone Description</label>
-                                                            <input type="text" className="form-control" name="zoneDescription" id="zoneDescription" placeholder="Zone Description" onChange={this.handleFormFieldsChange} />
-                                                            {zoneDescriptionError && <span className='errorMsg'>{zoneDescriptionError}</span>}
-                                                        </div>
-                                                    </div> */}
-
-
+                                                    
                                                     <div className="col-sm-6">
                                                         <div className="mb-4">
                                                             <label htmlFor="paymentStaus" className="form-label">Select Payment Mode</label>
@@ -245,17 +218,13 @@ class AddZone extends Component {
                                                     </div>
                                                     
                                                     <div className={`col-sm-6 ${test}`}>
-                                                    {/* ${paymentStaus==0 || undefined ? "d-none" : '' }`} */}
                                                         <div className="mb-4">
                                                             <label htmlFor="deliveryCharge" className="form-label">Delivery Charge</label>
-                                                            <input type="text" className="form-control" name="deliveryCharge" id="deliveryCharge" placeholder="Delivery Charge" onChange={this.handleFormFieldsChange} onInput={ this.deliveryChargeNumberValidate} />
+                                                            <input type="text" className="form-control" name="deliveryCharge" id="deliveryCharge" placeholder="Delivery Charge" onChange={this.handleFormFieldsChange} onInput={ this.deliveryChargeNumberValidate } />
                                                             {deliveryChargeError && <span className='errorMsg'>{deliveryChargeError}</span>}
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                
-
                                                 <div className='text-end'><button className="btn btn-primary btn-sm">Add</button></div>
                                             </form>
                                         </div>
