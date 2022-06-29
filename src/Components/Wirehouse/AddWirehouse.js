@@ -10,8 +10,7 @@ import Footer from '../Common/Footer';
 import CommonMethods from '../Common/CommonMethods';
 import ApiServices from '../Common/ApiServices';
 
-
-class AddZone extends Component {
+class AddWirehouse extends Component {
     constructor(props) {
         super(props);        
         this.state = {
@@ -24,97 +23,97 @@ class AddZone extends Component {
         let fields = this.state.fields;
         fields[event.target.name] = event.target.value;
 
-        if (event.target.value == "Free") {
-            fields['deliveryCharge'] = "";
-        } else if(event.target.value == "Paid"){
-            fields['deliveryCharge'] = "";
-        }
+        // if (event.target.value == "Free") {
+        //     fields['deliveryCharge'] = "";
+        // } else if(event.target.value == "Paid"){
+        //     fields['deliveryCharge'] = "";
+        // }
 
         this.setState({ fields });  
     }
 
-    formValidate(){
-        let fields = this.state.fields;
-        let Errors = {};
-        let formIsValid = true;
+    // formValidate(){
+    //     let fields = this.state.fields;
+    //     let Errors = {};
+    //     let formIsValid = true;
 
-        var zoneName = document.getElementById('zoneName');
-        var zoneNameValue = zoneName.options[zoneName.selectedIndex].value;
-        if (zoneNameValue == 0) {
-            formIsValid = false;
-            Errors["zoneNameError"]  = 'Please Select Zone';
-        } else {
-            formIsValid = true;
-            Errors["zoneNameError"]  = '';
-        }
+    //     var zoneName = document.getElementById('zoneName');
+    //     var zoneNameValue = zoneName.options[zoneName.selectedIndex].value;
+    //     if (zoneNameValue == 0) {
+    //         formIsValid = false;
+    //         Errors["zoneNameError"]  = 'Please Select Zone';
+    //     } else {
+    //         formIsValid = true;
+    //         Errors["zoneNameError"]  = '';
+    //     }
     
-        if (!fields["shippingTime"]) {
-            formIsValid = false;
-            Errors["shippingTimeError"]  = 'Shipping Time cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["shippingTimeError"]  = '';
-        } 
+    //     if (!fields["shippingTime"]) {
+    //         formIsValid = false;
+    //         Errors["shippingTimeError"]  = 'Shipping Time cannot be empty';
+    //     } else {
+    //         formIsValid = true;
+    //         Errors["shippingTimeError"]  = '';
+    //     } 
         
-        var selectPaymentStaus = document.getElementById('paymentStaus');
-        var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
-        if (selectPaymentStausValue == 0) {
-            formIsValid = false;
-            Errors["paymentStausError"]  = 'Please Select Payment Status';
-        } else {
-            formIsValid = true;
-            Errors["paymentStausError"]  = '';
-        }
+    //     var selectPaymentStaus = document.getElementById('paymentStaus');
+    //     var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
+    //     if (selectPaymentStausValue == 0) {
+    //         formIsValid = false;
+    //         Errors["paymentStausError"]  = 'Please Select Payment Status';
+    //     } else {
+    //         formIsValid = true;
+    //         Errors["paymentStausError"]  = '';
+    //     }
 
 
-        if (!fields['deliveryCharge']) {
-            formIsValid = false;
-            Errors["deliveryChargeError"]  = 'Delivery Charge cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["deliveryChargeError"]  = '';
-        }
+    //     if (!fields['deliveryCharge']) {
+    //         formIsValid = false;
+    //         Errors["deliveryChargeError"]  = 'Delivery Charge cannot be empty';
+    //     } else {
+    //         formIsValid = true;
+    //         Errors["deliveryChargeError"]  = '';
+    //     }
 
-        this.setState({ formErrors : Errors });
-        return formIsValid;
-    }
+    //     this.setState({ formErrors : Errors });
+    //     return formIsValid;
+    // }
 
-    deliveryChargeNumberValidate = (event) => {
-        CommonMethods.numberValidation(event);
-    }
+    // deliveryChargeNumberValidate = (event) => {
+    //     CommonMethods.numberValidation(event);
+    // }
 
-    handleSubmit = event =>{
-        event.preventDefault();
-        if(this.formValidate()) {   
-            let {zoneName, shippingTime, paymentStaus, deliveryCharge} = this.state.fields;
-            const formData = {
-                "collection" : "zones",
-                "data": {
-                        "zoneName": zoneName,
-                        "shippingTime": shippingTime,
-                        "paymentStaus": paymentStaus,
-                        "deliveryCharge": deliveryCharge
-                },
-                "meta" : {
-                    "duplicate" : ['selectZone'],
-                    "multiInsert": false
-                }
-            };   
-            ApiServices.AddRecord(formData).then(response => {    
-                if(response.status == 200 && response.data.status){
-                    swal("Thank you!", "Zone added successfully!!!", "success").then((value) => {
-                        if(value){
-                            this.props.navigate('/zones');
-                        }
-                    });
-                }           
-            }).catch(error => {
-                console.log(error);
-            });; 
-          } else {
-            console.log("Form Validation Error");
-          }        
-    }
+    // handleSubmit = event =>{
+    //     event.preventDefault();
+    //     if(this.formValidate()) {   
+    //         let {zoneName, shippingTime, paymentStaus, deliveryCharge} = this.state.fields;
+    //         const formData = {
+    //             "collection" : "zones",
+    //             "data": {
+    //                     "zoneName": zoneName,
+    //                     "shippingTime": shippingTime,
+    //                     "paymentStaus": paymentStaus,
+    //                     "deliveryCharge": deliveryCharge
+    //             },
+    //             "meta" : {
+    //                 "duplicate" : ['selectZone'],
+    //                 "multiInsert": false
+    //             }
+    //         };   
+    //         ApiServices.AddRecord(formData).then(response => {    
+    //             if(response.status == 200 && response.data.status){
+    //                 swal("Thank you!", "Zone added successfully!!!", "success").then((value) => {
+    //                     if(value){
+    //                         this.props.navigate('/zones');
+    //                     }
+    //                 });
+    //             }           
+    //         }).catch(error => {
+    //             console.log(error);
+    //         });; 
+    //       } else {
+    //         console.log("Form Validation Error");
+    //       }        
+    //}
 
 
 
@@ -241,4 +240,4 @@ class AddZone extends Component {
   }
 }
 
-export default WithRouter(AddZone);
+export default WithRouter(AddWirehouse);

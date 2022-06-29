@@ -79,7 +79,7 @@ class Zones extends Component {
                       <h1 className="page-header-title">Zones </h1>
                     </div>
                     <div className="col-md-auto">
-                      <Link className="btn btn-primary" to="/addzone">Add Zone</Link>
+                      <Link className="btn btn-primary" to="/addwirehouse">Add Wirehouse</Link>
                     </div>
                   
                   </div>

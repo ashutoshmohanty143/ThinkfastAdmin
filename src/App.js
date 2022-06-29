@@ -54,8 +54,8 @@ function App() {
             <Route exact path="/addslot" element={<AddSlot />} />
             <Route exact path="/updateslot/:id" element={<UpdateSlot />} />
             <Route exact path="/wirehouses" element={<Wirehouses />} />
-            <Route exact path="/addwirehouses" element={<AddWirehouse />} />
-            <Route exact path="/updatewirehouses" element={<UpdateWirehouse />} />
+            <Route exact path="/addwirehouse" element={<AddWirehouse />} />
+            <Route exact path="/updatewirehouse" element={<UpdateWirehouse />} />
             <Route exact path="/addslot" element={<AddSlot />} />
             <Route exact path="/updateslot/:id" element={<UpdateSlot />} />
             <Route exact path="/discounts" element={<Discounts />} />
