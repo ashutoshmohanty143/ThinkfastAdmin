@@ -94,7 +94,7 @@ export default function SideNav() {
                     >
                       <NavLink className="nav-link" to="/zones">Zones</NavLink>
                       <NavLink className="nav-link" to="/slots">Slots</NavLink>
-                      <NavLink className="nav-link" to="/wirehouse">Wirehouse</NavLink>
+                      <NavLink className="nav-link" to="/wirehouses">Wirehouse</NavLink>
 
                       {/* <NavLink className="nav-link" to="/users">Users</NavLink>
                       <NavLink className="nav-link" to="/offers">Offers</NavLink>

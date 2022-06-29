@@ -68,38 +68,44 @@ class UpdateSlot extends Component {
     handleSubmit = event => {
         event.preventDefault();
         console.log(this.state.fields["slotName"]);
-        // if(this.formValidate()) {   
-        //     let { slotName, slotTime } = this.state.fields;
-        //     const formData = {
-        //         "collection" : "slots",
-        //         "data": {
-        //                 "slotName": slotName,
-        //                 "slotTime": slotTime,
-        //         },
-        //         "meta" : {
-        //             "duplicate" : [],
-        //             "multiInsert": false
-        //         }
-        //     };   
-        //     ApiServices.UpdateRecord(formData).then((response) => {
-        //         if (response.status === 200 && response.data.status === "success") {
-        //             swal({
-        //                 title: "Thank you!",
-        //                 text: `Slot Updated successfully!!!`,
-        //                 type: "success",
-        //             }).then((value) => {
-        //                 if (value) {
-        //                     this.props.navigate('/slots');
-        //                 }
-        //             });
-        //         }
-        //     })
-        //   .catch((error) => {
-        //     console.log("error", error);
-        //   });  
-        //   } else {
-        //     console.log("Form Validation Error");
-        //   } 
+        let path = window.location.pathname;
+        let id = path.split('/')[2];
+        if(this.formValidate()) {
+            let { slotName, slotTime } = this.state.fields;
+            const formData = {
+                "collection" : "slots",
+                "id": id,
+                "data": {
+                    "slotName": slotName,
+                    "slotTime": slotTime,
+                },
+                "meta" : {
+                    "duplicate" : [],
+                    "multiInsert": false
+                }
+            };
+        
+            //console.log(formData)
+            ApiServices.UpdateRecord(formData).then((response) => {
+                //console.log(response);
+                if (response.status === 200 && response.data.status === "success") {
+                    swal({
+                        title: "Thank you!",
+                        text: `Slot Updated successfully!!!`,
+                        type: "success",
+                    }).then((value) => {
+                        if (value) {
+                            this.props.navigate('/slots');
+                        }
+                    });
+                }
+            })
+            .catch((error) => {
+            console.log("error", error);
+            });  
+        } else {
+            console.log("Something went wrong! Please try again later.");
+        }
     }
 
   render() {

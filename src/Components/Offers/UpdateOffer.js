@@ -85,7 +85,8 @@ class UpdateOffer extends Component {
                     "description": description
             },
             "meta" : {
-                "duplicate" : []
+                "duplicate" : [],
+                "multiInsert": false
             }
         }; 
 
