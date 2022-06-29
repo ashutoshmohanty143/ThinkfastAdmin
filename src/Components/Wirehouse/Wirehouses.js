@@ -13,14 +13,14 @@ class Zones extends Component {
   constructor(props){
     super(props);
     this.state = {
-        zoneLists: []
+        wirehouseLists: []
     }
   }
 
   componentDidMount(){
-    const collectionName = "zones";
+    const collectionName = "wirehouses";
     ApiServices.GetAllRecords(collectionName).then(response => {
-      this.setState({ zoneLists : response.data.data }); 
+      this.setState({ wirehouseLists : response.data.data }); 
     }).catch(error => {
       console.log("error", error)
     });
@@ -28,11 +28,11 @@ class Zones extends Component {
 
   handleDeleteRecord = (event,id) =>{
     event.preventDefault();
-    const collectionName = "zones";
+    const collectionName = "wirehouses";
 
     swal({
       title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this zone",
+      text: "Once deleted, you will not be able to recover this wirehouse",
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -41,15 +41,15 @@ class Zones extends Component {
         ApiServices.DeleteRecord(id, collectionName)
           .then((response) => {
             if (response.status === 200 && response.data.status === "success") {
-              swal("This zone has been deleted!", {
+              swal("This wirehouse has been deleted!", {
                 icon: "success",
               }).then((value) => {
                 if (value) {
-                  const index = this.state.zoneLists
+                  const index = this.state.wirehouseLists
                     .map((object) => object._id)
                     .indexOf(id);
-                  this.state.zoneLists.splice(index, 1);
-                  this.setState({ zoneLists: this.state.zoneLists });
+                  this.state.wirehouseLists.splice(index, 1);
+                  this.setState({ wirehouseLists: this.state.wirehouseLists });
                 }
               });
             }
@@ -64,7 +64,7 @@ class Zones extends Component {
 
   render() {
 
-    const { zoneLists } = this.state;
+    const { wirehouseLists } = this.state;
     return (
         <>
         {sessionStorage.getItem('userToken') ?
@@ -76,7 +76,7 @@ class Zones extends Component {
                 <div className="page-header">
                   <div className="row align-items-center mb-3">
                     <div className="col-md mb-2 mb-md-0">
-                      <h1 className="page-header-title">Zones </h1>
+                      <h1 className="page-header-title">Wirehouses </h1>
                     </div>
                     <div className="col-md-auto">
                       <Link className="btn btn-primary" to="/addwirehouse">Add Wirehouse</Link>
@@ -263,27 +263,35 @@ class Zones extends Component {
                         <th scope="col" className="table-column-pe-0">
                           SL No.#
                         </th>
-                        <th >Zone Name</th>
-                        <th>Shipping Time</th>
-                        <th>Payment Status</th>
-                        <th>Delivery Charge</th>
+                        <th>Location Name</th>
+                        <th>Country Region</th>
+                        <th>Address</th>
+                        <th>Appartment</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Pincode</th>
+                        <th>Phone</th>
                         <th>Action</th>
                       </tr>
                       
                     </thead>
 
                     <tbody>
-                    { zoneLists ? zoneLists.map((item, i) =>
+                    { wirehouseLists ? wirehouseLists.map((item, i) =>
                       <tr key={item._id}> 
                         <td className="table-column-pe-0">
                           {i+1}
                         </td>
-                        <td >{item.zoneName}</td>
-                        <td>{item.shippingTime}</td>
-                        <td>{item.paymentStaus}</td>
-                        <td>{item.deliveryCharge}</td>
+                        <td >{item.locationName}</td>
+                        <td>{item.countryRegion}</td>
+                        <td>{item.address}</td>
+                        <td>{item.appartment}</td>
+                        <td>{item.city}</td>
+                        <td>{item.state}</td>
+                        <td>{item.pincode}</td>
+                        <td>{item.phone}</td>
                         <td>
-                          <Link to={`/updatezone/${item._id}`}> <i className="bi bi-pencil-square text-success"> Edit</i> </Link>
+                          <Link to={`/updatewirehouse/${item._id}`}> <i className="bi bi-pencil-square text-success"> Edit</i> </Link>
                           <span> / </span>
                           <a href='' onClick={(event) => this.handleDeleteRecord(event, item._id)}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>

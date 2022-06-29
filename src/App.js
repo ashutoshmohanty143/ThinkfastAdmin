@@ -44,20 +44,23 @@ function App() {
         <Routes>
             <Route exact path="/" element={<Login />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
+
             <Route exact path="/offers" element={<Offers />} />
             <Route exact path="/addoffer" element={<AddOffers />} />
             <Route exact path="/updateoffer/:id" element={<UpdateOffer />} />
+
             <Route exact path="/zones" element={<Zones />} />
             <Route exact path="/addzone" element={<AddZone />} />
             <Route exact path="/updatezone/:id" element={<UpdateZone />} />
+
             <Route exact path="/slots" element={<Slots />} />
             <Route exact path="/addslot" element={<AddSlot />} />
             <Route exact path="/updateslot/:id" element={<UpdateSlot />} />
+
             <Route exact path="/wirehouses" element={<Wirehouses />} />
             <Route exact path="/addwirehouse" element={<AddWirehouse />} />
-            <Route exact path="/updatewirehouse" element={<UpdateWirehouse />} />
-            <Route exact path="/addslot" element={<AddSlot />} />
-            <Route exact path="/updateslot/:id" element={<UpdateSlot />} />
+            <Route exact path="/updatewirehouse/:id" element={<UpdateWirehouse />} />
+            
             <Route exact path="/discounts" element={<Discounts />} />
             <Route exact path="/adddiscount" element={<AddDiscount />} />
             <Route exact path="/users" element={<Users />} />

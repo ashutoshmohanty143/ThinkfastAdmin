@@ -22,222 +22,299 @@ class AddWirehouse extends Component {
     handleFormFieldsChange = event => {
         let fields = this.state.fields;
         fields[event.target.name] = event.target.value;
-
-        // if (event.target.value == "Free") {
-        //     fields['deliveryCharge'] = "";
-        // } else if(event.target.value == "Paid"){
-        //     fields['deliveryCharge'] = "";
-        // }
-
         this.setState({ fields });  
     }
 
-    // formValidate(){
-    //     let fields = this.state.fields;
-    //     let Errors = {};
-    //     let formIsValid = true;
-
-    //     var zoneName = document.getElementById('zoneName');
-    //     var zoneNameValue = zoneName.options[zoneName.selectedIndex].value;
-    //     if (zoneNameValue == 0) {
-    //         formIsValid = false;
-    //         Errors["zoneNameError"]  = 'Please Select Zone';
-    //     } else {
-    //         formIsValid = true;
-    //         Errors["zoneNameError"]  = '';
-    //     }
-    
-    //     if (!fields["shippingTime"]) {
-    //         formIsValid = false;
-    //         Errors["shippingTimeError"]  = 'Shipping Time cannot be empty';
-    //     } else {
-    //         formIsValid = true;
-    //         Errors["shippingTimeError"]  = '';
-    //     } 
+    formValidate(){
+        let fields = this.state.fields;
+        let Errors = {};
+        let formIsValid = true;
         
-    //     var selectPaymentStaus = document.getElementById('paymentStaus');
-    //     var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
-    //     if (selectPaymentStausValue == 0) {
-    //         formIsValid = false;
-    //         Errors["paymentStausError"]  = 'Please Select Payment Status';
-    //     } else {
-    //         formIsValid = true;
-    //         Errors["paymentStausError"]  = '';
-    //     }
+        if (!fields["locationName"]) {
+            formIsValid = false;
+            Errors["locationNameError"]  = 'Location Time field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["locationNameError"]  = '';
+        } 
+
+        var countryRegion = document.getElementById('countryRegion');
+        var countryRegionValue = countryRegion.options[countryRegion.selectedIndex].value;
+        if (countryRegionValue == 0) {
+            formIsValid = false;
+            Errors["countryRegionError"]  = 'Please Select Country';
+        } else {
+            formIsValid = true;
+            Errors["countryRegionError"]  = '';
+        }
+    
+        if (!fields["address"]) {
+            formIsValid = false;
+            Errors["addressError"]  = 'Address field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["addressError"]  = '';
+        }
+
+        if (!fields["appartment"]) {
+            formIsValid = false;
+            Errors["appartmentError"]  = 'Appartment field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["appartmentError"]  = '';
+        }
+
+        if (!fields["city"]) {
+            formIsValid = false;
+            Errors["cityError"]  = 'City field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["cityError"]  = '';
+        }
+        
+        var state = document.getElementById('state');
+        var stateValue = state.options[state.selectedIndex].value;
+        if (stateValue == 0) {
+            formIsValid = false;
+            Errors["stateError"]  = 'Please Select State';
+        } else {
+            formIsValid = true;
+            Errors["stateError"]  = '';
+        }
 
 
-    //     if (!fields['deliveryCharge']) {
-    //         formIsValid = false;
-    //         Errors["deliveryChargeError"]  = 'Delivery Charge cannot be empty';
-    //     } else {
-    //         formIsValid = true;
-    //         Errors["deliveryChargeError"]  = '';
-    //     }
+        if (!fields['pincode']) {
+            formIsValid = false;
+            Errors["pincodeError"]  = 'Pincode field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["pincodeError"]  = '';
+        }
 
-    //     this.setState({ formErrors : Errors });
-    //     return formIsValid;
-    // }
+        if (!fields['phone']) {
+            formIsValid = false;
+            Errors["phoneError"]  = 'Phone field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["phoneError"]  = '';
+        }
 
-    // deliveryChargeNumberValidate = (event) => {
-    //     CommonMethods.numberValidation(event);
-    // }
+        this.setState({ formErrors : Errors });
+        return formIsValid;
+    }
 
-    // handleSubmit = event =>{
-    //     event.preventDefault();
-    //     if(this.formValidate()) {   
-    //         let {zoneName, shippingTime, paymentStaus, deliveryCharge} = this.state.fields;
-    //         const formData = {
-    //             "collection" : "zones",
-    //             "data": {
-    //                     "zoneName": zoneName,
-    //                     "shippingTime": shippingTime,
-    //                     "paymentStaus": paymentStaus,
-    //                     "deliveryCharge": deliveryCharge
-    //             },
-    //             "meta" : {
-    //                 "duplicate" : ['selectZone'],
-    //                 "multiInsert": false
-    //             }
-    //         };   
-    //         ApiServices.AddRecord(formData).then(response => {    
-    //             if(response.status == 200 && response.data.status){
-    //                 swal("Thank you!", "Zone added successfully!!!", "success").then((value) => {
-    //                     if(value){
-    //                         this.props.navigate('/zones');
-    //                     }
-    //                 });
-    //             }           
-    //         }).catch(error => {
-    //             console.log(error);
-    //         });; 
-    //       } else {
-    //         console.log("Form Validation Error");
-    //       }        
-    //}
+    handleSubmit = event =>{
+        event.preventDefault();
+        if(this.formValidate()) {   
+            let { locationName, countryRegion, address, appartment, city, state, pincode, phone } = this.state.fields;
+            const formData = {
+                "collection" : "wirehouses",
+                "data": {
+                        "locationName": locationName,
+                        "countryRegion": countryRegion,
+                        "address": address,
+                        "appartment": appartment,
+                        "city": city,
+                        "state": state,
+                        "pincode": pincode,
+                        "phone": phone
+                },
+                "meta" : {
+                    "duplicate" : ['locationName'],
+                    "multiInsert": false
+                }
+            };   
+            ApiServices.AddRecord(formData).then(response => {    
+                if(response.status == 200 && response.data.status){
+                    swal("Thank you!", "Wirehouse added successfully!!!", "success").then((value) => {
+                        if(value){
+                            this.props.navigate('/wirehouses');
+                        }
+                    });
+                }           
+            }).catch(error => {
+                console.log(error);
+            });; 
+          } else {
+            console.log("Form Validation Error");
+          }        
+    }
 
 
 
     render() {
-        const { zoneNameError, shippingTimeError, paymentStausError,deliveryChargeError }  = this.state.formErrors;
-        const { paymentStaus } = this.state.fields;
-        //var test = "d-none";
-        if(paymentStaus == undefined || paymentStaus == 0) {
-            var test = "d-none";
-        } else{
-            var test = "";
-        }
-        //console.log(paymentStaus);
-    return (
-        <>
-        {sessionStorage.getItem('userToken') ?
-            <div>
-                <Header />
-                <SideNav />
-                <main id="content" role="main" className="main">
+        const { locationNameError, countryRegionError, addressError,
+            appartmentError, cityError, stateError, pincodeError, phoneError } = this.state.formErrors;
 
-                    <div className="content container-fluid">
-                        <div className="page-header">
-                            <div className="row align-items-center">
-                                <div className="col-sm mb-2 mb-sm-0">
-                                    <nav aria-label="breadcrumb">
-                                        <ol className="breadcrumb breadcrumb-no-gutter">
-                                            <li className="breadcrumb-item">
-                                                <Link className="breadcrumb-link" to="/zones">Zones</Link>
-                                            </li>
-                                            <li className="breadcrumb-item active" aria-current="page">Add Zone</li>
-                                        </ol>
-                                    </nav>
+        return (
+            <>
+                {sessionStorage.getItem('userToken') ?
+                    <div>
+                        <Header />
+                        <SideNav />
+                        <main id="content" role="main" className="main">
 
-                                    <h1 className="page-header-title">Add Zones</h1>
-                                </div>
-                                <div className="col-md-auto">
-                                    <Link className="btn btn-primary" to="/zones">Back</Link>
-                                </div>
-                            </div>
+                            <div className="content container-fluid">
+                                <div className="page-header">
+                                    <div className="row align-items-center">
+                                        <div className="col-sm mb-2 mb-sm-0">
+                                            <nav aria-label="breadcrumb">
+                                                <ol className="breadcrumb breadcrumb-no-gutter">
+                                                    <li className="breadcrumb-item">
+                                                        <Link className="breadcrumb-link" to="/wirehouses">Wirehouses</Link>
+                                                    </li>
+                                                    <li className="breadcrumb-item active" aria-current="page">Add Wirehouse</li>
+                                                </ol>
+                                            </nav>
 
-                        </div>
-
-                            <div className='row'>
-                                <div className='col-lg-12 mb-3 mb-lg-0'>
-                                    <div className="card mb-3 mb-lg-5">
-
-                                        <div className="card-header">
-                                            <h4 className="card-header-title">Enter Zone Information</h4>
+                                            <h1 className="page-header-title">Add Wirehouse</h1>
                                         </div>
-                                        
-                                        <div className="card-body">
-                                            <form method='post' onSubmit={this.handleSubmit}>
-
-                                                <div className="row">
-                                                    <div className="col-sm-6">
-                                                        <div className="mb-4">
-                                                            <label htmlFor="zoneName" className="form-label">Select Zone</label>
-                
-                                                            <div className="tom-select-custom">
-                                                                <select className="js-select form-select tomselected" name="zoneName" id="zoneName" onChange={this.handleFormFieldsChange} >
-                                                                    <option value="0">Select your zone</option>
-                                                                    <option value="Zone A">Zone A</option>
-                                                                    <option value="Zone B">Zone B</option>
-                                                                    <option value="Zone C">Zone C</option>
-                                                                    <option value="Zone D">Zone D</option>
-                                                                    <option value="Zone E">Zone E</option>
-                                                                </select>
-                                                            </div>
-                                                            {zoneNameError && <span className='errorMsg'>{zoneNameError}</span>}
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="col-sm-6">
-                                                        <div className="mb-4">
-                                                            <label htmlFor="shippingTime" className="form-label">Shipping Time</label>
-
-                                                            <input type="text" className="form-control" name="shippingTime" id="shippingTime" placeholder="Shipping Time" onChange={this.handleFormFieldsChange} />
-
-                                                            {shippingTimeError && <span className='errorMsg'>{shippingTimeError}</span>}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="row">
-                                                    
-                                                    <div className="col-sm-6">
-                                                        <div className="mb-4">
-                                                            <label htmlFor="paymentStaus" className="form-label">Select Payment Mode</label>
-                
-                                                            <div className="tom-select-custom">
-                                                                <select className="js-select form-select tomselected" name="paymentStaus" id="paymentStaus" onChange={this.handleFormFieldsChange}>
-                                                                    <option value="0">Select your payment mode</option>
-                                                                    <option value="Free">Free</option>
-                                                                    <option value="Paid">Paid</option>
-                                                                </select>
-                                                            </div>
-                                                            {paymentStausError && <span className='errorMsg'>{paymentStausError}</span>}
-
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div className={`col-sm-6 ${test}`}>
-                                                        <div className="mb-4">
-                                                            <label htmlFor="deliveryCharge" className="form-label">Delivery Charge</label>
-                                                            <input type="text" className="form-control" name="deliveryCharge" id="deliveryCharge" placeholder="Delivery Charge" onChange={this.handleFormFieldsChange} onInput={ this.deliveryChargeNumberValidate } />
-                                                            {deliveryChargeError && <span className='errorMsg'>{deliveryChargeError}</span>}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='text-end'><button className="btn btn-primary btn-sm">Add</button></div>
-                                            </form>
+                                        <div className="col-md-auto">
+                                            <Link className="btn btn-primary" to="/wirehouses">Back</Link>
                                         </div>
+                                    </div>
 
+                                </div>
+
+                                <div className='row'>
+                                    <div className='col-lg-12 mb-3 mb-lg-0'>
+                                        <div className="card mb-3 mb-lg-5">
+
+                                            <div className="card-header">
+                                                <h4 className="card-header-title">Enter Wirehouse Information</h4>
+                                            </div>
+
+                                            <div className="card-body">
+                                                <form method='post' onSubmit={this.handleSubmit}>
+
+                                                    <div className="row">
+                                                        <div className="col-sm-6">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="locationName" className="form-label">Location Name</label>
+                                                                <input type="text" className="form-control" name="locationName"
+                                                                    id="locationName" placeholder="Location Name"
+                                                                    onChange={this.handleFormFieldsChange} />
+                                                                {locationNameError && <span className='errorMsg'>{locationNameError}</span>}
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-sm-6">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="countryRegion" className="form-label">Country/region</label>
+                                                                <div className="tom-select-custom">
+                                                                    <select className="js-select form-select tomselected" name="countryRegion"
+                                                                        id="countryRegion" onChange={this.handleFormFieldsChange} >
+                                                                        <option value='0'>Select Country</option>
+                                                                        <option value='India'>India</option>
+                                                                    </select>
+                                                                </div>
+                                                                {countryRegionError && <span className='errorMsg'>{countryRegionError}</span>}
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="mb-4">
+                                                            <label htmlFor="address" className="form-label">Address</label>
+                                                            <input type="text" className="form-control" name="address" id="address"
+                                                                placeholder="Address" onChange={this.handleFormFieldsChange} />
+                                                            {addressError && <span className='errorMsg'>{addressError}</span>}
+                                                        </div>
+
+                                                        <div className="mb-4">
+                                                            <label htmlFor="appartment" className="form-label">Appartment, suite, etc.</label>
+                                                            <input type="text" className="form-control" name="appartment" id="appartment"
+                                                                placeholder="Appartment" onChange={this.handleFormFieldsChange} />
+                                                            {appartmentError && <span className='errorMsg'>{appartmentError}</span>}
+                                                        </div>
+
+                                                        <div className="col-sm-4">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="city" className="form-label">City</label>
+                                                                <input type="text" className="form-control" name="city" id="city"
+                                                                    placeholder="City" onChange={this.handleFormFieldsChange} />
+                                                                {cityError && <span className='errorMsg'>{cityError}</span>}
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-sm-4">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="state" className="form-label">Select State</label>
+                                                                <div className="tom-select-custom">
+                                                                    <select className="js-select form-select tomselected" name="state"
+                                                                        id="state" onChange={this.handleFormFieldsChange} >
+                                                                        <option value='0'>Select State</option>
+                                                                        <option value='Andaman and Nicobar Islands'>Andaman and Nicobar Islands</option>
+                                                                        <option value='Andhra Pradesh'>Andhra Pradesh</option>
+                                                                        <option value='Arunachal Pradesh'>Arunachal Pradesh</option>
+                                                                        <option value='Assam'>Assam</option>
+                                                                        <option value='Bihar'>Bihar</option>
+                                                                        <option value='Chandigarh'>Chandigarh</option>
+                                                                        <option value='Chhattisgarh'>Chhattisgarh</option>
+                                                                        <option value='Dadra and Nagar Haveli'>Dadra and Nagar Haveli</option>
+                                                                        <option value='Daman and Diu'>Daman and Diu</option>
+                                                                        <option value='Delhi'>Delhi</option>
+                                                                        <option value='Goa'>Goa</option>
+                                                                        <option value='Gujarat'>Gujarat</option>
+                                                                        <option value='Haryana'>Haryana</option>
+                                                                        <option value='Himachal Pradesh'>Himachal Pradesh</option>
+                                                                        <option value='Jammu and Kashmir'>Jammu and Kashmir</option>
+                                                                        <option value='Jharkhand'>Jharkhand</option>
+                                                                        <option value='Karnataka'>Karnataka</option>
+                                                                        <option value='Kerala'>Kerala</option>
+                                                                        <option value='Lakshadweep'>Lakshadweep</option>
+                                                                        <option value='Madhya Pradesh'>Madhya Pradesh</option>
+                                                                        <option value='Maharashtra'>Maharashtra</option>
+                                                                        <option value='Manipur'>Manipur</option>
+                                                                        <option value='Meghalaya'>Meghalaya</option>
+                                                                        <option value='Mizoram'>Mizoram</option>
+                                                                        <option value='Nagaland'>Nagaland</option>
+                                                                        <option value='Odisha'>Odisha</option>
+                                                                        <option value='Puducherry'>Puducherry</option>
+                                                                        <option value='Punjab'>Punjab</option>
+                                                                        <option value='Rajasthan'>Rajasthan</option>
+                                                                        <option value='Sikkim'>Sikkim</option>
+                                                                        <option value='Tamil Nadu'>Tamil Nadu</option>
+                                                                        <option value='Telengana'>Telengana</option>
+                                                                        <option value='Tripura'>Tripura</option>
+                                                                        <option value='Uttar Pradesh'>Uttar Pradesh</option>
+                                                                        <option value='Uttarakhand'>Uttarakhand</option>
+                                                                        <option value='West Bengal'>West Bengal</option>
+                                                                    </select>
+                                                                </div>
+                                                                {stateError && <span className='errorMsg'>{stateError}</span>}
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-sm-4">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="pincode" className="form-label">Pincode</label>
+                                                                <input type="text" className="form-control" name="pincode" id="pincode"
+                                                                    placeholder="Pincode" onChange={this.handleFormFieldsChange} />
+                                                                {pincodeError && <span className='errorMsg'>{pincodeError}</span>}
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="mb-4">
+                                                            <label htmlFor="phone" className="form-label">Phone</label>
+                                                            <input type="text" className="form-control" name="phone" id="phone"
+                                                                placeholder="Phone" onChange={this.handleFormFieldsChange} />
+                                                            {phoneError && <span className='errorMsg'>{phoneError}</span>}
+                                                        </div>
+
+                                                        <div className='text-end'><button className="btn btn-primary btn-sm">Add</button></div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                    </div>
-                </main>
-                <Footer />
-            </div> : window.location.href = "/"}
-    </>
-    )
-  }
+                        </main>
+                        <Footer />
+                    </div> : window.location.href = "/"}
+            </>
+        )
+    }
 }
 
 export default WithRouter(AddWirehouse);

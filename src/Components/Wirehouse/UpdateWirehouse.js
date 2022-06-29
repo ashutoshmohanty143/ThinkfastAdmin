@@ -19,7 +19,7 @@ class UpdateZone extends Component {
     }
 
     componentDidMount(){
-        const collectionName = "zones";
+        const collectionName = "wirehouses";
         const path = window.location.pathname;
         const id = path.split('/')[2];
         ApiServices.GetSingleRecordById(id,collectionName)
@@ -41,43 +41,75 @@ class UpdateZone extends Component {
         let fields = this.state.fields;
         let Errors = {};
         let formIsValid = true;
-
-        var zoneName = document.getElementById('zoneName');
-        var zoneNameValue = zoneName.options[zoneName.selectedIndex].value;
-        if (zoneNameValue === 0) {
+        
+        if (!fields["locationName"]) {
             formIsValid = false;
-            Errors["zoneNameError"]  = 'Please Select Zone';
+            Errors["locationNameError"]  = 'Location Time field cannot be empty';
         } else {
             formIsValid = true;
-            Errors["zoneNameError"]  = '';
+            Errors["locationNameError"]  = '';
+        } 
+
+        var countryRegion = document.getElementById('countryRegion');
+        var countryRegionValue = countryRegion.options[countryRegion.selectedIndex].value;
+        if (countryRegionValue == 0) {
+            formIsValid = false;
+            Errors["countryRegionError"]  = 'Please Select Country';
+        } else {
+            formIsValid = true;
+            Errors["countryRegionError"]  = '';
         }
     
-        if (!fields["shippingTime"]) {
+        if (!fields["address"]) {
             formIsValid = false;
-            Errors["shippingTimeError"]  = 'Shipping Time cannot be empty';
+            Errors["addressError"]  = 'Address field cannot be empty';
         } else {
             formIsValid = true;
-            Errors["shippingTimeError"]  = '';
-        } 
+            Errors["addressError"]  = '';
+        }
+
+        if (!fields["appartment"]) {
+            formIsValid = false;
+            Errors["appartmentError"]  = 'Appartment field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["appartmentError"]  = '';
+        }
+
+        if (!fields["city"]) {
+            formIsValid = false;
+            Errors["cityError"]  = 'City field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["cityError"]  = '';
+        }
         
-        var selectPaymentStaus = document.getElementById('paymentStaus');
-        var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
-        if (selectPaymentStausValue === 0) {
+        var state = document.getElementById('state');
+        var stateValue = state.options[state.selectedIndex].value;
+        if (stateValue == 0) {
             formIsValid = false;
-            Errors["paymentStausError"]  = 'Please Select Payment Status';
+            Errors["stateError"]  = 'Please Select State';
         } else {
             formIsValid = true;
-            Errors["paymentStausError"]  = '';
-        } 
+            Errors["stateError"]  = '';
+        }
 
 
-        if (!fields['deliveryCharge']) {
+        if (!fields['pincode']) {
             formIsValid = false;
-            Errors["deliveryChargeError"]  = 'Delivery Charge cannot be empty';
+            Errors["pincodeError"]  = 'Pincode field cannot be empty';
         } else {
             formIsValid = true;
-            Errors["deliveryChargeError"]  = '';
-        } 
+            Errors["pincodeError"]  = '';
+        }
+
+        if (!fields['phone']) {
+            formIsValid = false;
+            Errors["phoneError"]  = 'Phone field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["phoneError"]  = '';
+        }
 
         this.setState({ formErrors : Errors });
         return formIsValid;
@@ -86,17 +118,21 @@ class UpdateZone extends Component {
     handleSubmit = event => {
         event.preventDefault();
         if (this.formValidate()) {
-            let { zoneName, shippingTime, paymentStaus, deliveryCharge } = this.state.fields;
+            let { locationName, countryRegion, address, appartment, city, state, pincode, phone } = this.state.fields;
             let path = window.location.pathname;
             let id = path.split('/')[2];
             const formData = {
-                "collection": "zones",
+                "collection": "wirehouses",
                 "id": id,
                 "data": {
-                    "zoneName": zoneName,
-                    "shippingTime": shippingTime,
-                    "paymentStaus": paymentStaus,
-                    "deliveryCharge": deliveryCharge
+                    "locationName": locationName,
+                    "countryRegion": countryRegion,
+                    "address": address,
+                    "appartment": appartment,
+                    "city": city,
+                    "state": state,
+                    "pincode": pincode,
+                    "phone": phone
                 },
                 "meta": {
                     "duplicate": []
@@ -107,11 +143,11 @@ class UpdateZone extends Component {
                 if (response.status === 200 && response.data.status === "success") {
                     swal({
                         title: "Thank you!",
-                        text: `Zone Updated successfully!!!`,
+                        text: `Wirehouse Updated successfully!!!`,
                         type: "success",
                     }).then((value) => {
                         if (value) {
-                            this.props.navigate('/zones');
+                            this.props.navigate('/wirehouses');
                         }
                     });
                 }
@@ -126,8 +162,9 @@ class UpdateZone extends Component {
 
 
     render() {
-        let { zoneName, shippingTime, paymentStaus, deliveryCharge } = this.state.fields;
-        const { zoneNameError, shippingTimeError, paymentStausError, deliveryChargeError }  = this.state.formErrors;
+        let { locationName, countryRegion, address, appartment, city, state, pincode, phone } = this.state.fields;
+        const { locationNameError, countryRegionError, addressError,
+            appartmentError, cityError, stateError, pincodeError, phoneError } = this.state.formErrors;
     return (
         <>
         {sessionStorage.getItem('userToken') ?
@@ -143,16 +180,16 @@ class UpdateZone extends Component {
                                     <nav aria-label="breadcrumb">
                                         <ol className="breadcrumb breadcrumb-no-gutter">
                                             <li className="breadcrumb-item">
-                                                <Link className="breadcrumb-link" to="/zones">Zones</Link>
+                                                <Link className="breadcrumb-link" to="/wirehouses">Wirehouse</Link>
                                             </li>
-                                            <li className="breadcrumb-item active" aria-current="page">Update Zone</li>
+                                            <li className="breadcrumb-item active" aria-current="page">Update Wirehouse</li>
                                         </ol>
                                     </nav>
 
-                                    <h1 className="page-header-title">Update Zones</h1>
+                                    <h1 className="page-header-title">Update Wirehouse</h1>
                                 </div>
                                 <div className="col-md-auto">
-                                    <Link className="btn btn-primary" to="/zones">Back</Link>
+                                    <Link className="btn btn-primary" to="/wirehouses">Back</Link>
                                 </div>
                             </div>
 
@@ -163,76 +200,129 @@ class UpdateZone extends Component {
                                     <div className="card mb-3 mb-lg-5">
 
                                         <div className="card-header">
-                                            <h4 className="card-header-title">Enter Zone Information</h4>
+                                            <h4 className="card-header-title">Enter Wirehouse Information</h4>
                                         </div>
                                         
                                         <div className="card-body">
-                                            <form method='post' onSubmit={this.handleSubmit}>
+                                                <form method='post' onSubmit={this.handleSubmit}>
 
-                                                <div className="row">
-                                                    <div className="col-sm-6">
-                                                        <div className="mb-4">
-                                                            <label htmlFor="zoneName" className="form-label">Select Zone</label>
-                
-                                                            <div className="tom-select-custom">
-                                                                <select className="js-select form-select tomselected" name="zoneName" id="zoneName" onChange={this.handleFormFieldsChange} value={zoneName}>
-                                                                    <option value="0">Select your zone</option>
-                                                                    <option value="Zone A">Zone A</option>
-                                                                    <option value="Zone B">Zone B</option>
-                                                                    <option value="Zone C">Zone C</option>
-                                                                    <option value="Zone D">Zone D</option>
-                                                                    <option value="Zone E">Zone E</option>
-                                                                </select>
+                                                    <div className="row">
+                                                        <div className="col-sm-6">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="locationName" className="form-label">Location Name</label>
+                                                                <input type="text" className="form-control" name="locationName"
+                                                                    id="locationName" placeholder="Location Name"
+                                                                    onChange={this.handleFormFieldsChange} value={locationName}/>
+                                                                {locationNameError && <span className='errorMsg'>{locationNameError}</span>}
                                                             </div>
-                                                            {zoneNameError && <span className='errorMsg'>{zoneNameError}</span>}
                                                         </div>
-                                                    </div>
 
-                                                    <div className="col-sm-6">
-                                                        <div className="mb-4">
-                                                            <label htmlFor="shippingTime" className="form-label">Shipping Time</label>
-
-                                                            <input type="text" className="form-control" name="shippingTime" id="shippingTime" 
-                                                                placeholder="Shipping Time" onChange={this.handleFormFieldsChange} value={shippingTime} />
-
-                                                            {shippingTimeError && <span className='errorMsg'>{shippingTimeError}</span>}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="row">
-                                                    
-                                                    <div className="col-sm-6">
-                                                        <div className="mb-4">
-                                                            <label htmlFor="paymentStaus" className="form-label">Select Payment Mode</label>
-                
-                                                            <div className="tom-select-custom">
-                                                                <select className="js-select form-select tomselected" name="paymentStaus" 
-                                                                    id="paymentStaus" onChange={this.handleFormFieldsChange} value={paymentStaus}>
-                                                                    <option value="0">Select your payment mode</option>
-                                                                    <option value="Free">Free</option>
-                                                                    <option value="Paid">Paid</option>
-                                                                </select>
+                                                        <div className="col-sm-6">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="countryRegion" className="form-label">Country/region</label>
+                                                                <div className="tom-select-custom">
+                                                                    <select className="js-select form-select tomselected" name="countryRegion"
+                                                                        id="countryRegion" onChange={this.handleFormFieldsChange} value={countryRegion}>
+                                                                        <option value='0'>Select Country</option>
+                                                                        <option value='India'>India</option>
+                                                                    </select>
+                                                                </div>
+                                                                {countryRegionError && <span className='errorMsg'>{countryRegionError}</span>}
                                                             </div>
-                                                            {paymentStausError && <span className='errorMsg'>{paymentStausError}</span>}
-
                                                         </div>
-                                                    </div>
-                                                    
-                                                    <div className="col-sm-6">
+
                                                         <div className="mb-4">
-                                                            <label htmlFor="deliveryCharge" className="form-label">Delivery Charge</label>
-                                                            <input type="text" className="form-control" name="deliveryCharge" id="deliveryCharge" placeholder="Delivery Charge" onChange={this.handleFormFieldsChange} value={deliveryCharge} />
-                                                            {deliveryChargeError && <span className='errorMsg'>{deliveryChargeError}</span>}
+                                                            <label htmlFor="address" className="form-label">Address</label>
+                                                            <input type="text" className="form-control" name="address" id="address"
+                                                                placeholder="Address" onChange={this.handleFormFieldsChange} value={address} />
+                                                            {addressError && <span className='errorMsg'>{addressError}</span>}
                                                         </div>
+
+                                                        <div className="mb-4">
+                                                            <label htmlFor="appartment" className="form-label">Appartment, suite, etc.</label>
+                                                            <input type="text" className="form-control" name="appartment" id="appartment"
+                                                                placeholder="Appartment" onChange={this.handleFormFieldsChange} value={appartment} />
+                                                            {appartmentError && <span className='errorMsg'>{appartmentError}</span>}
+                                                        </div>
+
+                                                        <div className="col-sm-4">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="city" className="form-label">City</label>
+                                                                <input type="text" className="form-control" name="city" id="city"
+                                                                    placeholder="City" onChange={this.handleFormFieldsChange} value={city} />
+                                                                {cityError && <span className='errorMsg'>{cityError}</span>}
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-sm-4">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="state" className="form-label">Select State</label>
+                                                                <div className="tom-select-custom">
+                                                                    <select className="js-select form-select tomselected" name="state"
+                                                                        id="state" onChange={this.handleFormFieldsChange} value={state} >
+                                                                        <option value='0'>Select State</option>
+                                                                        <option value='Andaman and Nicobar Islands'>Andaman and Nicobar Islands</option>
+                                                                        <option value='Andhra Pradesh'>Andhra Pradesh</option>
+                                                                        <option value='Arunachal Pradesh'>Arunachal Pradesh</option>
+                                                                        <option value='Assam'>Assam</option>
+                                                                        <option value='Bihar'>Bihar</option>
+                                                                        <option value='Chandigarh'>Chandigarh</option>
+                                                                        <option value='Chhattisgarh'>Chhattisgarh</option>
+                                                                        <option value='Dadra and Nagar Haveli'>Dadra and Nagar Haveli</option>
+                                                                        <option value='Daman and Diu'>Daman and Diu</option>
+                                                                        <option value='Delhi'>Delhi</option>
+                                                                        <option value='Goa'>Goa</option>
+                                                                        <option value='Gujarat'>Gujarat</option>
+                                                                        <option value='Haryana'>Haryana</option>
+                                                                        <option value='Himachal Pradesh'>Himachal Pradesh</option>
+                                                                        <option value='Jammu and Kashmir'>Jammu and Kashmir</option>
+                                                                        <option value='Jharkhand'>Jharkhand</option>
+                                                                        <option value='Karnataka'>Karnataka</option>
+                                                                        <option value='Kerala'>Kerala</option>
+                                                                        <option value='Lakshadweep'>Lakshadweep</option>
+                                                                        <option value='Madhya Pradesh'>Madhya Pradesh</option>
+                                                                        <option value='Maharashtra'>Maharashtra</option>
+                                                                        <option value='Manipur'>Manipur</option>
+                                                                        <option value='Meghalaya'>Meghalaya</option>
+                                                                        <option value='Mizoram'>Mizoram</option>
+                                                                        <option value='Nagaland'>Nagaland</option>
+                                                                        <option value='Odisha'>Odisha</option>
+                                                                        <option value='Puducherry'>Puducherry</option>
+                                                                        <option value='Punjab'>Punjab</option>
+                                                                        <option value='Rajasthan'>Rajasthan</option>
+                                                                        <option value='Sikkim'>Sikkim</option>
+                                                                        <option value='Tamil Nadu'>Tamil Nadu</option>
+                                                                        <option value='Telengana'>Telengana</option>
+                                                                        <option value='Tripura'>Tripura</option>
+                                                                        <option value='Uttar Pradesh'>Uttar Pradesh</option>
+                                                                        <option value='Uttarakhand'>Uttarakhand</option>
+                                                                        <option value='West Bengal'>West Bengal</option>
+                                                                    </select>
+                                                                </div>
+                                                                {stateError && <span className='errorMsg'>{stateError}</span>}
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-sm-4">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="pincode" className="form-label">Pincode</label>
+                                                                <input type="text" className="form-control" name="pincode" id="pincode"
+                                                                    placeholder="Pincode" onChange={this.handleFormFieldsChange} value={pincode} />
+                                                                {pincodeError && <span className='errorMsg'>{pincodeError}</span>}
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="mb-4">
+                                                            <label htmlFor="phone" className="form-label">Phone</label>
+                                                            <input type="text" className="form-control" name="phone" id="phone"
+                                                                placeholder="Phone" onChange={this.handleFormFieldsChange} value={phone} />
+                                                            {phoneError && <span className='errorMsg'>{phoneError}</span>}
+                                                        </div>
+
+                                                        <div className='text-end'><button className="btn btn-primary btn-sm">Save Data</button></div>
                                                     </div>
-                                                </div>
-
-                                                
-
-                                                <div className='text-end'><button className="btn btn-primary btn-sm">Save Data</button></div>
-                                            </form>
-                                        </div>
+                                                </form>
+                                            </div>
 
                                     </div>
                                 </div>

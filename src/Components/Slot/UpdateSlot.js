@@ -70,21 +70,21 @@ class UpdateSlot extends Component {
         console.log(this.state.fields["slotName"]);
         let path = window.location.pathname;
         let id = path.split('/')[2];
-        if(this.formValidate()) {
+        if (this.formValidate()) {
             let { slotName, slotTime } = this.state.fields;
             const formData = {
-                "collection" : "slots",
+                "collection": "slots",
                 "id": id,
                 "data": {
                     "slotName": slotName,
                     "slotTime": slotTime,
                 },
-                "meta" : {
-                    "duplicate" : [],
+                "meta": {
+                    "duplicate": [],
                     "multiInsert": false
                 }
             };
-        
+
             //console.log(formData)
             ApiServices.UpdateRecord(formData).then((response) => {
                 //console.log(response);
@@ -100,9 +100,9 @@ class UpdateSlot extends Component {
                     });
                 }
             })
-            .catch((error) => {
-            console.log("error", error);
-            });  
+                .catch((error) => {
+                    console.log("error", error);
+                });
         } else {
             console.log("Something went wrong! Please try again later.");
         }
@@ -128,11 +128,11 @@ class UpdateSlot extends Component {
                                     <li className="breadcrumb-item">
                                         <Link className="breadcrumb-link" to="/slots">Slots</Link>
                                     </li>
-                                    <li className="breadcrumb-item active" aria-current="page">Add Slot</li>
+                                    <li className="breadcrumb-item active" aria-current="page">Update Slot</li>
                                 </ol>
                             </nav>
 
-                            <h1 className="page-header-title">Add Slots</h1>
+                            <h1 className="page-header-title">Update Slots</h1>
                         </div>
 
                     </div>
