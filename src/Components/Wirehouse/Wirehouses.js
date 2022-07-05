@@ -264,12 +264,7 @@ class Zones extends Component {
                           SL No.#
                         </th>
                         <th>Location Name</th>
-                        <th>Country Region</th>
                         <th>Address</th>
-                        <th>Appartment</th>
-                        <th>City</th>
-                        <th>State</th>
-                        <th>Pincode</th>
                         <th>Phone</th>
                         <th>Action</th>
                       </tr>
@@ -283,18 +278,53 @@ class Zones extends Component {
                           {i+1}
                         </td>
                         <td >{item.locationName}</td>
-                        <td>{item.countryRegion}</td>
-                        <td>{item.address}</td>
-                        <td>{item.appartment}</td>
-                        <td>{item.city}</td>
-                        <td>{item.state}</td>
-                        <td>{item.pincode}</td>
+                        <td>{item.address1+' , '+item.address2}</td>
                         <td>{item.phone}</td>
                         <td>
-                          <Link to={`/updatewirehouse/${item._id}`}> <i className="bi bi-pencil-square text-success"> Edit</i> </Link>
-                          <span> / </span>
-                          <a href='' onClick={(event) => this.handleDeleteRecord(event, item._id)}><i className="bi bi-trash text-danger"> Delete</i></a>
-                        </td>
+                                  <div className="btn-group" role="group">
+                                    <Link
+                                      className="btn btn-white btn-sm"
+                                      to={`/updatewirehouse/${item._id}`}
+                                    >
+                                      {" "}
+                                      <i className="bi-pencil-fill me-1">
+                                        {" "}
+                                        Edit
+                                      </i>{" "}
+                                    </Link>
+
+                                    <div className="btn-group">
+                                      <button
+                                        type="button"
+                                        className="btn btn-white btn-icon btn-sm dropdown-toggle dropdown-toggle-empty"
+                                        id="productsEditDropdown1"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      ></button>
+
+                                      <div
+                                        className="dropdown-menu dropdown-menu-end mt-1"
+                                        aria-labelledby="productsEditDropdown1"
+                                      >
+                                        <a
+                                          className="dropdown-item"
+                                          href=""
+                                          onClick={(event) =>
+                                            this.handleDeleteRecord(
+                                              event,
+                                              item._id
+                                            )
+                                          }
+                                        >
+                                          <i className="bi-trash dropdown-item-icon">
+                                            {" "}
+                                          </i>{" "}
+                                          Delete
+                                        </a>                                        
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
 
                       </tr>
                       ): "Data Not Found"

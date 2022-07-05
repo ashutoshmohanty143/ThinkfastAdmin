@@ -108,7 +108,9 @@ class AddSlot extends Component {
 
                             <h1 className="page-header-title">Add Slots</h1>
                         </div>
-
+                        <div className="col-md-auto">
+                            <Link className="btn btn-primary" to="/slots">Back</Link>
+                        </div>
                     </div>
 
                 </div>

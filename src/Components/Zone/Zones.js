@@ -283,10 +283,50 @@ class Zones extends Component {
                         <td>{item.paymentStaus}</td>
                         <td>{item.deliveryCharge}</td>
                         <td>
-                          <Link to={`/updatezone/${item._id}`}> <i className="bi bi-pencil-square text-success"> Edit</i> </Link>
-                          <span> / </span>
-                          <a href='' onClick={(event) => this.handleDeleteRecord(event, item._id)}><i className="bi bi-trash text-danger"> Delete</i></a>
-                        </td>
+                                  <div className="btn-group" role="group">
+                                    <Link
+                                      className="btn btn-white btn-sm"
+                                      to={`/updatezone/${item._id}`}
+                                    >
+                                      {" "}
+                                      <i className="bi-pencil-fill me-1">
+                                        {" "}
+                                        Edit
+                                      </i>{" "}
+                                    </Link>
+
+                                    <div className="btn-group">
+                                      <button
+                                        type="button"
+                                        className="btn btn-white btn-icon btn-sm dropdown-toggle dropdown-toggle-empty"
+                                        id="productsEditDropdown1"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      ></button>
+
+                                      <div
+                                        className="dropdown-menu dropdown-menu-end mt-1"
+                                        aria-labelledby="productsEditDropdown1"
+                                      >
+                                        <a
+                                          className="dropdown-item"
+                                          href=""
+                                          onClick={(event) =>
+                                            this.handleDeleteRecord(
+                                              event,
+                                              item._id
+                                            )
+                                          }
+                                        >
+                                          <i className="bi-trash dropdown-item-icon">
+                                            {" "}
+                                          </i>{" "}
+                                          Delete
+                                        </a>                                        
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
 
                       </tr>
                       ): "Data Not Found"

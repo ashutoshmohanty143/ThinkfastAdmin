@@ -63,9 +63,12 @@ function App() {
             
             <Route exact path="/discounts" element={<Discounts />} />
             <Route exact path="/adddiscount" element={<AddDiscount />} />
+
             <Route exact path="/users" element={<Users />} />
             <Route exact path="/adduser" element={<AddUser />} />
+
             <Route exact path="/orders" element={<Orders />} />
+            
             <Route exact path="*" element={<PageNotFound />} /> 
         </Routes>
       </BrowserRouter>

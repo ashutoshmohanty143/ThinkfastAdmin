@@ -15,7 +15,8 @@ class AddWirehouse extends Component {
         super(props);        
         this.state = {
             fields: {},
-            formErrors: {}
+            formErrors: {},
+            multiOptionSlots: []
         }
     }
 
@@ -23,6 +24,16 @@ class AddWirehouse extends Component {
         let fields = this.state.fields;
         fields[event.target.name] = event.target.value;
         this.setState({ fields });  
+    }
+
+    handleMultiSelectFieldsChange = event => {
+        let value = Array.from(
+            event.target.selectedOptions,
+            (multiOptionSlots) => multiOptionSlots.value
+        );
+        this.setState({
+            multiOptionSlots: value
+        });
     }
 
     formValidate(){
@@ -38,6 +49,30 @@ class AddWirehouse extends Component {
             Errors["locationNameError"]  = '';
         } 
 
+        if (!fields['phone']) {
+            formIsValid = false;
+            Errors["phoneError"]  = 'Phone field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["phoneError"]  = '';
+        }
+
+        if (!fields["address1"]) {
+            formIsValid = false;
+            Errors["address1Error"]  = 'Address 1 field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["address1Error"]  = '';
+        }
+
+        if (!fields["address2"]) {
+            formIsValid = false;
+            Errors["address2Error"]  = 'Address 2 field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["address2Error"]  = '';
+        }
+
         var countryRegion = document.getElementById('countryRegion');
         var countryRegionValue = countryRegion.options[countryRegion.selectedIndex].value;
         if (countryRegionValue == 0) {
@@ -47,31 +82,7 @@ class AddWirehouse extends Component {
             formIsValid = true;
             Errors["countryRegionError"]  = '';
         }
-    
-        if (!fields["address"]) {
-            formIsValid = false;
-            Errors["addressError"]  = 'Address field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["addressError"]  = '';
-        }
 
-        if (!fields["appartment"]) {
-            formIsValid = false;
-            Errors["appartmentError"]  = 'Appartment field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["appartmentError"]  = '';
-        }
-
-        if (!fields["city"]) {
-            formIsValid = false;
-            Errors["cityError"]  = 'City field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["cityError"]  = '';
-        }
-        
         var state = document.getElementById('state');
         var stateValue = state.options[state.selectedIndex].value;
         if (stateValue == 0) {
@@ -81,7 +92,14 @@ class AddWirehouse extends Component {
             formIsValid = true;
             Errors["stateError"]  = '';
         }
-
+    
+        if (!fields["city"]) {
+            formIsValid = false;
+            Errors["cityError"]  = 'City field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["cityError"]  = '';
+        }
 
         if (!fields['pincode']) {
             formIsValid = false;
@@ -89,15 +107,7 @@ class AddWirehouse extends Component {
         } else {
             formIsValid = true;
             Errors["pincodeError"]  = '';
-        }
-
-        if (!fields['phone']) {
-            formIsValid = false;
-            Errors["phoneError"]  = 'Phone field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["phoneError"]  = '';
-        }
+        }       
 
         this.setState({ formErrors : Errors });
         return formIsValid;
@@ -106,18 +116,20 @@ class AddWirehouse extends Component {
     handleSubmit = event =>{
         event.preventDefault();
         if(this.formValidate()) {   
-            let { locationName, countryRegion, address, appartment, city, state, pincode, phone } = this.state.fields;
+            let { locationName, countryRegion, address1, address2, city, state, pincode, phone } = this.state.fields;
+            let multiOptionSlots = this.state.multiOptionSlots;
             const formData = {
                 "collection" : "wirehouses",
                 "data": {
                         "locationName": locationName,
                         "countryRegion": countryRegion,
-                        "address": address,
-                        "appartment": appartment,
+                        "address1": address1,
+                        "address2": address2,
                         "city": city,
                         "state": state,
                         "pincode": pincode,
-                        "phone": phone
+                        "phone": phone,
+                        "mapSlot": multiOptionSlots
                 },
                 "meta" : {
                     "duplicate" : ['locationName'],
@@ -141,10 +153,25 @@ class AddWirehouse extends Component {
     }
 
 
+    phoneInputHandler = e => {
+        if(!CommonMethods.phoneMasking(e)){
+            this.state.formErrors["phoneError"] = "Please Give Only Numbers";
+          } else {
+            this.state.formErrors["phoneError"] = "";
+          }
+    }
+
+    pincodeInputHandler = e => {
+        if(!CommonMethods.numberValidation(e)){
+            this.state.formErrors["pincodeError"] = "Please Give Only Numbers (Max 6)";
+          } else {
+            this.state.formErrors["pincodeError"] = "";
+          }
+    }
 
     render() {
-        const { locationNameError, countryRegionError, addressError,
-            appartmentError, cityError, stateError, pincodeError, phoneError } = this.state.formErrors;
+        const { locationNameError, countryRegionError, address1Error,
+            address2Error, cityError, stateError, pincodeError, phoneError, mapSlotError } = this.state.formErrors;
 
         return (
             <>
@@ -190,13 +217,41 @@ class AddWirehouse extends Component {
                                                     <div className="row">
                                                         <div className="col-sm-6">
                                                             <div className="mb-4">
-                                                                <label htmlFor="locationName" className="form-label">Location Name</label>
+                                                                <label htmlFor="locationName" className="form-label">Location / Wirehouse Name</label>
                                                                 <input type="text" className="form-control" name="locationName"
                                                                     id="locationName" placeholder="Location Name"
                                                                     onChange={this.handleFormFieldsChange} />
                                                                 {locationNameError && <span className='errorMsg'>{locationNameError}</span>}
                                                             </div>
                                                         </div>
+
+                                                        <div className="col-sm-6">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="phone" className="form-label">Phone</label>
+                                                                <input type="text" className="form-control" name="phone" id="phone" maxLength={12}
+                                                                    placeholder="Phone" onChange={this.handleFormFieldsChange} onInput={this.phoneInputHandler}/>
+                                                                {phoneError && <span className='errorMsg'>{phoneError}</span>}
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-sm-6">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="address1" className="form-label">Address 1</label>
+                                                                <textarea rows={3} className="form-control" name="address1" id="address1"
+                                                                    placeholder="Address 1" onChange={this.handleFormFieldsChange} ></textarea>
+                                                                {address1Error && <span className='errorMsg'>{address1Error}</span>}
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-sm-6">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="address2" className="form-label">Address 2</label>
+                                                                <textarea rows={3} className="form-control" name="address2" id="address2"
+                                                                    placeholder="Address 2" onChange={this.handleFormFieldsChange} ></textarea>
+                                                                {address2Error && <span className='errorMsg'>{address2Error}</span>}
+                                                            </div>
+                                                        </div>
+                                                        
 
                                                         <div className="col-sm-6">
                                                             <div className="mb-4">
@@ -212,30 +267,7 @@ class AddWirehouse extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="mb-4">
-                                                            <label htmlFor="address" className="form-label">Address</label>
-                                                            <input type="text" className="form-control" name="address" id="address"
-                                                                placeholder="Address" onChange={this.handleFormFieldsChange} />
-                                                            {addressError && <span className='errorMsg'>{addressError}</span>}
-                                                        </div>
-
-                                                        <div className="mb-4">
-                                                            <label htmlFor="appartment" className="form-label">Appartment, suite, etc.</label>
-                                                            <input type="text" className="form-control" name="appartment" id="appartment"
-                                                                placeholder="Appartment" onChange={this.handleFormFieldsChange} />
-                                                            {appartmentError && <span className='errorMsg'>{appartmentError}</span>}
-                                                        </div>
-
-                                                        <div className="col-sm-4">
-                                                            <div className="mb-4">
-                                                                <label htmlFor="city" className="form-label">City</label>
-                                                                <input type="text" className="form-control" name="city" id="city"
-                                                                    placeholder="City" onChange={this.handleFormFieldsChange} />
-                                                                {cityError && <span className='errorMsg'>{cityError}</span>}
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="col-sm-4">
+                                                        <div className="col-sm-6">
                                                             <div className="mb-4">
                                                                 <label htmlFor="state" className="form-label">Select State</label>
                                                                 <div className="tom-select-custom">
@@ -284,21 +316,49 @@ class AddWirehouse extends Component {
                                                             </div>
                                                         </div>
 
-                                                        <div className="col-sm-4">
+                                                        <div className="col-sm-6">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="city" className="form-label">City</label>
+                                                                <input type="text" className="form-control" name="city" id="city"
+                                                                    placeholder="City" onChange={this.handleFormFieldsChange} />
+                                                                {cityError && <span className='errorMsg'>{cityError}</span>}
+                                                            </div>
+                                                        </div>
+
+                                                        
+
+                                                        <div className="col-sm-6">
                                                             <div className="mb-4">
                                                                 <label htmlFor="pincode" className="form-label">Pincode</label>
                                                                 <input type="text" className="form-control" name="pincode" id="pincode"
-                                                                    placeholder="Pincode" onChange={this.handleFormFieldsChange} />
+                                                                    placeholder="Pincode" onChange={this.handleFormFieldsChange} maxLength={6} 
+                                                                    onInput={this.pincodeInputHandler} />
                                                                 {pincodeError && <span className='errorMsg'>{pincodeError}</span>}
                                                             </div>
                                                         </div>
 
-                                                        <div className="mb-4">
-                                                            <label htmlFor="phone" className="form-label">Phone</label>
-                                                            <input type="text" className="form-control" name="phone" id="phone"
-                                                                placeholder="Phone" onChange={this.handleFormFieldsChange} />
-                                                            {phoneError && <span className='errorMsg'>{phoneError}</span>}
+
+                                                        <div className="col-sm-6">
+                                                            <div className="mb-4">
+                                                                <label htmlFor="mapSlot" className="form-label">Map Slot</label>
+                                                                <div className="tom-select-custom tom-select-custom-with-tags">
+                                                                    <select className="js-select form-select" autoComplete="off" multiple 
+                                                                        onChange={this.handleMultiSelectFieldsChange} name="mapSlot" id="mapSlot"
+                                                                        data-hs-tom-select-options='{"placeholder": "Select a slot..."}'
+                                                                        value={this.state.multiOptionSlots}>
+                                                                        {/* <option value="0">Select a slot</option> */}
+                                                                        <option value="9 AM - 11 AM">9 AM - 11 AM</option>
+                                                                        <option value="11 AM - 1 PM">11 AM - 1 PM</option>
+                                                                        <option value="1 PM - 3 PM">1 PM - 3 PM</option>
+                                                                        <option value="3 PM - 5 PM">3 PM - 5 PM</option>
+                                                                        <option value="5 PM - 7 PM">5 PM - 7 PM</option>
+                                                                    </select>
+                                                                </div>
+                                                                {mapSlotError && <span className='errorMsg'>{mapSlotError}</span>}
+                                                            </div>
                                                         </div>
+
+                                                        
 
                                                         <div className='text-end'><button className="btn btn-primary btn-sm">Add</button></div>
                                                     </div>

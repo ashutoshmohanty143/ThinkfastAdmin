@@ -248,7 +248,7 @@ export default class Orders extends Component {
                         <td>
                           <a href='javasrcipt:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
                           <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
+                          <a href='' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>
@@ -276,9 +276,9 @@ export default class Orders extends Component {
                         <td>+1-752-235-2353</td>
                         <td>United States</td>
                         <td>
-                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                          <a href=''><i className="bi bi-pencil-square text-success"> Edit</i></a>
                           <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
+                          <a href='' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>
@@ -306,9 +306,9 @@ export default class Orders extends Component {
                         <td>+1-235-364-2611</td>
                         <td>United States</td>
                         <td>
-                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                          <a href=''><i className="bi bi-pencil-square text-success"> Edit</i></a>
                           <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
+                          <a href='' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>
@@ -336,9 +336,9 @@ export default class Orders extends Component {
                         <td>+1-743-632-9574</td>
                         <td>Argentina</td>
                         <td>
-                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                          <a href=''><i className="bi bi-pencil-square text-success"> Edit</i></a>
                           <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
+                          <a href='' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>
@@ -366,9 +366,9 @@ export default class Orders extends Component {
                         <td>+1-854-235-9755</td>
                         <td>Austria</td>
                         <td>
-                          <a href='javascript:void(0)'><i className="bi bi-pencil-square text-success"> Edit</i></a>
+                          <a href=''><i className="bi bi-pencil-square text-success"> Edit</i></a>
                           <span> / </span>
-                          <a href='javascript:void(0)' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
+                          <a href='' onClick={this.handleDeleteRecord}><i className="bi bi-trash text-danger"> Delete</i></a>
                         </td>
 
                       </tr>

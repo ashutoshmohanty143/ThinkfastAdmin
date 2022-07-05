@@ -16,21 +16,29 @@ class AddZone extends Component {
         super(props);        
         this.state = {
             fields: {},
-            formErrors: {}
+            formErrors: {},
+            prev : false
         }
     }
 
     handleFormFieldsChange = event => {
         let fields = this.state.fields;
         fields[event.target.name] = event.target.value;
+        this.setState({ fields });
 
-        if (event.target.value == "Free") {
-            fields['deliveryCharge'] = "";
-        } else if(event.target.value == "Paid"){
-            fields['deliveryCharge'] = "";
+
+
+        var selectPaymentStaus = document.getElementById('paymentStaus');
+        var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
+        if (selectPaymentStausValue == "Free") {
+            // fields['deliveryCharge'] = "";
+            document.getElementById('strikeDC').style.textDecoration = "line-through";
+        } else {
+            // fields['deliveryCharge'] = "";
+            document.getElementById('strikeDC').style.textDecoration = "none";
         }
 
-        this.setState({ fields });  
+          
     }
 
     formValidate(){
@@ -116,18 +124,31 @@ class AddZone extends Component {
           }        
     }
 
+    showPrev = e => {
+        e.preventDefault();
+        this.setState({ prev : true });
+        var { paymentStaus } = this.state.fields;
+        if(paymentStaus == 'Free'){
+            document.getElementById('strikeDC').style.textDecoration = "line-through"; 
+        }
+
+        if(paymentStaus == 'Paid') {
+            document.getElementById('strikeDC').style.textDecoration = "none";
+        }
+
+    }
+
 
 
     render() {
         const { zoneNameError, shippingTimeError, paymentStausError,deliveryChargeError }  = this.state.formErrors;
-        const { paymentStaus } = this.state.fields;
-        //var test = "d-none";
+        var { paymentStaus, deliveryCharge } = this.state.fields;
         if(paymentStaus == undefined || paymentStaus == 0) {
             var test = "d-none";
         } else{
             var test = "";
-        }
-        //console.log(paymentStaus);
+        }    
+        
     return (
         <>
         {sessionStorage.getItem('userToken') ?
@@ -177,11 +198,11 @@ class AddZone extends Component {
                                                             <div className="tom-select-custom">
                                                                 <select className="js-select form-select tomselected" name="zoneName" id="zoneName" onChange={this.handleFormFieldsChange} >
                                                                     <option value="0">Select your zone</option>
-                                                                    <option value="Zone A">Zone A</option>
-                                                                    <option value="Zone B">Zone B</option>
-                                                                    <option value="Zone C">Zone C</option>
-                                                                    <option value="Zone D">Zone D</option>
-                                                                    <option value="Zone E">Zone E</option>
+                                                                    <option value="Zone A">Zone A ( Within the city )</option>
+                                                                    <option value="Zone B">Zone B ( Within the state )</option>
+                                                                    <option value="Zone C">Zone C ( Metro 2 Metro )</option>
+                                                                    <option value="Zone D">Zone D ( Rest of India )</option>
+                                                                    <option value="Zone E">Zone E ( J&K Northeast )</option>
                                                                 </select>
                                                             </div>
                                                             {zoneNameError && <span className='errorMsg'>{zoneNameError}</span>}
@@ -190,10 +211,21 @@ class AddZone extends Component {
 
                                                     <div className="col-sm-6">
                                                         <div className="mb-4">
-                                                            <label htmlFor="shippingTime" className="form-label">Shipping Time</label>
+                                                            <label htmlFor="shippingTime" className="form-label">Shipping Time (In hrs)</label>
 
-                                                            <input type="text" className="form-control" name="shippingTime" id="shippingTime" placeholder="Shipping Time" onChange={this.handleFormFieldsChange} />
-
+                                                            {/* <input type="text" className="form-control" name="shippingTime" id="shippingTime" 
+                                                            placeholder="Shipping Time" onChange={this.handleFormFieldsChange} /> */}
+                                                            <div className="tom-select-custom">
+                                                                <select className="js-select form-select tomselected" name="shippingTime" id="shippingTime" 
+                                                                                                    onChange={this.handleFormFieldsChange} >
+                                                                    <option value="0">Select shipping time</option>
+                                                                    <option value="0-24">0-24</option>
+                                                                    <option value="24-48">24-48</option>
+                                                                    <option value="48-72">48-72</option>
+                                                                    <option value="72-120">72-120</option>
+                                                                    <option value="120-148">120-148</option>
+                                                                </select>
+                                                            </div>
                                                             {shippingTimeError && <span className='errorMsg'>{shippingTimeError}</span>}
                                                         </div>
                                                     </div>
@@ -218,14 +250,18 @@ class AddZone extends Component {
                                                     </div>
                                                     
                                                     <div className={`col-sm-6 ${test}`}>
-                                                        <div className="mb-4">
+                                                        <div className="mb-2">
                                                             <label htmlFor="deliveryCharge" className="form-label">Delivery Charge</label>
-                                                            <input type="text" className="form-control" name="deliveryCharge" id="deliveryCharge" placeholder="Delivery Charge" onChange={this.handleFormFieldsChange} onInput={ this.deliveryChargeNumberValidate } />
+                                                            <input type="text" className="form-control" name="deliveryCharge" 
+                                                            id="deliveryCharge" placeholder="Delivery Charge" 
+                                                            onChange={this.handleFormFieldsChange} onInput={ this.deliveryChargeNumberValidate } />
                                                             {deliveryChargeError && <span className='errorMsg'>{deliveryChargeError}</span>}
                                                         </div>
+                                                        <a href='' className='float-start mb-2' onClick={this.showPrev}>Preview</a>
+                                                        <span className={`float-end ${this.state.prev ? "" : "d-none"}`}><b>{paymentStaus+' '}</b><span id='strikeDC'>{`Rs ${deliveryCharge}`}</span></span>
                                                     </div>
                                                 </div>
-                                                <div className='text-end'><button className="btn btn-primary btn-sm">Add</button></div>
+                                                <div className='text-end mt-4'><button className="btn btn-primary btn-sm">Add</button></div>
                                             </form>
                                         </div>
 

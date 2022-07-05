@@ -7,6 +7,7 @@ import SideNav from '../Common/SideNav';
 import Footer from '../Common/Footer';
 
 import ApiServices from "../Common/ApiServices";
+import CommonMethods from '../Common/CommonMethods';
 import { WithRouter } from '../Common/WithRouter';
 
 class UpdateZone extends Component {
@@ -14,7 +15,8 @@ class UpdateZone extends Component {
         super(props);        
         this.state = {
             fields: {},
-            formErrors: {}
+            formErrors: {},
+            multiOptionSlots: []
         }
     }
 
@@ -25,6 +27,7 @@ class UpdateZone extends Component {
         ApiServices.GetSingleRecordById(id,collectionName)
         .then((response) => {
             this.setState({ fields : response.data.data });
+            this.setState({ multiOptionSlots : response.data.data.mapSlot });
         })
       .catch((error) => {
             console.log("error", error);
@@ -35,6 +38,16 @@ class UpdateZone extends Component {
         let fields = this.state.fields;
         fields[event.target.name] = event.target.value;
         this.setState({ fields });  
+    }
+
+    handleMultiSelectFieldsChange = event => {
+        let value = Array.from(
+            event.target.selectedOptions,
+            (multiOptionSlots) => multiOptionSlots.value
+        );
+        this.setState({
+            multiOptionSlots: value
+        });
     }
 
     formValidate(){
@@ -50,6 +63,30 @@ class UpdateZone extends Component {
             Errors["locationNameError"]  = '';
         } 
 
+        if (!fields['phone']) {
+            formIsValid = false;
+            Errors["phoneError"]  = 'Phone field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["phoneError"]  = '';
+        }
+
+        if (!fields["address1"]) {
+            formIsValid = false;
+            Errors["address1Error"]  = 'Address 1 field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["address1Error"]  = '';
+        }
+
+        if (!fields["address2"]) {
+            formIsValid = false;
+            Errors["address2Error"]  = 'Address 2 field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["address2Error"]  = '';
+        }
+
         var countryRegion = document.getElementById('countryRegion');
         var countryRegionValue = countryRegion.options[countryRegion.selectedIndex].value;
         if (countryRegionValue == 0) {
@@ -59,31 +96,7 @@ class UpdateZone extends Component {
             formIsValid = true;
             Errors["countryRegionError"]  = '';
         }
-    
-        if (!fields["address"]) {
-            formIsValid = false;
-            Errors["addressError"]  = 'Address field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["addressError"]  = '';
-        }
 
-        if (!fields["appartment"]) {
-            formIsValid = false;
-            Errors["appartmentError"]  = 'Appartment field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["appartmentError"]  = '';
-        }
-
-        if (!fields["city"]) {
-            formIsValid = false;
-            Errors["cityError"]  = 'City field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["cityError"]  = '';
-        }
-        
         var state = document.getElementById('state');
         var stateValue = state.options[state.selectedIndex].value;
         if (stateValue == 0) {
@@ -93,7 +106,14 @@ class UpdateZone extends Component {
             formIsValid = true;
             Errors["stateError"]  = '';
         }
-
+    
+        if (!fields["city"]) {
+            formIsValid = false;
+            Errors["cityError"]  = 'City field cannot be empty';
+        } else {
+            formIsValid = true;
+            Errors["cityError"]  = '';
+        }
 
         if (!fields['pincode']) {
             formIsValid = false;
@@ -101,15 +121,7 @@ class UpdateZone extends Component {
         } else {
             formIsValid = true;
             Errors["pincodeError"]  = '';
-        }
-
-        if (!fields['phone']) {
-            formIsValid = false;
-            Errors["phoneError"]  = 'Phone field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["phoneError"]  = '';
-        }
+        }       
 
         this.setState({ formErrors : Errors });
         return formIsValid;
@@ -118,7 +130,8 @@ class UpdateZone extends Component {
     handleSubmit = event => {
         event.preventDefault();
         if (this.formValidate()) {
-            let { locationName, countryRegion, address, appartment, city, state, pincode, phone } = this.state.fields;
+            let { locationName, countryRegion, address1, address2, city, state, pincode, phone } = this.state.fields;
+            let multiOptionSlots = this.state.multiOptionSlots;
             let path = window.location.pathname;
             let id = path.split('/')[2];
             const formData = {
@@ -127,12 +140,13 @@ class UpdateZone extends Component {
                 "data": {
                     "locationName": locationName,
                     "countryRegion": countryRegion,
-                    "address": address,
-                    "appartment": appartment,
+                    "address1": address1,
+                    "address2": address2,
                     "city": city,
                     "state": state,
                     "pincode": pincode,
-                    "phone": phone
+                    "phone": phone,
+                    "mapSlot": multiOptionSlots
                 },
                 "meta": {
                     "duplicate": []
@@ -160,11 +174,28 @@ class UpdateZone extends Component {
         }
     } 
 
+    phoneInputHandler = e => {
+        if(!CommonMethods.phoneMasking(e)){
+            this.state.formErrors["phoneError"] = "Please Give Only Numbers";
+          } else {
+            this.state.formErrors["phoneError"] = "";
+          }
+    }
+
+    pincodeInputHandler = e => {
+        if(!CommonMethods.numberValidation(e)){
+            this.state.formErrors["pincodeError"] = "Please Give Only Numbers (Max 6)";
+          } else {
+            this.state.formErrors["pincodeError"] = "";
+          }
+    }
+
 
     render() {
-        let { locationName, countryRegion, address, appartment, city, state, pincode, phone } = this.state.fields;
-        const { locationNameError, countryRegionError, addressError,
-            appartmentError, cityError, stateError, pincodeError, phoneError } = this.state.formErrors;
+        let { locationName, countryRegion, address1, address2, city, state, pincode, phone } = this.state.fields;
+        let multiOptionSlots = this.state.multiOptionSlots;
+        const { locationNameError, countryRegionError, address1Error,
+            address2Error, cityError, stateError, pincodeError, phoneError, mapSlotError } = this.state.formErrors;
     return (
         <>
         {sessionStorage.getItem('userToken') ?
@@ -204,124 +235,161 @@ class UpdateZone extends Component {
                                         </div>
                                         
                                         <div className="card-body">
-                                                <form method='post' onSubmit={this.handleSubmit}>
+                                            <form method='post' onSubmit={this.handleSubmit}>
 
-                                                    <div className="row">
-                                                        <div className="col-sm-6">
-                                                            <div className="mb-4">
-                                                                <label htmlFor="locationName" className="form-label">Location Name</label>
-                                                                <input type="text" className="form-control" name="locationName"
-                                                                    id="locationName" placeholder="Location Name"
-                                                                    onChange={this.handleFormFieldsChange} value={locationName}/>
-                                                                {locationNameError && <span className='errorMsg'>{locationNameError}</span>}
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="col-sm-6">
-                                                            <div className="mb-4">
-                                                                <label htmlFor="countryRegion" className="form-label">Country/region</label>
-                                                                <div className="tom-select-custom">
-                                                                    <select className="js-select form-select tomselected" name="countryRegion"
-                                                                        id="countryRegion" onChange={this.handleFormFieldsChange} value={countryRegion}>
-                                                                        <option value='0'>Select Country</option>
-                                                                        <option value='India'>India</option>
-                                                                    </select>
-                                                                </div>
-                                                                {countryRegionError && <span className='errorMsg'>{countryRegionError}</span>}
-                                                            </div>
-                                                        </div>
-
+                                                <div className="row">
+                                                    <div className="col-sm-6">
                                                         <div className="mb-4">
-                                                            <label htmlFor="address" className="form-label">Address</label>
-                                                            <input type="text" className="form-control" name="address" id="address"
-                                                                placeholder="Address" onChange={this.handleFormFieldsChange} value={address} />
-                                                            {addressError && <span className='errorMsg'>{addressError}</span>}
+                                                            <label htmlFor="locationName" className="form-label">Location / Wirehouse Name</label>
+                                                            <input type="text" className="form-control" name="locationName"
+                                                                id="locationName" placeholder="Location Name"
+                                                                onChange={this.handleFormFieldsChange} value={locationName} />
+                                                            {locationNameError && <span className='errorMsg'>{locationNameError}</span>}
                                                         </div>
+                                                    </div>
 
-                                                        <div className="mb-4">
-                                                            <label htmlFor="appartment" className="form-label">Appartment, suite, etc.</label>
-                                                            <input type="text" className="form-control" name="appartment" id="appartment"
-                                                                placeholder="Appartment" onChange={this.handleFormFieldsChange} value={appartment} />
-                                                            {appartmentError && <span className='errorMsg'>{appartmentError}</span>}
-                                                        </div>
-
-                                                        <div className="col-sm-4">
-                                                            <div className="mb-4">
-                                                                <label htmlFor="city" className="form-label">City</label>
-                                                                <input type="text" className="form-control" name="city" id="city"
-                                                                    placeholder="City" onChange={this.handleFormFieldsChange} value={city} />
-                                                                {cityError && <span className='errorMsg'>{cityError}</span>}
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="col-sm-4">
-                                                            <div className="mb-4">
-                                                                <label htmlFor="state" className="form-label">Select State</label>
-                                                                <div className="tom-select-custom">
-                                                                    <select className="js-select form-select tomselected" name="state"
-                                                                        id="state" onChange={this.handleFormFieldsChange} value={state} >
-                                                                        <option value='0'>Select State</option>
-                                                                        <option value='Andaman and Nicobar Islands'>Andaman and Nicobar Islands</option>
-                                                                        <option value='Andhra Pradesh'>Andhra Pradesh</option>
-                                                                        <option value='Arunachal Pradesh'>Arunachal Pradesh</option>
-                                                                        <option value='Assam'>Assam</option>
-                                                                        <option value='Bihar'>Bihar</option>
-                                                                        <option value='Chandigarh'>Chandigarh</option>
-                                                                        <option value='Chhattisgarh'>Chhattisgarh</option>
-                                                                        <option value='Dadra and Nagar Haveli'>Dadra and Nagar Haveli</option>
-                                                                        <option value='Daman and Diu'>Daman and Diu</option>
-                                                                        <option value='Delhi'>Delhi</option>
-                                                                        <option value='Goa'>Goa</option>
-                                                                        <option value='Gujarat'>Gujarat</option>
-                                                                        <option value='Haryana'>Haryana</option>
-                                                                        <option value='Himachal Pradesh'>Himachal Pradesh</option>
-                                                                        <option value='Jammu and Kashmir'>Jammu and Kashmir</option>
-                                                                        <option value='Jharkhand'>Jharkhand</option>
-                                                                        <option value='Karnataka'>Karnataka</option>
-                                                                        <option value='Kerala'>Kerala</option>
-                                                                        <option value='Lakshadweep'>Lakshadweep</option>
-                                                                        <option value='Madhya Pradesh'>Madhya Pradesh</option>
-                                                                        <option value='Maharashtra'>Maharashtra</option>
-                                                                        <option value='Manipur'>Manipur</option>
-                                                                        <option value='Meghalaya'>Meghalaya</option>
-                                                                        <option value='Mizoram'>Mizoram</option>
-                                                                        <option value='Nagaland'>Nagaland</option>
-                                                                        <option value='Odisha'>Odisha</option>
-                                                                        <option value='Puducherry'>Puducherry</option>
-                                                                        <option value='Punjab'>Punjab</option>
-                                                                        <option value='Rajasthan'>Rajasthan</option>
-                                                                        <option value='Sikkim'>Sikkim</option>
-                                                                        <option value='Tamil Nadu'>Tamil Nadu</option>
-                                                                        <option value='Telengana'>Telengana</option>
-                                                                        <option value='Tripura'>Tripura</option>
-                                                                        <option value='Uttar Pradesh'>Uttar Pradesh</option>
-                                                                        <option value='Uttarakhand'>Uttarakhand</option>
-                                                                        <option value='West Bengal'>West Bengal</option>
-                                                                    </select>
-                                                                </div>
-                                                                {stateError && <span className='errorMsg'>{stateError}</span>}
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="col-sm-4">
-                                                            <div className="mb-4">
-                                                                <label htmlFor="pincode" className="form-label">Pincode</label>
-                                                                <input type="text" className="form-control" name="pincode" id="pincode"
-                                                                    placeholder="Pincode" onChange={this.handleFormFieldsChange} value={pincode} />
-                                                                {pincodeError && <span className='errorMsg'>{pincodeError}</span>}
-                                                            </div>
-                                                        </div>
-
+                                                    <div className="col-sm-6">
                                                         <div className="mb-4">
                                                             <label htmlFor="phone" className="form-label">Phone</label>
-                                                            <input type="text" className="form-control" name="phone" id="phone"
-                                                                placeholder="Phone" onChange={this.handleFormFieldsChange} value={phone} />
+                                                            <input type="text" className="form-control" name="phone" id="phone" maxLength={12}
+                                                                placeholder="Phone" onChange={this.handleFormFieldsChange} 
+                                                                onInput={this.phoneInputHandler} value={phone} />
                                                             {phoneError && <span className='errorMsg'>{phoneError}</span>}
                                                         </div>
-
-                                                        <div className='text-end'><button className="btn btn-primary btn-sm">Save Data</button></div>
                                                     </div>
-                                                </form>
+
+                                                    <div className="col-sm-6">
+                                                        <div className="mb-4">
+                                                            <label htmlFor="address1" className="form-label">Address 1</label>
+                                                            <textarea rows={3} className="form-control" name="address1" id="address1"
+                                                                placeholder="Address 1" onChange={this.handleFormFieldsChange} 
+                                                                value={address1} ></textarea>
+                                                            {address1Error && <span className='errorMsg'>{address1Error}</span>}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="col-sm-6">
+                                                        <div className="mb-4">
+                                                            <label htmlFor="address2" className="form-label">Address 2</label>
+                                                            <textarea rows={3} className="form-control" name="address2" id="address2"
+                                                                placeholder="Address 2" onChange={this.handleFormFieldsChange} 
+                                                                value={address2} ></textarea>
+                                                            {address2Error && <span className='errorMsg'>{address2Error}</span>}
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div className="col-sm-6">
+                                                        <div className="mb-4">
+                                                            <label htmlFor="countryRegion" className="form-label">Country/region</label>
+                                                            <div className="tom-select-custom">
+                                                                <select className="js-select form-select tomselected" name="countryRegion"
+                                                                    id="countryRegion" onChange={this.handleFormFieldsChange} 
+                                                                    value={countryRegion} >
+                                                                    <option value='0'>Select Country</option>
+                                                                    <option value='India'>India</option>
+                                                                </select>
+                                                            </div>
+                                                            {countryRegionError && <span className='errorMsg'>{countryRegionError}</span>}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="col-sm-6">
+                                                        <div className="mb-4">
+                                                            <label htmlFor="state" className="form-label">Select State</label>
+                                                            <div className="tom-select-custom">
+                                                                <select className="js-select form-select tomselected" name="state"
+                                                                    id="state" onChange={this.handleFormFieldsChange} value={state} >
+                                                                    <option value='0'>Select State</option>
+                                                                    <option value='Andaman and Nicobar Islands'>Andaman and Nicobar Islands</option>
+                                                                    <option value='Andhra Pradesh'>Andhra Pradesh</option>
+                                                                    <option value='Arunachal Pradesh'>Arunachal Pradesh</option>
+                                                                    <option value='Assam'>Assam</option>
+                                                                    <option value='Bihar'>Bihar</option>
+                                                                    <option value='Chandigarh'>Chandigarh</option>
+                                                                    <option value='Chhattisgarh'>Chhattisgarh</option>
+                                                                    <option value='Dadra and Nagar Haveli'>Dadra and Nagar Haveli</option>
+                                                                    <option value='Daman and Diu'>Daman and Diu</option>
+                                                                    <option value='Delhi'>Delhi</option>
+                                                                    <option value='Goa'>Goa</option>
+                                                                    <option value='Gujarat'>Gujarat</option>
+                                                                    <option value='Haryana'>Haryana</option>
+                                                                    <option value='Himachal Pradesh'>Himachal Pradesh</option>
+                                                                    <option value='Jammu and Kashmir'>Jammu and Kashmir</option>
+                                                                    <option value='Jharkhand'>Jharkhand</option>
+                                                                    <option value='Karnataka'>Karnataka</option>
+                                                                    <option value='Kerala'>Kerala</option>
+                                                                    <option value='Lakshadweep'>Lakshadweep</option>
+                                                                    <option value='Madhya Pradesh'>Madhya Pradesh</option>
+                                                                    <option value='Maharashtra'>Maharashtra</option>
+                                                                    <option value='Manipur'>Manipur</option>
+                                                                    <option value='Meghalaya'>Meghalaya</option>
+                                                                    <option value='Mizoram'>Mizoram</option>
+                                                                    <option value='Nagaland'>Nagaland</option>
+                                                                    <option value='Odisha'>Odisha</option>
+                                                                    <option value='Puducherry'>Puducherry</option>
+                                                                    <option value='Punjab'>Punjab</option>
+                                                                    <option value='Rajasthan'>Rajasthan</option>
+                                                                    <option value='Sikkim'>Sikkim</option>
+                                                                    <option value='Tamil Nadu'>Tamil Nadu</option>
+                                                                    <option value='Telengana'>Telengana</option>
+                                                                    <option value='Tripura'>Tripura</option>
+                                                                    <option value='Uttar Pradesh'>Uttar Pradesh</option>
+                                                                    <option value='Uttarakhand'>Uttarakhand</option>
+                                                                    <option value='West Bengal'>West Bengal</option>
+                                                                </select>
+                                                            </div>
+                                                            {stateError && <span className='errorMsg'>{stateError}</span>}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="col-sm-6">
+                                                        <div className="mb-4">
+                                                            <label htmlFor="city" className="form-label">City</label>
+                                                            <input type="text" className="form-control" name="city" id="city"
+                                                                placeholder="City" onChange={this.handleFormFieldsChange} value={city} />
+                                                            {cityError && <span className='errorMsg'>{cityError}</span>}
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div className="col-sm-6">
+                                                        <div className="mb-4">
+                                                            <label htmlFor="pincode" className="form-label">Pincode</label>
+                                                            <input type="text" className="form-control" name="pincode" id="pincode"
+                                                                placeholder="Pincode" onChange={this.handleFormFieldsChange} maxLength={6}
+                                                                onInput={this.pincodeInputHandler} value={pincode} />
+                                                            {pincodeError && <span className='errorMsg'>{pincodeError}</span>}
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div className="col-sm-6">
+                                                        <div className="mb-4">
+                                                            <label htmlFor="mapSlot" className="form-label">Map Slot</label>
+                                                            <div className="tom-select-custom tom-select-custom-with-tags">
+                                                                <select className="js-select form-select" autoComplete="off" multiple
+                                                                    onChange={this.handleMultiSelectFieldsChange} name="mapSlot" id="mapSlot"
+                                                                    data-hs-tom-select-options='{"placeholder": "Select a slot..."}'
+                                                                    value={multiOptionSlots}>
+                                                                    {/* <option value="0">Select a slot</option> */}
+                                                                    <option value="9 AM - 11 AM">9 AM - 11 AM</option>
+                                                                    <option value="11 AM - 1 PM">11 AM - 1 PM</option>
+                                                                    <option value="1 PM - 3 PM">1 PM - 3 PM</option>
+                                                                    <option value="3 PM - 5 PM">3 PM - 5 PM</option>
+                                                                    <option value="5 PM - 7 PM">5 PM - 7 PM</option>
+                                                                </select>
+                                                            </div>
+                                                            {mapSlotError && <span className='errorMsg'>{mapSlotError}</span>}
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div className='text-end'><button className="btn btn-primary btn-sm">Save</button></div>
+                                                </div>
+                                            </form>
                                             </div>
 
                                     </div>

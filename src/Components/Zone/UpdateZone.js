@@ -230,7 +230,7 @@ class UpdateZone extends Component {
 
                                                 
 
-                                                <div className='text-end'><button className="btn btn-primary btn-sm">Save Data</button></div>
+                                                <div className='text-end'><button className="btn btn-primary btn-sm">Save</button></div>
                                             </form>
                                         </div>
 
