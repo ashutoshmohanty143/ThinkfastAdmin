@@ -1,11 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert';
-
-import Header from '../Common/Header';
-import SideNav from '../Common/SideNav';
-import Footer from '../Common/Footer';
-
 import ApiServices from '../Common/ApiServices';
 import { WithRouter } from '../Common/WithRouter';
 
@@ -66,11 +61,6 @@ class Slots extends Component {
     const { slotLists } = this.state;
     return (
         <>
-        {sessionStorage.getItem('userToken') ?
-          <div>
-            <Header />
-            <SideNav />
-            <main id="content" role="main" className="main">
               <div className="content container-fluid">
                 <div className="page-header">
                   <div className="row align-items-center mb-3">
@@ -371,10 +361,6 @@ class Slots extends Component {
   
                 </div>
               </div>
-            </main>
-            <Footer />
-          </div>
-          : window.location.href= "/"}
       </>
     )
   }

@@ -1,8 +1,15 @@
 import React, { Component } from 'react'
 
+import Header from './Common/Header';
+import SideNav from './Common/SideNav';
+import Footer from './Common/Footer';
+
 export default class Home extends Component {
   render() {
     return (
+        <>
+        <Header />
+        <SideNav />
         <main id="content" role="main" className="main">
         <div className="content container-fluid">
 
@@ -612,6 +619,8 @@ export default class Home extends Component {
             </div>
         </div>
         </main>
+        <Footer />
+        </>
     )
   }
 }

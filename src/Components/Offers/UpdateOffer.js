@@ -5,11 +5,6 @@ import swal from 'sweetalert';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import ApiServices from "../Common/ApiServices";
-
-import Header from '../Common/Header';
-import SideNav from '../Common/SideNav';
-import Footer from '../Common/Footer';
-
 import { WithRouter } from '../Common/WithRouter';
 
 class UpdateOffer extends Component {
@@ -117,12 +112,6 @@ render() {
     
     return (
         <>
-{sessionStorage.getItem('userToken') ?
-    <div>
-        <Header />
-        <SideNav />
-        <main id="content" role="main" className="main">
-
             <div className="content container-fluid">
                 <div className="page-header">
                     <div className="row align-items-center">
@@ -191,11 +180,6 @@ render() {
 
 
             </div>
-
-
-        </main>
-        <Footer />
-    </div> : window.location.href = "/"}
         </>
     )
 }

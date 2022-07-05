@@ -7,13 +7,6 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import ApiServices from '../Common/ApiServices';
 import { WithRouter } from '../Common/WithRouter';
 
-import Header from '../Common/Header';
-import SideNav from '../Common/SideNav';
-import Footer from '../Common/Footer';
-
-//import { withRouter } from "react-router";
-
-
 class AddOffers extends Component {
     constructor(props) {
         super(props);        
@@ -23,11 +16,6 @@ class AddOffers extends Component {
             offerTitle: "",
             offerDescription: ""
         }
-    }
-
-    componentDidMount(){
-        // let id = this.props.match.params.id;
-        // console.log(id);
     }
 
     handleofferTitleFieldsChange = (event, editor) => {
@@ -84,7 +72,6 @@ class AddOffers extends Component {
             };
 
             ApiServices.AddRecord(formData).then(response => {
-                //console.log(response);
                 if(response.status == 200 && response.data.status == "success"){
                     swal("Thank you!", "Offer added successfully!!!", "success").then((value) => {
                         if(value){
@@ -92,7 +79,6 @@ class AddOffers extends Component {
                         }
                     });
                 }
-        
               }).catch(error => {
                 console.log("error", error)
               });
@@ -107,12 +93,6 @@ render() {
     const { offerTitleErr, offerDescriptionErr }  = this.state.formErorrs;
     return (
         <>
-{sessionStorage.getItem('userToken') ?
-    <div>
-        <Header />
-        <SideNav />
-        <main id="content" role="main" className="main">
-
             <div className="content container-fluid">
                 <div className="page-header">
                     <div className="row align-items-center">
@@ -143,15 +123,11 @@ render() {
                                 <h4 className="card-header-title">Offers Information</h4>
                             </div>
 
-
-
                             <div className="card-body">
                                 <form method='post' onSubmit={this.handleSubmit}>
 
                                     <div className="mb-4">
                                         <label htmlFor="offerTitle" className="form-label"> Title </label>
-                                        {/* <input type="text" className="form-control" name="offerTitle" id="offerTitle"
-                                            placeholder="Title" onChange={this.handleFormFieldsChange} /> */}
                                         <CKEditor
                                                 name="offerTitle" id="offerTitle" 
                                                 editor={ ClassicEditor }
@@ -164,9 +140,6 @@ render() {
 
                                     <div className='mb-4'>
                                         <label htmlFor="offerDescription" className="form-label"> Description </label>
-                                        {/* <textarea rows={6} className="form-control" name="offerDescription"
-                                            id="offerDescription" placeholder="Offer Description" 
-                                            onChange={this.handleFormFieldsChange} /> */}
                                         <CKEditor
                                                 name="offerDescription" id="offerDescription"
                                                 editor={ ClassicEditor }
@@ -187,11 +160,6 @@ render() {
 
 
             </div>
-
-
-        </main>
-        <Footer />
-    </div> : window.location.href = "/"}
         </>
     )
 }
@@ -199,4 +167,3 @@ render() {
 
 
 export default WithRouter(AddOffers);
-//export default AddOffers;

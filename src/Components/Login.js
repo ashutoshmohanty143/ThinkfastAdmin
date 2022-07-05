@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import { WithRouter } from './Common/WithRouter';
 import '../Common.css';
 
 class Login extends Component {
@@ -54,7 +55,7 @@ class Login extends Component {
         sessionStorage.setItem("userToken", response.data.data.accessToken);
         sessionStorage.setItem("userData", JSON.stringify(response.data.data));
         if (sessionStorage.getItem('userToken')) {
-          window.location.href = "/dashboard";
+            this.props.navigate('/dashboard');
         } else {
           console.log('error');
         }
@@ -75,9 +76,6 @@ class Login extends Component {
     const { emailErr, passwordErr } = this.state.formErrors;
     return (
       <>
-        {sessionStorage.getItem('userToken') ?
-          window.location.href = "/dashboard" :
-
           <div className="d-flex align-items-center min-h-100">
 
             <main id="content" role="main" className="main pt-0" style={{ paddingLeft: 0 }}>
@@ -231,10 +229,10 @@ class Login extends Component {
               </div>
 
             </main>
-          </div>}
+          </div>
       </>
     )
   }
 }
 
-export default Login;
+export default WithRouter(Login);
