@@ -11,4 +11,6 @@
 }
 
 
-/* .ck-dropdown */
+th, td {
+    text-align: center;
+}

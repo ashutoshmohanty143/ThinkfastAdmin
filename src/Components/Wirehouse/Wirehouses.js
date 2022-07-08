@@ -4,11 +4,12 @@ import swal from 'sweetalert';
 import ApiServices from '../Common/ApiServices';
 import { WithRouter } from '../Common/WithRouter';
 
-class Zones extends Component {
+class Wirehouses extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      wirehouseLists: []
+      wirehouseLists: [],
+      singleFetchRecord: {}
     }
   }
 
@@ -19,6 +20,11 @@ class Zones extends Component {
     }).catch(error => {
       console.log("error", error)
     });
+  }
+
+  handleEditRecord = (event, id) => {
+    event.preventDefault();
+    this.props.navigate(`/updatewirehouse/${id}`);
   }
 
   handleDeleteRecord = (event, id) => {
@@ -56,10 +62,24 @@ class Zones extends Component {
     });
   }
 
+  handleViewRecord = (event, id) => {
+      event.preventDefault();
+      const collectionName = "wirehouses";
+      event.preventDefault();
+      ApiServices.GetSingleRecordById(id, collectionName)
+            .then((response) => {
+                this.setState({ singleFetchRecord: response.data.data });
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
+  }
+
 
   render() {
 
-    const { wirehouseLists } = this.state;
+    const { wirehouseLists, singleFetchRecord } = this.state;
+  
     return (
       <>
         <div className="content container-fluid">
@@ -71,10 +91,7 @@ class Zones extends Component {
               <div className="col-md-auto">
                 <Link className="btn btn-primary" to="/addwirehouse">Add Wirehouse</Link>
               </div>
-
             </div>
-
-
 
             <div className="js-nav-scroller hs-nav-scroller-horizontal">
               <span className="hs-nav-scroller-arrow-prev" style={{ display: 'none' }}>
@@ -272,16 +289,25 @@ class Zones extends Component {
                       <td>{item.phone}</td>
                       <td>
                         <div className="btn-group" role="group">
-                          <Link
+                          {/* <Link
                             className="btn btn-white btn-sm"
-                            to={`/updatewirehouse/${item._id}`}
+                            to={`/viewwirehouse/${item._id}`}
                           >
                             {" "}
                             <i className="bi-pencil-fill me-1">
                               {" "}
-                              Edit
+                              View
                             </i>{" "}
-                          </Link>
+                          </Link> */}
+
+                              <button
+                                className="dropdown-item" data-bs-toggle="modal" data-bs-target="#whmodal"
+                                onClick={(event) => this.handleViewRecord(event, item._id)}>
+                                <i className="bi-pencil-fill dropdown-item-icon">
+                                  {" "}
+                                </i>{" "}
+                                View
+                              </button>
 
                           <div className="btn-group">
                             <button
@@ -296,9 +322,32 @@ class Zones extends Component {
                               className="dropdown-menu dropdown-menu-end mt-1"
                               aria-labelledby="productsEditDropdown1"
                             >
-                              <a
+                              {/* <button className="dropdown-item">
+                              <Link
+                                
+                                to={`/updatewirehouse/${item._id}`}
+                              >
+                                {" "}
+                                <i className="bi-pencil-fill me-1">
+                                  {" "}
+                                  Edit
+                                </i>{" "}
+                              </Link>
+                              </button> */}
+                                 
+
+                              <button
                                 className="dropdown-item"
-                                href=""
+                                onClick={(event) => this.handleEditRecord(event, item._id)}>
+                                <i className="bi-pencil-fill dropdown-item-icon">
+                                  {" "}
+                                </i>{" "}
+                                Edit
+                              </button>
+
+                              <button
+                                className="dropdown-item"
+               
                                 onClick={(event) =>
                                   this.handleDeleteRecord(
                                     event,
@@ -310,9 +359,11 @@ class Zones extends Component {
                                   {" "}
                                 </i>{" "}
                                 Delete
-                              </a>
+                              </button>
+
                             </div>
                           </div>
+                          
                         </div>
                       </td>
 
@@ -366,9 +417,58 @@ class Zones extends Component {
 
           </div>
         </div>
+
+        <div className="modal fade" id="whmodal" tabIndex="-1" aria-labelledby="whModalLabel" aria-hidden="true">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="whModalLabel">Wirehouse Details</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+                <ul className="list-group list-group-horizontal">
+                  <li className="list-group-item w-50"><b>Location Name</b></li>
+                  <li className="list-group-item w-50">{singleFetchRecord["locationName"]}</li>
+                </ul>
+                <ul className="list-group list-group-horizontal">
+                  <li className="list-group-item w-50"><b>Country</b></li>
+                  <li className="list-group-item w-50">{singleFetchRecord["countryRegion"]}</li>
+                </ul>
+                <ul className="list-group list-group-horizontal">
+                  <li className="list-group-item w-50"><b>Address</b></li>
+                  <li className="list-group-item w-50">{singleFetchRecord["address1"] + ", " + singleFetchRecord["address2"]}</li>
+                </ul>
+                <ul className="list-group list-group-horizontal">
+                  <li className="list-group-item w-50"><b>City</b></li>
+                  <li className="list-group-item w-50">{singleFetchRecord["city"]}</li>
+                </ul>
+                <ul className="list-group list-group-horizontal">
+                  <li className="list-group-item w-50"><b>State</b></li>
+                  <li className="list-group-item w-50">{singleFetchRecord["state"]}</li>
+                </ul>
+                <ul className="list-group list-group-horizontal">
+                  <li className="list-group-item w-50"><b>Pincode</b></li>
+                  <li className="list-group-item w-50">{singleFetchRecord["pincode"]}</li>
+                </ul>
+                <ul className="list-group list-group-horizontal">
+                  <li className="list-group-item w-50"><b>Phone</b></li>
+                  <li className="list-group-item w-50">{singleFetchRecord["phone"]}</li>
+                </ul>
+                <ul className="list-group list-group-horizontal">
+                  <li className="list-group-item w-50"><b>Map Slot</b></li>
+                  <li className="list-group-item w-50">{singleFetchRecord["mapSlot"]}</li>
+                </ul>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                {/* <button type="button" className="btn btn-primary">Save changes</button> */}
+              </div>
+            </div>
+          </div>
+        </div>                  
       </>
     )
   }
 }
 
-export default WithRouter(Zones);
+export default WithRouter(Wirehouses);

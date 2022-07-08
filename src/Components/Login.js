@@ -53,7 +53,8 @@ class Login extends Component {
       }
       axios.post(apiUrl, formData).then(response => {
         sessionStorage.setItem("userToken", response.data.data.accessToken);
-        sessionStorage.setItem("userData", JSON.stringify(response.data.data));
+        sessionStorage.setItem("userName", response.data.data.username);
+        // sessionStorage.setItem("userData", JSON.stringify(response.data.data));
         if (sessionStorage.getItem('userToken')) {
             this.props.navigate('/dashboard');
         } else {
@@ -61,6 +62,7 @@ class Login extends Component {
         }
       }).catch(error => {
         console.log("error", error)
+        
       })          
     } else {
       return false;

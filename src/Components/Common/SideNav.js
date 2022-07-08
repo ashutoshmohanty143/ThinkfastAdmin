@@ -129,7 +129,7 @@ export default function SideNav() {
                       className="nav-collapse collapse show"
                       data-bs-parent="#navbarVerticalMenuPagesMenu"
                     >
-                      <NavLink className="nav-link" to="/popup-settings">Popup Settings</NavLink>
+                      <NavLink className="nav-link" to="/popupsettings">Popup Settings</NavLink>
                     </div>
                   </div>
 

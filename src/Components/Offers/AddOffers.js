@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link, Redirect, Navigate } from 'react-router-dom'
+import { Link  } from 'react-router-dom'
 import "./offers.css"
 import swal from 'sweetalert';
 import { CKEditor } from '@ckeditor/ckeditor5-react';

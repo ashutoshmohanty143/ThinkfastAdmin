@@ -178,7 +178,10 @@ class UpdateSlot extends Component {
                                             </div>
 
                                         </div>
-                                        <div className='text-end'><button className="btn btn-primary btn-sm">Save</button></div>
+                                        <div className='text-end mt-5'>
+                                            <Link className="btn btn-primary btn-sm me-2" to="/slots">Cancel</Link>
+                                            <button className="btn btn-primary btn-sm">Update</button>
+                                        </div>
                                     </form>
                                 </div>
 

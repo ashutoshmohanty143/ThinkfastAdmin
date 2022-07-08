@@ -1,9 +1,10 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 import Login from './Components/Login';
-
 import Dashboard from './Components/Dashboard';
-
+import Home from './Components/Home';
+import ProtectedRoutes from './Components/Auth/ProtectedRoutes';
 
 import Offers from './Components/Offers/Offers';
 import AddOffers from './Components/Offers/AddOffers';
@@ -21,6 +22,9 @@ import Wirehouses from './Components/Wirehouse/Wirehouses';
 import AddWirehouse from './Components/Wirehouse/AddWirehouse';
 import UpdateWirehouse from './Components/Wirehouse/UpdateWirehouse';
 
+import PopupSettings from "./Components/PopupSettings/PopupSettings";
+import AddPopupSettings from "./Components/PopupSettings/AddPopupSettings";
+
 import Orders from './Components/Orders/Orders';
 import PageNotFound from './Components/Common/PageNotFound';
 
@@ -29,8 +33,7 @@ import AddDiscount from './Components/Discount/AddDiscount';
 
 import Users from './Components/Users/Users';
 import AddUser from './Components/Users/AddUser';
-import ProtectedRoutes from './Components/Auth/ProtectedRoutes';
-import Home from './Components/Home';
+
 
 function App() {
   let token = sessionStorage.getItem('userToken');
@@ -41,6 +44,7 @@ function App() {
       <BrowserRouter>
         <Routes>
             <Route exact path="/" element={token ? <Dashboard /> : <Login />} />
+            <Route exact path="/login" element={ <Login /> } />
             <Route exact path="/dashboard" element={<ProtectedRoutes Comp={Home} />} />
             <Route path="/" element={<ProtectedRoutes Comp={Dashboard} />} >
               <Route exact path="/home" element={<Home />} />
@@ -59,6 +63,9 @@ function App() {
               <Route exact path="/wirehouses" element={<Wirehouses />} />
               <Route exact path="/addwirehouse" element={<AddWirehouse />} />
               <Route exact path="/updatewirehouse/:id" element={<UpdateWirehouse />} />
+
+              <Route exact path="/popupsettings" element={<PopupSettings />} />
+              <Route exact path="/addpopupsettings" element={<AddPopupSettings />} />
 
               <Route exact path="/discounts" element={<Discounts />} />
               <Route exact path="/adddiscount" element={<AddDiscount />} />

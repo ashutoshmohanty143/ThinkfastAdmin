@@ -168,8 +168,10 @@ render() {
                                         />
                                         {offerDescriptionErr && <span className='errorMsg'>{offerDescriptionErr}</span>}
                                     </div>
-
-                                    <div className='text-end mt-5'><button className="btn btn-primary btn-sm">Save</button></div>
+                                    <div className='text-end mt-5'>
+                                        <Link className="btn btn-primary btn-sm me-2" to="/offers">Cancel</Link>
+                                        <button className="btn btn-primary btn-sm">Update</button>
+                                    </div>
                                 </form>
                             </div>
 

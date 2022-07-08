@@ -240,7 +240,7 @@ class AddZone extends Component {
                                                 <span className={`float-end ${this.state.prev ? "" : "d-none"}`}><b>{paymentStaus + ' '}</b><span id='strikeDC'>{`Rs ${deliveryCharge}`}</span></span>
                                             </div>
                                         </div>
-                                        <div className='text-end mt-4'><button className="btn btn-primary btn-sm">Add</button></div>
+                                        <div className='text-end mt-4'><button className="btn btn-primary btn-sm">Submit</button></div>
                                     </form>
                                 </div>
 

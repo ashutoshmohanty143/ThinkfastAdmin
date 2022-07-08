@@ -21,9 +21,9 @@ export default class Footer extends Component {
                                 </li>
                                 <li className="list-inline-item">
 
-                                    <button className="btn btn-ghost-secondary btn btn-icon btn-ghost-secondary rounded-circle" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasKeyboardShortcuts" aria-controls="offcanvasKeyboardShortcuts">
-                                        <i className="bi-command"></i>
-                                    </button>
+                                <button className="btn btn-ghost-secondary btn btn-icon btn-ghost-secondary rounded-circle" type="button">
+                                    <i className="bi-command"></i>
+                                </button>
 
                                 </li>
                             </ul>

@@ -1,174 +1,34 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-
-import swal from 'sweetalert';
+import ApiServices from "../Common/ApiServices";
 import { WithRouter } from '../Common/WithRouter';
-import CommonMethods from '../Common/CommonMethods';
-import ApiServices from '../Common/ApiServices';
 
-class AddWirehouse extends Component {
+class ViewWirehouse extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fields: {},
-            formErrors: {},
-            multiOptionSlots: []
+            fields: {}
         }
     }
 
-    handleFormFieldsChange = event => {
-        let fields = this.state.fields;
-        fields[event.target.name] = event.target.value;
-        this.setState({ fields });
-    }
-
-    handleMultiSelectFieldsChange = event => {
-        let value = Array.from(
-            event.target.selectedOptions,
-            (multiOptionSlots) => multiOptionSlots.value
-        );
-        this.setState({
-            multiOptionSlots: value
-        });
-    }
-
-    formValidate() {
-        let fields = this.state.fields;
-        let Errors = {};
-        let formIsValid = true;
-
-        if (!fields["locationName"]) {
-            formIsValid = false;
-            Errors["locationNameError"] = 'Location Time field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["locationNameError"] = '';
-        }
-
-        if (!fields['phone']) {
-            formIsValid = false;
-            Errors["phoneError"] = 'Phone field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["phoneError"] = '';
-        }
-
-        if (!fields["address1"]) {
-            formIsValid = false;
-            Errors["address1Error"] = 'Address 1 field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["address1Error"] = '';
-        }
-
-        if (!fields["address2"]) {
-            formIsValid = false;
-            Errors["address2Error"] = 'Address 2 field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["address2Error"] = '';
-        }
-
-        var countryRegion = document.getElementById('countryRegion');
-        var countryRegionValue = countryRegion.options[countryRegion.selectedIndex].value;
-        if (countryRegionValue == 0) {
-            formIsValid = false;
-            Errors["countryRegionError"] = 'Please Select Country';
-        } else {
-            formIsValid = true;
-            Errors["countryRegionError"] = '';
-        }
-
-        var state = document.getElementById('state');
-        var stateValue = state.options[state.selectedIndex].value;
-        if (stateValue == 0) {
-            formIsValid = false;
-            Errors["stateError"] = 'Please Select State';
-        } else {
-            formIsValid = true;
-            Errors["stateError"] = '';
-        }
-
-        if (!fields["city"]) {
-            formIsValid = false;
-            Errors["cityError"] = 'City field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["cityError"] = '';
-        }
-
-        if (!fields['pincode']) {
-            formIsValid = false;
-            Errors["pincodeError"] = 'Pincode field cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["pincodeError"] = '';
-        }
-
-        this.setState({ formErrors: Errors });
-        return formIsValid;
-    }
-
-    handleSubmit = event => {
-        event.preventDefault();
-        if (this.formValidate()) {
-            let { locationName, countryRegion, address1, address2, city, state, pincode, phone } = this.state.fields;
-            let multiOptionSlots = this.state.multiOptionSlots;
-            const formData = {
-                "collection": "wirehouses",
-                "data": {
-                    "locationName": locationName,
-                    "countryRegion": countryRegion,
-                    "address1": address1,
-                    "address2": address2,
-                    "city": city,
-                    "state": state,
-                    "pincode": pincode,
-                    "phone": phone,
-                    "mapSlot": multiOptionSlots
-                },
-                "meta": {
-                    "duplicate": ['locationName'],
-                    "multiInsert": false
-                }
-            };
-            ApiServices.AddRecord(formData).then(response => {
-                if (response.status == 200 && response.data.status) {
-                    swal("Thank you!", "Wirehouse added successfully!!!", "success").then((value) => {
-                        if (value) {
-                            this.props.navigate('/wirehouses');
-                        }
-                    });
-                }
-            }).catch(error => {
-                console.log(error);
-            });;
-        } else {
-            console.log("Form Validation Error");
-        }
-    }
-
-
-    phoneInputHandler = e => {
-        if (!CommonMethods.phoneMasking(e)) {
-            this.state.formErrors["phoneError"] = "Please Give Only Numbers";
-        } else {
-            this.state.formErrors["phoneError"] = "";
-        }
-    }
-
-    pincodeInputHandler = e => {
-        if (!CommonMethods.numberValidation(e)) {
-            this.state.formErrors["pincodeError"] = "Please Give Only Numbers (Max 6)";
-        } else {
-            this.state.formErrors["pincodeError"] = "";
-        }
+    componentDidMount() {
+        const collectionName = "wirehouses";
+        const path = window.location.pathname;
+        const id = path.split('/')[2];
+        ApiServices.GetSingleRecordById(id, collectionName)
+            .then((response) => {
+                this.setState({ fields: response.data.data });
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
     }
 
     render() {
+        let { locationName, countryRegion, address1, address2, city, state, pincode, phone, mapSlot } = this.state.fields;
+        let multiOptionSlots = this.state.multiOptionSlots;
         const { locationNameError, countryRegionError, address1Error,
             address2Error, cityError, stateError, pincodeError, phoneError, mapSlotError } = this.state.formErrors;
-
         return (
             <>
                 <div className="content container-fluid">
@@ -178,13 +38,13 @@ class AddWirehouse extends Component {
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb breadcrumb-no-gutter">
                                         <li className="breadcrumb-item">
-                                            <Link className="breadcrumb-link" to="/wirehouses">Wirehouses</Link>
+                                            <Link className="breadcrumb-link" to="/wirehouses">Wirehouse</Link>
                                         </li>
-                                        <li className="breadcrumb-item active" aria-current="page">Add Wirehouse</li>
+                                        <li className="breadcrumb-item active" aria-current="page">Update Wirehouse</li>
                                     </ol>
                                 </nav>
 
-                                <h1 className="page-header-title">Add Wirehouse</h1>
+                                <h1 className="page-header-title">Update Wirehouse</h1>
                             </div>
                             <div className="col-md-auto">
                                 <Link className="btn btn-primary" to="/wirehouses">Back</Link>
@@ -210,7 +70,7 @@ class AddWirehouse extends Component {
                                                     <label htmlFor="locationName" className="form-label">Location / Wirehouse Name</label>
                                                     <input type="text" className="form-control" name="locationName"
                                                         id="locationName" placeholder="Location Name"
-                                                        onChange={this.handleFormFieldsChange} />
+                                                        onChange={this.handleFormFieldsChange} value={locationName} />
                                                     {locationNameError && <span className='errorMsg'>{locationNameError}</span>}
                                                 </div>
                                             </div>
@@ -219,7 +79,8 @@ class AddWirehouse extends Component {
                                                 <div className="mb-4">
                                                     <label htmlFor="phone" className="form-label">Phone</label>
                                                     <input type="text" className="form-control" name="phone" id="phone" maxLength={12}
-                                                        placeholder="Phone" onChange={this.handleFormFieldsChange} onInput={this.phoneInputHandler} />
+                                                        placeholder="Phone" onChange={this.handleFormFieldsChange}
+                                                        onInput={this.phoneInputHandler} value={phone} />
                                                     {phoneError && <span className='errorMsg'>{phoneError}</span>}
                                                 </div>
                                             </div>
@@ -228,7 +89,8 @@ class AddWirehouse extends Component {
                                                 <div className="mb-4">
                                                     <label htmlFor="address1" className="form-label">Address 1</label>
                                                     <textarea rows={3} className="form-control" name="address1" id="address1"
-                                                        placeholder="Address 1" onChange={this.handleFormFieldsChange} ></textarea>
+                                                        placeholder="Address 1" onChange={this.handleFormFieldsChange}
+                                                        value={address1} ></textarea>
                                                     {address1Error && <span className='errorMsg'>{address1Error}</span>}
                                                 </div>
                                             </div>
@@ -237,7 +99,8 @@ class AddWirehouse extends Component {
                                                 <div className="mb-4">
                                                     <label htmlFor="address2" className="form-label">Address 2</label>
                                                     <textarea rows={3} className="form-control" name="address2" id="address2"
-                                                        placeholder="Address 2" onChange={this.handleFormFieldsChange} ></textarea>
+                                                        placeholder="Address 2" onChange={this.handleFormFieldsChange}
+                                                        value={address2} ></textarea>
                                                     {address2Error && <span className='errorMsg'>{address2Error}</span>}
                                                 </div>
                                             </div>
@@ -248,7 +111,8 @@ class AddWirehouse extends Component {
                                                     <label htmlFor="countryRegion" className="form-label">Country/region</label>
                                                     <div className="tom-select-custom">
                                                         <select className="js-select form-select tomselected" name="countryRegion"
-                                                            id="countryRegion" onChange={this.handleFormFieldsChange} >
+                                                            id="countryRegion" onChange={this.handleFormFieldsChange}
+                                                            value={countryRegion} >
                                                             <option value='0'>Select Country</option>
                                                             <option value='India'>India</option>
                                                         </select>
@@ -262,7 +126,7 @@ class AddWirehouse extends Component {
                                                     <label htmlFor="state" className="form-label">Select State</label>
                                                     <div className="tom-select-custom">
                                                         <select className="js-select form-select tomselected" name="state"
-                                                            id="state" onChange={this.handleFormFieldsChange} >
+                                                            id="state" onChange={this.handleFormFieldsChange} value={state} >
                                                             <option value='0'>Select State</option>
                                                             <option value='Andaman and Nicobar Islands'>Andaman and Nicobar Islands</option>
                                                             <option value='Andhra Pradesh'>Andhra Pradesh</option>
@@ -310,7 +174,7 @@ class AddWirehouse extends Component {
                                                 <div className="mb-4">
                                                     <label htmlFor="city" className="form-label">City</label>
                                                     <input type="text" className="form-control" name="city" id="city"
-                                                        placeholder="City" onChange={this.handleFormFieldsChange} />
+                                                        placeholder="City" onChange={this.handleFormFieldsChange} value={city} />
                                                     {cityError && <span className='errorMsg'>{cityError}</span>}
                                                 </div>
                                             </div>
@@ -322,7 +186,7 @@ class AddWirehouse extends Component {
                                                     <label htmlFor="pincode" className="form-label">Pincode</label>
                                                     <input type="text" className="form-control" name="pincode" id="pincode"
                                                         placeholder="Pincode" onChange={this.handleFormFieldsChange} maxLength={6}
-                                                        onInput={this.pincodeInputHandler} />
+                                                        onInput={this.pincodeInputHandler} value={pincode} />
                                                     {pincodeError && <span className='errorMsg'>{pincodeError}</span>}
                                                 </div>
                                             </div>
@@ -335,7 +199,7 @@ class AddWirehouse extends Component {
                                                         <select className="js-select form-select" autoComplete="off" multiple
                                                             onChange={this.handleMultiSelectFieldsChange} name="mapSlot" id="mapSlot"
                                                             data-hs-tom-select-options='{"placeholder": "Select a slot..."}'
-                                                            value={this.state.multiOptionSlots}>
+                                                            value={multiOptionSlots}>
                                                             <option value="9 AM - 11 AM">9 AM - 11 AM</option>
                                                             <option value="11 AM - 1 PM">11 AM - 1 PM</option>
                                                             <option value="1 PM - 3 PM">1 PM - 3 PM</option>
@@ -346,10 +210,10 @@ class AddWirehouse extends Component {
                                                     {mapSlotError && <span className='errorMsg'>{mapSlotError}</span>}
                                                 </div>
                                             </div>
-
-
-
-                                            <div className='text-end'><button className="btn btn-primary btn-sm">Submit</button></div>
+                                            <div className='text-end mt-5'>
+                                                <Link className="btn btn-primary btn-sm me-2" to="/wirehouses">Cancel</Link>
+                                                <button className="btn btn-primary btn-sm">Update</button>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
@@ -363,4 +227,4 @@ class AddWirehouse extends Component {
     }
 }
 
-export default WithRouter(AddWirehouse);
+export default WithRouter(ViewWirehouse);

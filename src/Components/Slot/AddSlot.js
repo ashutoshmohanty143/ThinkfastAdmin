@@ -155,7 +155,7 @@ class AddSlot extends Component {
                                             </div>
 
                                         </div>
-                                        <div className='text-end'><button className="btn btn-primary btn-sm">Add</button></div>
+                                        <div className='text-end'><button className="btn btn-primary btn-sm">Submit</button></div>
                                     </form>
                                 </div>
 

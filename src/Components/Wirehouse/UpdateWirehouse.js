@@ -5,7 +5,7 @@ import ApiServices from "../Common/ApiServices";
 import CommonMethods from '../Common/CommonMethods';
 import { WithRouter } from '../Common/WithRouter';
 
-class UpdateZone extends Component {
+class UpdateWirehouse extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,6 +13,7 @@ class UpdateZone extends Component {
             formErrors: {},
             multiOptionSlots: []
         }
+        
     }
 
     componentDidMount() {
@@ -22,7 +23,7 @@ class UpdateZone extends Component {
         ApiServices.GetSingleRecordById(id, collectionName)
             .then((response) => {
                 this.setState({ fields: response.data.data });
-                // this.setState({ multiOptionSlots: response.data.data.mapSlot });
+                this.setState({ multiOptionSlots: response.data.data.mapSlot });
             })
             .catch((error) => {
                 console.log("error", error);
@@ -188,7 +189,7 @@ class UpdateZone extends Component {
 
     render() {
         let { locationName, countryRegion, address1, address2, city, state, pincode, phone } = this.state.fields;
-        // let multiOptionSlots = this.state.multiOptionSlots;
+        let multiOptionSlots = this.state.multiOptionSlots;
         const { locationNameError, countryRegionError, address1Error,
             address2Error, cityError, stateError, pincodeError, phoneError, mapSlotError } = this.state.formErrors;
         return (
@@ -360,7 +361,8 @@ class UpdateZone extends Component {
                                                     <div className="tom-select-custom tom-select-custom-with-tags">
                                                         <select className="js-select form-select" autoComplete="off" multiple
                                                             onChange={this.handleMultiSelectFieldsChange} name="mapSlot" id="mapSlot"
-                                                            data-hs-tom-select-options='{"placeholder": "Select a slot..."}'>
+                                                            data-hs-tom-select-options='{"placeholder": "Select a slot..."}'
+                                                            value={multiOptionSlots}>
                                                             <option value="9 AM - 11 AM">9 AM - 11 AM</option>
                                                             <option value="11 AM - 1 PM">11 AM - 1 PM</option>
                                                             <option value="1 PM - 3 PM">1 PM - 3 PM</option>
@@ -371,10 +373,10 @@ class UpdateZone extends Component {
                                                     {mapSlotError && <span className='errorMsg'>{mapSlotError}</span>}
                                                 </div>
                                             </div>
-
-
-
-                                            <div className='text-end'><button className="btn btn-primary btn-sm">Save</button></div>
+                                            <div className='text-end mt-5'>
+                                                <Link className="btn btn-primary btn-sm me-2" to="/wirehouses">Cancel</Link>
+                                                <button className="btn btn-primary btn-sm">Update</button>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
@@ -388,4 +390,4 @@ class UpdateZone extends Component {
     }
 }
 
-export default WithRouter(UpdateZone);
+export default WithRouter(UpdateWirehouse);
