@@ -289,25 +289,25 @@ class Wirehouses extends Component {
                       <td>{item.phone}</td>
                       <td>
                         <div className="btn-group" role="group">
-                          {/* <Link
-                            className="btn btn-white btn-sm"
-                            to={`/viewwirehouse/${item._id}`}
+                          <a data-bs-toggle="modal" data-bs-target="#whmodal"
+                            className="btn btn-white btn-sm" href='#'
+                            onClick={(event) => this.handleViewRecord(event, item._id)}
                           >
                             {" "}
                             <i className="bi-pencil-fill me-1">
                               {" "}
                               View
                             </i>{" "}
-                          </Link> */}
+                          </a>
 
-                              <button
+                              {/* <button
                                 className="dropdown-item" data-bs-toggle="modal" data-bs-target="#whmodal"
                                 onClick={(event) => this.handleViewRecord(event, item._id)}>
                                 <i className="bi-pencil-fill dropdown-item-icon">
                                   {" "}
                                 </i>{" "}
                                 View
-                              </button>
+                              </button> */}
 
                           <div className="btn-group">
                             <button

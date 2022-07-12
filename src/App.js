@@ -22,8 +22,8 @@ import Wirehouses from './Components/Wirehouse/Wirehouses';
 import AddWirehouse from './Components/Wirehouse/AddWirehouse';
 import UpdateWirehouse from './Components/Wirehouse/UpdateWirehouse';
 
-import PopupSettings from "./Components/PopupSettings/PopupSettings";
-import AddPopupSettings from "./Components/PopupSettings/AddPopupSettings";
+import LocationPopup from "./Components/Location Popup/LocationPopup";
+import AddLocationPopup from "./Components/Location Popup/AddLocationPopup";
 
 import Orders from './Components/Orders/Orders';
 import PageNotFound from './Components/Common/PageNotFound';
@@ -33,6 +33,7 @@ import AddDiscount from './Components/Discount/AddDiscount';
 
 import Users from './Components/Users/Users';
 import AddUser from './Components/Users/AddUser';
+
 
 
 function App() {
@@ -64,8 +65,8 @@ function App() {
               <Route exact path="/addwirehouse" element={<AddWirehouse />} />
               <Route exact path="/updatewirehouse/:id" element={<UpdateWirehouse />} />
 
-              <Route exact path="/popupsettings" element={<PopupSettings />} />
-              <Route exact path="/addpopupsettings" element={<AddPopupSettings />} />
+              <Route exact path="/locationpopup" element={<LocationPopup />} />
+              <Route exact path="/addlocationpopup" element={<AddLocationPopup />} />
 
               <Route exact path="/discounts" element={<Discounts />} />
               <Route exact path="/adddiscount" element={<AddDiscount />} />

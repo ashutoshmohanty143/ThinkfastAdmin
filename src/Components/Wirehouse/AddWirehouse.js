@@ -48,6 +48,9 @@ class AddWirehouse extends Component {
         if (!fields['phone']) {
             formIsValid = false;
             Errors["phoneError"] = 'Phone field cannot be empty';
+        } else if(fields['phone'].length != 12 )  {
+            formIsValid = false;
+            Errors["phoneError"] = 'Phone number should be 10 digits';
         } else {
             formIsValid = true;
             Errors["phoneError"] = '';
@@ -71,7 +74,7 @@ class AddWirehouse extends Component {
 
         var countryRegion = document.getElementById('countryRegion');
         var countryRegionValue = countryRegion.options[countryRegion.selectedIndex].value;
-        if (countryRegionValue == 0) {
+        if (countryRegionValue === 0) {
             formIsValid = false;
             Errors["countryRegionError"] = 'Please Select Country';
         } else {
@@ -81,7 +84,7 @@ class AddWirehouse extends Component {
 
         var state = document.getElementById('state');
         var stateValue = state.options[state.selectedIndex].value;
-        if (stateValue == 0) {
+        if (stateValue === 0) {
             formIsValid = false;
             Errors["stateError"] = 'Please Select State';
         } else {
@@ -100,10 +103,14 @@ class AddWirehouse extends Component {
         if (!fields['pincode']) {
             formIsValid = false;
             Errors["pincodeError"] = 'Pincode field cannot be empty';
+        } else if(fields['pincode'].length != 6) {
+            formIsValid = false;
+            Errors["pincodeError"] = 'Pincode should be 6 digits';
         } else {
             formIsValid = true;
             Errors["pincodeError"] = '';
         }
+
 
         this.setState({ formErrors: Errors });
         return formIsValid;
@@ -133,7 +140,7 @@ class AddWirehouse extends Component {
                 }
             };
             ApiServices.AddRecord(formData).then(response => {
-                if (response.status == 200 && response.data.status) {
+                if (response.status === 200 && response.data.status) {
                     swal("Thank you!", "Wirehouse added successfully!!!", "success").then((value) => {
                         if (value) {
                             this.props.navigate('/wirehouses');
@@ -150,7 +157,7 @@ class AddWirehouse extends Component {
 
 
     phoneInputHandler = e => {
-        if (!CommonMethods.phoneMasking(e)) {
+        if (!CommonMethods.phoneMasking(e) && !CommonMethods.numberValidation(e)) {
             this.state.formErrors["phoneError"] = "Please Give Only Numbers";
         } else {
             this.state.formErrors["phoneError"] = "";
@@ -218,7 +225,7 @@ class AddWirehouse extends Component {
                                             <div className="col-sm-6">
                                                 <div className="mb-4">
                                                     <label htmlFor="phone" className="form-label">Phone</label>
-                                                    <input type="text" className="form-control" name="phone" id="phone" maxLength={12}
+                                                    <input type="text" className="form-control" name="phone" id="phone" minLength={12} maxLength={12}
                                                         placeholder="Phone" onChange={this.handleFormFieldsChange} onInput={this.phoneInputHandler} />
                                                     {phoneError && <span className='errorMsg'>{phoneError}</span>}
                                                 </div>

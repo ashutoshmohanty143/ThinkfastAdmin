@@ -2,7 +2,6 @@ class CommonMethods {
     
     // Only Number Allowed Validation
     numberValidation(e){
-        let oldValue;
         let el = e.target,
             newValue = el.value
             ;

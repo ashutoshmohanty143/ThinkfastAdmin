@@ -59,7 +59,7 @@ class AddPopupSettings extends Component {
             const formData = {
                 "collection" : "popupsettings",
                 "data": {
-                        "popupTime": popupTime,
+                        "popupTime": popupTime*1000,
                         "popupButtonColor": popupButtonColor,
                         "isEnabled":true
                 },
@@ -73,7 +73,7 @@ class AddPopupSettings extends Component {
                 if(response.status == 200 && response.data.status == "success"){
                     swal("Thank you!", "Popup Settings added successfully!!!", "success").then((value) => {
                         if(value){
-                            this.props.navigate('/popupsettings');
+                            this.props.navigate('/locationpopup');
                         }
                     });
                 }
@@ -106,16 +106,16 @@ render() {
                             <nav aria-label="breadcrumb">
                                 <ol className="breadcrumb breadcrumb-no-gutter">
                                     <li className="breadcrumb-item">
-                                        <Link className="breadcrumb-link" to="/popupsettings">Popup Settings</Link>
+                                        <Link className="breadcrumb-link" to="/locationpopup">Location Popup</Link>
                                     </li>
-                                    <li className="breadcrumb-item active" aria-current="page">Add Popup Settings</li>
+                                    <li className="breadcrumb-item active" aria-current="page">Add Location Popup</li>
                                 </ol>
                             </nav>
 
-                            <h1 className="page-header-title">Add Popup Settings</h1>
+                            <h1 className="page-header-title">Add Location Popup</h1>
                         </div>
                         <div className="col-md-auto">
-                            <Link className="btn btn-primary" to="/popupsettings">Back</Link>
+                            <Link className="btn btn-primary" to="/locationpopup">Back</Link>
                         </div>
                     </div>
 
@@ -159,7 +159,7 @@ render() {
                                     </div> */}
 
                                     <div className='col-md-6 mb-4'>
-                                        <label htmlFor="popupTime" className="form-label"> Time To Popup (In ms) </label>
+                                        <label htmlFor="popupTime" className="form-label"> Time To Popup (In Sec.) </label>
                                         <input type="text" className='form-control' name="popupTime" id='popupTime' 
                                            onInput={this.popupTimeInputHandler} onChange={this.handleFormFieldsChange} />
                                         {popupTimeErr && <span className='errorMsg'>{popupTimeErr}</span>}

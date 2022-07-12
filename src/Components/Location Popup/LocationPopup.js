@@ -194,10 +194,10 @@ handleUpdate = (event, id) => {
         <div className="page-header">
           <div className="row align-items-center mb-3">
             <div className="col-md mb-2 mb-md-0">
-              <h1 className="page-header-title">Popup Settings </h1>
+              <h1 className="page-header-title">Location Popup </h1>
             </div>
             <div className="col-md-auto">
-              <Link className="btn btn-primary" to="/addpopupsettings">Add Popup Settings</Link>
+              <Link className="btn btn-primary" to="/addlocationpopup">Add Location Popup</Link>
             </div>
           </div>
 
@@ -379,7 +379,7 @@ handleUpdate = (event, id) => {
                     SL No.#
                   </th>
                   <th>Popup Status</th>
-                  <th>Popup Time (In ms)</th>
+                  <th>Popup Time (In Sec.)</th>
                   <th>Popup Button Color</th>
                   <th>Action</th>
                 </tr>
@@ -393,19 +393,19 @@ handleUpdate = (event, id) => {
                       {i + 1}
                     </td>
                     <td >{ item.isEnabled ? "Enabled" : "Disabled" }</td>
-                    <td>{item.popupTime}</td>
+                    <td>{item.popupTime/1000}</td>
                     <td><span style={{ borderRadius:50+'%', padding:10+'px '+ 18+'px', backgroundColor: item.popupButtonColor}}></span></td>
                     <td>
                       <div className="btn-group" role="group">
             
-                            <button data-bs-toggle="modal" data-bs-target="#whmodal"
-                              className="dropdown-item"
+                            <a data-bs-toggle="modal" data-bs-target="#whmodal" href='#'
+                              className="btn btn-white btn-sm"
                               onClick={(event) => this.handleEditRecord(event, item._id)}>
                               <i className="bi-pencil-fill dropdown-item-icon">
                                 {" "}
                               </i>{" "}
                               Edit
-                            </button>
+                            </a>
 
                         <div className="btn-group">
                           <button

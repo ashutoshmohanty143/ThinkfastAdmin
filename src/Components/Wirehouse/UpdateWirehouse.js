@@ -62,6 +62,9 @@ class UpdateWirehouse extends Component {
         if (!fields['phone']) {
             formIsValid = false;
             Errors["phoneError"] = 'Phone field cannot be empty';
+        } else if(fields['phone'].length != 12 )  {
+            formIsValid = false;
+            Errors["phoneError"] = 'Phone number should be 10 digits';
         } else {
             formIsValid = true;
             Errors["phoneError"] = '';
@@ -114,6 +117,9 @@ class UpdateWirehouse extends Component {
         if (!fields['pincode']) {
             formIsValid = false;
             Errors["pincodeError"] = 'Pincode field cannot be empty';
+        } else if(fields['pincode'].length != 6) {
+            formIsValid = false;
+            Errors["pincodeError"] = 'Pincode should be 6 digits';
         } else {
             formIsValid = true;
             Errors["pincodeError"] = '';
