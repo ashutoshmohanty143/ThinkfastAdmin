@@ -23,9 +23,15 @@ class AddZone extends Component {
 
         var selectPaymentStaus = document.getElementById('paymentStaus');
         var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
-        if (selectPaymentStausValue == "Free") {
+        if (selectPaymentStausValue === "0") {
+            this.setState({ prev: false });
+        }
+        if (selectPaymentStausValue === "Free") {
+            this.setState({ prev: true });
             document.getElementById('strikeDC').style.textDecoration = "line-through";
-        } else {
+        } 
+        if (selectPaymentStausValue === "Paid") {
+            this.setState({ prev: true });
             document.getElementById('strikeDC').style.textDecoration = "none";
         }
     }
@@ -37,40 +43,33 @@ class AddZone extends Component {
 
         var zoneName = document.getElementById('zoneName');
         var zoneNameValue = zoneName.options[zoneName.selectedIndex].value;
-        if (zoneNameValue == 0) {
+        if (zoneNameValue === '0') {
             formIsValid = false;
             Errors["zoneNameError"] = 'Please Select Zone';
         } else {
             formIsValid = true;
-            Errors["zoneNameError"] = '';
+            Errors["zoneNameError"] = ' ';
         }
 
-        if (!fields["shippingTime"]) {
+        var shippingTime = document.getElementById('shippingTime');
+        var shippingTimeValue = shippingTime.options[shippingTime.selectedIndex].value;
+        if (shippingTimeValue === '0') {
             formIsValid = false;
-            Errors["shippingTimeError"] = 'Shipping Time cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["shippingTimeError"] = '';
+            Errors["shippingTimeError"] = 'Please Select Shipping Time';
         }
-
-        var selectPaymentStaus = document.getElementById('paymentStaus');
-        var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
-        if (selectPaymentStausValue == 0) {
-            formIsValid = false;
-            Errors["paymentStausError"] = 'Please Select Payment Status';
-        } else {
-            formIsValid = true;
-            Errors["paymentStausError"] = '';
-        }
-
+        
 
         if (!fields['deliveryCharge']) {
             formIsValid = false;
             Errors["deliveryChargeError"] = 'Delivery Charge cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["deliveryChargeError"] = '';
-        }
+        } 
+
+        var selectPaymentStaus = document.getElementById('paymentStaus');
+        var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
+        if (selectPaymentStausValue === '0') {
+            formIsValid = false;
+            Errors["paymentStausError"] = 'Please Select Payment Status';
+        } 
 
         this.setState({ formErrors: Errors });
         return formIsValid;
@@ -113,26 +112,9 @@ class AddZone extends Component {
         }
     }
 
-    showPrev = e => {
-        e.preventDefault();
-        this.setState({ prev: true });
-        var { paymentStaus } = this.state.fields;
-        if (paymentStaus == 'Free') {
-            document.getElementById('strikeDC').style.textDecoration = "line-through";
-        }
-        if (paymentStaus == 'Paid') {
-            document.getElementById('strikeDC').style.textDecoration = "none";
-        }
-    }
-
     render() {
         const { zoneNameError, shippingTimeError, paymentStausError, deliveryChargeError } = this.state.formErrors;
-        var { paymentStaus, deliveryCharge } = this.state.fields;
-        if (paymentStaus == undefined || paymentStaus == 0) {
-            var test = "d-none";
-        } else {
-            var test = "";
-        }
+        const { paymentStaus, deliveryCharge } = this.state.fields;
 
         return (
             <>
@@ -191,9 +173,6 @@ class AddZone extends Component {
                                             <div className="col-sm-6">
                                                 <div className="mb-4">
                                                     <label htmlFor="shippingTime" className="form-label">Shipping Time (In hrs)</label>
-
-                                                    {/* <input type="text" className="form-control" name="shippingTime" id="shippingTime" 
-                                                            placeholder="Shipping Time" onChange={this.handleFormFieldsChange} /> */}
                                                     <div className="tom-select-custom">
                                                         <select className="js-select form-select tomselected" name="shippingTime" id="shippingTime"
                                                             onChange={this.handleFormFieldsChange} >
@@ -213,6 +192,17 @@ class AddZone extends Component {
                                         <div className="row">
 
                                             <div className="col-sm-6">
+                                                <div className="mb-2">
+                                                    <label htmlFor="deliveryCharge" className="form-label">Delivery Charge</label>
+                                                    <input type="text" className="form-control" name="deliveryCharge"
+                                                        id="deliveryCharge" placeholder="Delivery Charge"
+                                                        onChange={this.handleFormFieldsChange} onInput={this.deliveryChargeNumberValidate} />
+                                                    {deliveryChargeError && <span className='errorMsg'>{deliveryChargeError}</span>}
+                                                </div>
+                                                <span className={`${this.state.prev ? "" : "d-none"}`}><b>{paymentStaus + ' '}</b><span id='strikeDC'>{`Rs ${deliveryCharge}`}</span></span>
+                                            </div>
+
+                                            <div className="col-sm-6">
                                                 <div className="mb-4">
                                                     <label htmlFor="paymentStaus" className="form-label">Select Payment Mode</label>
 
@@ -228,17 +218,7 @@ class AddZone extends Component {
                                                 </div>
                                             </div>
 
-                                            <div className={`col-sm-6 ${test}`}>
-                                                <div className="mb-2">
-                                                    <label htmlFor="deliveryCharge" className="form-label">Delivery Charge</label>
-                                                    <input type="text" className="form-control" name="deliveryCharge"
-                                                        id="deliveryCharge" placeholder="Delivery Charge"
-                                                        onChange={this.handleFormFieldsChange} onInput={this.deliveryChargeNumberValidate} />
-                                                    {deliveryChargeError && <span className='errorMsg'>{deliveryChargeError}</span>}
-                                                </div>
-                                                <a href='' className='float-start mb-2' onClick={this.showPrev}>Preview</a>
-                                                <span className={`float-end ${this.state.prev ? "" : "d-none"}`}><b>{paymentStaus + ' '}</b><span id='strikeDC'>{`Rs ${deliveryCharge}`}</span></span>
-                                            </div>
+
                                         </div>
                                         <div className='text-end mt-4'><button className="btn btn-primary btn-sm">Submit</button></div>
                                     </form>

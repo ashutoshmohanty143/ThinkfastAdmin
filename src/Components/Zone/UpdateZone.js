@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert';
 import ApiServices from "../Common/ApiServices";
+import CommonMethods from '../Common/CommonMethods';
 import { WithRouter } from '../Common/WithRouter';
 
 class UpdateZone extends Component {
@@ -30,6 +31,20 @@ class UpdateZone extends Component {
         let fields = this.state.fields;
         fields[event.target.name] = event.target.value;
         this.setState({ fields });
+
+        var selectPaymentStaus = document.getElementById('paymentStaus');
+        var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
+        if (selectPaymentStausValue === "0") {
+            this.setState({ prev: false });
+        }
+        if (selectPaymentStausValue === "Free") {
+            this.setState({ prev: true });
+            document.getElementById('strikeDC').style.textDecoration = "line-through";
+        } 
+        if (selectPaymentStausValue === "Paid") {
+            this.setState({ prev: true });
+            document.getElementById('strikeDC').style.textDecoration = "none";
+        }
     }
 
     formValidate() {
@@ -39,40 +54,33 @@ class UpdateZone extends Component {
 
         var zoneName = document.getElementById('zoneName');
         var zoneNameValue = zoneName.options[zoneName.selectedIndex].value;
-        if (zoneNameValue === 0) {
+        if (zoneNameValue === '0') {
             formIsValid = false;
             Errors["zoneNameError"] = 'Please Select Zone';
         } else {
             formIsValid = true;
-            Errors["zoneNameError"] = '';
+            Errors["zoneNameError"] = ' ';
         }
 
-        if (!fields["shippingTime"]) {
+        var shippingTime = document.getElementById('shippingTime');
+        var shippingTimeValue = shippingTime.options[shippingTime.selectedIndex].value;
+        if (shippingTimeValue === '0') {
             formIsValid = false;
-            Errors["shippingTimeError"] = 'Shipping Time cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["shippingTimeError"] = '';
+            Errors["shippingTimeError"] = 'Please Select Shipping Time';
         }
-
-        var selectPaymentStaus = document.getElementById('paymentStaus');
-        var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
-        if (selectPaymentStausValue === 0) {
-            formIsValid = false;
-            Errors["paymentStausError"] = 'Please Select Payment Status';
-        } else {
-            formIsValid = true;
-            Errors["paymentStausError"] = '';
-        }
-
+        
 
         if (!fields['deliveryCharge']) {
             formIsValid = false;
             Errors["deliveryChargeError"] = 'Delivery Charge cannot be empty';
-        } else {
-            formIsValid = true;
-            Errors["deliveryChargeError"] = '';
-        }
+        } 
+
+        var selectPaymentStaus = document.getElementById('paymentStaus');
+        var selectPaymentStausValue = selectPaymentStaus.options[selectPaymentStaus.selectedIndex].value;
+        if (selectPaymentStausValue === '0') {
+            formIsValid = false;
+            Errors["paymentStausError"] = 'Please Select Payment Status';
+        } 
 
         this.setState({ formErrors: Errors });
         return formIsValid;
@@ -119,10 +127,15 @@ class UpdateZone extends Component {
         }
     }
 
+    deliveryChargeNumberValidate = (event) => {
+        CommonMethods.numberValidation(event);
+    }
+
 
     render() {
         let { zoneName, shippingTime, paymentStaus, deliveryCharge } = this.state.fields;
         const { zoneNameError, shippingTimeError, paymentStausError, deliveryChargeError } = this.state.formErrors;
+        
         return (
             <>
 
@@ -165,7 +178,8 @@ class UpdateZone extends Component {
                                                     <label htmlFor="zoneName" className="form-label">Select Zone</label>
 
                                                     <div className="tom-select-custom">
-                                                        <select className="js-select form-select tomselected" name="zoneName" id="zoneName" onChange={this.handleFormFieldsChange} value={zoneName}>
+                                                        <select className="js-select form-select tomselected" name="zoneName" 
+                                                        id="zoneName" onChange={this.handleFormFieldsChange} value={zoneName}>
                                                             <option value="0">Select your zone</option>
                                                             <option value="Zone A">Zone A</option>
                                                             <option value="Zone B">Zone B</option>
@@ -182,9 +196,17 @@ class UpdateZone extends Component {
                                                 <div className="mb-4">
                                                     <label htmlFor="shippingTime" className="form-label">Shipping Time</label>
 
-                                                    <input type="text" className="form-control" name="shippingTime" id="shippingTime"
-                                                        placeholder="Shipping Time" onChange={this.handleFormFieldsChange} value={shippingTime} />
-
+                                                    <div className="tom-select-custom">
+                                                        <select className="js-select form-select tomselected" name="shippingTime" 
+                                                        id="shippingTime" onChange={this.handleFormFieldsChange} value={shippingTime} >
+                                                            <option value="0">Select Shipping Time</option>
+                                                            <option value="0-24">0-24</option>
+                                                            <option value="24-48">24-48</option>
+                                                            <option value="48-72">48-72</option>
+                                                            <option value="72-120">72-120</option>
+                                                            <option value="120-148">120-148</option>
+                                                        </select>
+                                                    </div>
                                                     {shippingTimeError && <span className='errorMsg'>{shippingTimeError}</span>}
                                                 </div>
                                             </div>
@@ -193,12 +215,23 @@ class UpdateZone extends Component {
                                         <div className="row">
 
                                             <div className="col-sm-6">
+                                                <div className="mb-2">
+                                                    <label htmlFor="deliveryCharge" className="form-label">Delivery Charge</label>
+                                                    <input type="text" className="form-control" name="deliveryCharge"
+                                                        id="deliveryCharge" placeholder="Delivery Charge" value={deliveryCharge}
+                                                        onChange={this.handleFormFieldsChange} onInput={this.deliveryChargeNumberValidate} />
+                                                    {deliveryChargeError && <span className='errorMsg'>{deliveryChargeError}</span>}
+                                                </div>
+                                                <span className={`${this.state.prev ? "" : "d-none"}`}><b>{paymentStaus + ' '}</b><span id='strikeDC'>{`Rs ${deliveryCharge}`}</span></span>
+                                            </div>
+
+                                            <div className="col-sm-6">
                                                 <div className="mb-4">
                                                     <label htmlFor="paymentStaus" className="form-label">Select Payment Mode</label>
 
                                                     <div className="tom-select-custom">
-                                                        <select className="js-select form-select tomselected" name="paymentStaus"
-                                                            id="paymentStaus" onChange={this.handleFormFieldsChange} value={paymentStaus}>
+                                                        <select className="js-select form-select tomselected" name="paymentStaus" 
+                                                            id="paymentStaus" onChange={this.handleFormFieldsChange} value={paymentStaus} >
                                                             <option value="0">Select your payment mode</option>
                                                             <option value="Free">Free</option>
                                                             <option value="Paid">Paid</option>
@@ -209,14 +242,8 @@ class UpdateZone extends Component {
                                                 </div>
                                             </div>
 
-                                            <div className="col-sm-6">
-                                                <div className="mb-4">
-                                                    <label htmlFor="deliveryCharge" className="form-label">Delivery Charge</label>
-                                                    <input type="text" className="form-control" name="deliveryCharge" id="deliveryCharge" placeholder="Delivery Charge" onChange={this.handleFormFieldsChange} value={deliveryCharge} />
-                                                    {deliveryChargeError && <span className='errorMsg'>{deliveryChargeError}</span>}
-                                                </div>
-                                            </div>
                                         </div>
+
                                         <div className='text-end mt-5'>
                                             <Link className="btn btn-primary btn-sm me-2" to="/zones">Cancel</Link>
                                             <button className="btn btn-primary btn-sm">Update</button>
