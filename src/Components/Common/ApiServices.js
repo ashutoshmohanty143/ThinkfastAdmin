@@ -13,12 +13,14 @@ class ApiServices {
         });
     }
 
-    GetAllRecords(collectionName){
-        return axios.get(API_BASE_URL+"/?collection="+collectionName, {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            },
-          });
+    GetAllRecords(collectionName,params){
+      let config = {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        params: params
+      }
+      return axios.get(API_BASE_URL+"/?collection="+collectionName,config);
     }
 
     GetSingleRecordById(id,collectionName){

@@ -14,7 +14,11 @@ class Offers extends Component {
 
   componentDidMount() {
     const collectionName = "offers";
-    ApiServices.GetAllRecords(collectionName)
+    const params = {
+      isSort : true,
+      sortDetails: [{keyName : 'isEnabled', orderType: 'asc'}]
+    }
+    ApiServices.GetAllRecords(collectionName,params)
       .then((response) => {
         this.setState({ offerLists: response.data.data });
       })

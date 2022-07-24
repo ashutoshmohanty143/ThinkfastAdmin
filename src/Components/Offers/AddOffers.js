@@ -149,7 +149,7 @@ render() {
                                         />
                                         {offerDescriptionErr && <span className='errorMsg'>{offerDescriptionErr}</span>}
                                     </div>
-                                    <div className='text-end mt-5'><button className="btn btn-primary btn-sm">Submit</button></div>
+                                    <div className='text-end mt-5'><button className="btn btn-primary btn-sm">Save</button></div>
                                 </form>
                             </div>
 
